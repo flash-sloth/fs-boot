@@ -23,5 +23,5 @@ import top.fsfsfs.basic.webmvc.handler.AbstractGlobalExceptionHandler;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @RestControllerAdvice(annotations = {RestController.class, Controller.class})
 @Slf4j
-public class BaseExceptionConfiguration extends AbstractGlobalExceptionHandler {
+public class FsExceptionConfiguration extends AbstractGlobalExceptionHandler {
 }

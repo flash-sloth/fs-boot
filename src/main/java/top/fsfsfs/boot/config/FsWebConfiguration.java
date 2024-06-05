@@ -29,7 +29,7 @@ import top.fsfsfs.boot.config.properties.SystemProperties;
 @Configuration
 @EnableConfigurationProperties({IgnoreProperties.class, SystemProperties.class})
 @RequiredArgsConstructor
-public class BaseWebConfiguration extends BaseConfig implements WebMvcConfigurer {
+public class FsWebConfiguration extends BaseConfig implements WebMvcConfigurer {
 
 
     private final IgnoreProperties ignoreProperties;

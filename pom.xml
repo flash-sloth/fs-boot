@@ -26,6 +26,18 @@
                     <groupId>top.fsfsfs.basic</groupId>
                     <artifactId>fs-cloud-starter</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>top.fsfsfs.basic</groupId>
+                    <artifactId>fs-db-mybatis-plus</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>top.fsfsfs.basic</groupId>
+                    <artifactId>fs-db-mvc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>p6spy</artifactId>
+                    <groupId>p6spy</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 

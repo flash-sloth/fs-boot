@@ -11,9 +11,10 @@ fs:
     validation-query: SELECT 'x'
     filters: stat,wall
     username: 'root'
-    password: 'PJjs!@34'
+    password: 'root'
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.26.3.68:3306/flash_sloth?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://127.0.0.1:3306/lamp_column?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&nullCatalogMeansCurrent=true
+#    url: jdbc:mysql://172.26.3.68:3306/flash_sloth?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&nullCatalogMeansCurrent=true
   database: # 字段介绍参考 DatabaseProperties
     # COLUMN模式中隔离 租户 的列名
     tenantIdColumn: 'tenant_id'
@@ -223,6 +224,7 @@ spring:
 #  autoconfigure:
 #    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
     druid:
       enable: true
       <<: *db-mysql
@@ -354,4 +356,17 @@ mybatis-plus:
     cache-enabled: false
     #配置JdbcTypeForNull, oracle数据库必须配置
     jdbc-type-for-null: 'null'
-    default-enum-type-handler: top.fsfsfs.basic.database.mybatis.handlers.MybatisEnumTypeHandler
+    default-enum-type-handler: top.fsfsfs.basic.mybatisplus.mybatis.handlers.MybatisEnumTypeHandler
+
+mybatis-flex:
+  mapper-locations:
+    - classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    jdbc-type-for-null: null
+    auto-mapping-unknown-column-behavior: none
+    auto-mapping-behavior: full
+  global-config:
+    deleted-value-of-logic-delete: "1"
+    normal-value-of-logic-delete: "0"
