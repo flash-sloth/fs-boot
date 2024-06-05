@@ -11,7 +11,7 @@ fs:
     validation-query: SELECT 'x'
     filters: stat,wall
     username: 'root'
-    password: 'root'
+    password: 'PJjs!@34'
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://172.26.3.68:3306/flash_sloth?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&nullCatalogMeansCurrent=true
   database: # 字段介绍参考 DatabaseProperties

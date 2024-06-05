@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="logback/defaults-dev.xml"/>
+    <include resource="logback/defaults-sync-logger.xml"/>
 
-
-    <!-- 可以在这里自定义规则 -->
-    <logger name="top.fsfsfs.boot.system.controller" additivity="true" level="${log.level.controller}">
-        <appender-ref ref="CONTROLLER_APPENDER"/>
+    <logger name="top.fsfsfs.boot.modules" additivity="true" level="${log.level.modules}">
+        <appender-ref ref="MODULES_APPENDER"/>
     </logger>
-    <logger name="top.fsfsfs.boot.system.service" additivity="true" level="${log.level.service}">
-        <appender-ref ref="SERVICE_APPENDER"/>
+
+    <logger name="top.fsfsfs.boot.common" additivity="true" level="${log.level.common}">
+        <appender-ref ref="MODULES_APPENDER"/>
+    </logger>
+
+    <logger name="top.fsfsfs.boot.config" additivity="true" level="${log.level.common}">
+        <appender-ref ref="COMMON_APPENDER"/>
     </logger>
 </configuration>
