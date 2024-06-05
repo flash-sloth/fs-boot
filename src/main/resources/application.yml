@@ -18,16 +18,19 @@ fs:
   database: # 字段介绍参考 DatabaseProperties
     # COLUMN模式中隔离 租户 的列名
     tenantIdColumn: 'tenant_id'
-    # 4.x 需要写死 column， 其他模式需要使用其他项目，而非改变此参数
-    multiTenantType: COLUMN
     # 是否不允许写入数据  WriteInterceptor
     isNotWrite: false
-    # 是否启用  sql性能规范插件
-    isBlockAttack: false
-    # 是否启用分布式事务
-    isSeata: false
     # 生产环境请设置p6spy = false
     p6spy: true
+    plus:
+      maxLimit: -1
+      overflow: true
+      optimizeJoin: true
+      # 是否启用  sql性能规范插件
+      isBlockAttack: false
+      isIllegalSql: false
+    flex:
+      audit: true
     # id生成策略
     id-type: CACHE
     hutoolId:
