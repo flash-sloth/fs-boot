@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="logback/defaults-dev.xml"/>
+
+
+    <!-- 可以在这里自定义规则 -->
+    <logger name="top.fsfsfs.boot.system.controller" additivity="true" level="${log.level.controller}">
+        <appender-ref ref="CONTROLLER_APPENDER"/>
+    </logger>
+    <logger name="top.fsfsfs.boot.system.service" additivity="true" level="${log.level.service}">
+        <appender-ref ref="SERVICE_APPENDER"/>
+    </logger>
+</configuration>

@@ -1,0 +1,7 @@
+
+logging:
+  file:
+    path: /mnt/www/fs-boot/logs
+    name: ${logging.file.path}/${spring.application.name}/root.log
+
+
