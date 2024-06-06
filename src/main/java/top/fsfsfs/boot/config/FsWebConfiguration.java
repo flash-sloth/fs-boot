@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.fsfsfs.basic.cache.repository.CacheOps;
 import top.fsfsfs.basic.constant.Constants;
 import top.fsfsfs.basic.log.event.SysLogListener;
-import top.fsfsfs.basic.webmvc.config.BaseConfig;
+import top.fsfsfs.basic.web.config.BaseConfig;
 import top.fsfsfs.boot.config.properties.IgnoreProperties;
 import top.fsfsfs.boot.config.properties.SystemProperties;
 

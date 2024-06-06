@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import jakarta.servlet.Servlet;
-import top.fsfsfs.basic.webmvc.handler.AbstractGlobalExceptionHandler;
+import top.fsfsfs.basic.web.handler.AbstractGlobalExceptionHandler;
 
 /**
  * 基础服务-全局异常处理
