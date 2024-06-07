@@ -16,7 +16,7 @@ import java.net.UnknownHostException;
  * 基础服务启动类
  *
  * @author zuihou
- * @date 2021-10-08
+ * @since 2021-10-08
  */
 @SpringBootApplication
 @EnableDiscoveryClient

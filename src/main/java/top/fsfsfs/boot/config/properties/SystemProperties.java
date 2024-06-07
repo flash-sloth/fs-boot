@@ -10,7 +10,7 @@ import top.fsfsfs.basic.constant.Constants;
  * 登录配置
  *
  * @author zuihou
- * @date 2021/1/28 7:57 下午
+ * @since 2021/1/28 7:57 下午
  */
 @Setter
 @Getter
@@ -64,7 +64,7 @@ public class SystemProperties {
      * 缓存Key前缀
      *
      * @author tangyh
-     * @date 2023/5/15 9:28 AM
+     * @since 2023/5/15 9:28 AM
      * @create [2023/5/15 9:28 AM ] [tangyh] [初始创建]
      */
     private String cachePrefix;

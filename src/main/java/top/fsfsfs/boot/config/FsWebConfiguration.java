@@ -23,7 +23,7 @@ import top.fsfsfs.boot.config.properties.SystemProperties;
  * 基础服务-Web配置
  *
  * @author zuihou
- * @date 2021-10-08
+ * @since 2021-10-08
  */
 @Slf4j
 @Configuration

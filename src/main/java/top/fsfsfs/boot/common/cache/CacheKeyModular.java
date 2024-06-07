@@ -4,7 +4,7 @@ package top.fsfsfs.boot.common.cache;
  * 缓存模块
  *
  * @author tangyh
- * @date 2020/10/21
+ * @since 2020/10/21
  */
 public class CacheKeyModular {
     /**
