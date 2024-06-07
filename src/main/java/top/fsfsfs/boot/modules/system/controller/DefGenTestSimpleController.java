@@ -32,7 +32,7 @@ import static top.fsfsfs.boot.modules.system.entity.table.DefGenTestSimple2Table
 @RestController
 @RequestMapping("/system/test2")
 @AllArgsConstructor
-@Tag(name = "示例接口")
+@Tag(name = "不继承接口")
 @Slf4j
 public class DefGenTestSimpleController {
 

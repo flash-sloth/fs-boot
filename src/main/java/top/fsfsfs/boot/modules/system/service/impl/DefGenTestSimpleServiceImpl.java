@@ -21,10 +21,6 @@ import java.lang.reflect.Type;
 @Service
 @RequiredArgsConstructor
 public class DefGenTestSimpleServiceImpl extends SuperServiceImpl<DefGenTestSimple2Mapper, DefGenTestSimple2> implements DefGenTestSimpleService {
-    @Override
-    public Class<DefGenTestSimple2> getEntityClass() {
-        return DefGenTestSimple2.class;
-    }
 
     public static void main(String[] args) {
         Type typeArgument = TypeUtil.getTypeArgument(DefGenTestSimpleServiceImpl.class, 1);
