@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
  * 解决跨域问题
  *
  * @author zuihou
- * @date 2020年02月24日15:51:57
+ * @since 2020年02月24日15:51:57
  */
 @Configuration
 public class CorsConfiguration {

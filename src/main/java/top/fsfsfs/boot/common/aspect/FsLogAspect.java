@@ -16,7 +16,7 @@ import top.fsfsfs.boot.config.properties.SystemProperties;
  * 操作日志使用spring event异步入库
  *
  * @author zuihou
- * @date 2019-07-01 15:15
+ * @since 2019-07-01 15:15
  */
 @Slf4j
 @Aspect

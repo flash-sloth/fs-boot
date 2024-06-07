@@ -11,7 +11,7 @@ import top.fsfsfs.boot.common.enumeration.HttpMethod;
 import java.util.Map;
 import java.util.Set;
 
-import static top.fsfsfs.basic.utils.CollHelper.putAll;
+import static top.fsfsfs.util.utils.CollHelper.putAll;
 
 
 /**
@@ -22,7 +22,7 @@ import static top.fsfsfs.basic.utils.CollHelper.putAll;
  * 3. 是否需要uri权限?
  *
  * @author zuihou
- * @date 2019/01/03
+ * @since 2019/01/03
  */
 @Data
 @ConfigurationProperties(prefix = IgnoreProperties.PREFIX)

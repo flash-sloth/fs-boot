@@ -8,7 +8,7 @@ package top.fsfsfs.boot.common.constant;
  * 本类中的 @fs.generator auto insert 请勿删除
  *
  * @author zuihou
- * @date 2020年01月20日11:16:37
+ * @since 2020年01月20日11:16:37
  */
 public interface EchoApi {
     // @fs.generator auto insert EchoApi

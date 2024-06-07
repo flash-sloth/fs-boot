@@ -373,3 +373,7 @@ mybatis-flex:
   global-config:
     deleted-value-of-logic-delete: "1"
     normal-value-of-logic-delete: "0"
+    key-config:
+      before: true
+      key-type: generator
+      value: 'uid'

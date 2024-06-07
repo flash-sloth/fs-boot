@@ -8,7 +8,7 @@ package top.fsfsfs.boot.common.constant;
  * 本类中的 @fs.generator auto insert 请勿删除
  *
  * @author zuihou
- * @date 2019/07/26
+ * @since 2019/07/26
  */
 public interface EchoDictType {
     // @fs.generator auto insert EchoDictType

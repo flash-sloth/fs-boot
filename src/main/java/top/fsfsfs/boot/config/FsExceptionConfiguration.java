@@ -16,7 +16,7 @@ import top.fsfsfs.basic.web.handler.AbstractGlobalExceptionHandler;
  * 基础服务-全局异常处理
  *
  * @author zuihou
- * @date 2021-10-08
+ * @since 2021-10-08
  */
 @Configuration
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class})

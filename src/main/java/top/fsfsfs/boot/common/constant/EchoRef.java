@@ -6,7 +6,7 @@ package top.fsfsfs.boot.common.constant;
  *
  * @author tangyh
  * @version v1.0
- * @date 2022/4/20 5:20 PM
+ * @since 2022/4/20 5:20 PM
  * @create [2022/4/20 5:20 PM ] [tangyh] [初始创建]
  */
 public interface EchoRef {

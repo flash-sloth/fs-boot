@@ -38,7 +38,16 @@
                     <artifactId>p6spy</artifactId>
                     <groupId>p6spy</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>top.fsfsfs.basic</groupId>
+                    <artifactId>fs-mvc-plus</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-codegen</artifactId>
         </dependency>
 
         <dependency>

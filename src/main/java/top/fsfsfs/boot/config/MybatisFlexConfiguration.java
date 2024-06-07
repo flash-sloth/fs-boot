@@ -16,7 +16,7 @@ import top.fsfsfs.basic.mybatisflex.config.FsMybatisFlexConfiguration;
  * WriteInterceptor > DataScopeInterceptor > PaginationInterceptor
  *
  * @author zuihou
- * @date 2018/10/24
+ * @since 2018/10/24
  */
 @Configuration
 @Slf4j

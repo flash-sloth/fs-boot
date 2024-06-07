@@ -13,8 +13,10 @@ import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.cache.redis.CacheResult;
 import top.fsfsfs.basic.cache.repository.CacheOps;
 import top.fsfsfs.basic.model.cache.CacheKey;
-import top.fsfsfs.basic.mvc.request.PageParams;
+import top.fsfsfs.basic.mvcflex.request.PageParams;
 import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple;
+import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
+import top.fsfsfs.boot.modules.system.mapper.DefGenTestSimple2Mapper;
 import top.fsfsfs.boot.modules.system.service.TestSimpleService;
 
 import java.time.Duration;
@@ -27,7 +29,8 @@ import java.time.Duration;
 public class TestController {
 
     private final TestSimpleService testSimpleService;
-//    private final DefGenTestSimplePlusMapper defGenTestSimplePlusMapper;
+    private final DefGenTestSimple2Mapper defGenTestSimple2Mapper;
+    //    private final DefGenTestSimplePlusMapper defGenTestSimplePlusMapper;
     private final CacheOps cacheOps;
 
     @PostMapping("/saveCache")
@@ -65,6 +68,11 @@ public class TestController {
     @PostMapping("/save")
     public R<Object> save(@RequestBody DefGenTestSimple simple) {
         return R.success(testSimpleService.save(simple));
+    }
+
+    @PostMapping("/save2")
+    public R<Object> save2(@RequestBody DefGenTestSimple2 simple) {
+        return R.success(defGenTestSimple2Mapper.insert(simple));
     }
 
     @PostMapping("/updateById")
