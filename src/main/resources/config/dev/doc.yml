@@ -1,0 +1,56 @@
+fs:
+  swagger:
+    license: Powered By flash-sloth
+    licenseUrl: https://github.com/flash-sloth
+    termsOfServiceUrl: https://github.com/flash-sloth
+    version: @project.version@
+    contact: # 联系人信息
+      url: https://github.com/flash-sloth
+      name: tangyh
+      email: 244387066@qq.com
+    global-operation-parameters: # 全局参数
+      - name: Token
+        description: 用户信息
+        modelRef: String
+        parameterType: header
+        required: true
+        # 默认值只是方便本地开发时，少填参数，生产环境请禁用swagger或者禁用默认参数
+        defaultValue: "test"
+      - name: Authorization
+        description: 客户端信息
+        modelRef: String
+        parameterType: header
+        required: true
+        defaultValue: "bGFtcF93ZWI6bGFtcF93ZWJfc2VjcmV0"
+      - name: TenantId
+        description: 租户ID
+        modelRef: String
+        parameterType: header
+        required: true
+        defaultValue: "1"
+
+# knife4j 文档通用配置 详情看: Knife4jProperties
+knife4j:
+  enable: true
+  setting:
+    enableReloadCacheParameter: true
+    enableVersion: true
+    enableDynamicParameter: true
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Apache License 2.0 | Copyright  2024 [flash-sloth](https://github.com/flash-sloth)
+
+springdoc:
+  # 默认是false，需要设置为true
+  default-flat-param-object: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'fs-boot'
+      displayName: '单体版'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot

@@ -33,3 +33,7 @@ nbdist/
 .nb-gradle/
 generatorConfig.xml
 
+**/config/tangyh/**
+**/config/liy/**
+**/config/liulh/**
+**/config/hukz/**

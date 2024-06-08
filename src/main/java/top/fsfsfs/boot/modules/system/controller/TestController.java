@@ -3,7 +3,9 @@ package top.fsfsfs.boot.modules.system.controller;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,15 +25,19 @@ import java.time.Duration;
 
 @RestController
 @RequestMapping("/system/test")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "测试接口")
 @Slf4j
 public class TestController {
 
     private final TestSimpleService testSimpleService;
     private final DefGenTestSimple2Mapper defGenTestSimple2Mapper;
-    //    private final DefGenTestSimplePlusMapper defGenTestSimplePlusMapper;
     private final CacheOps cacheOps;
+
+    @GetMapping("/hello")
+    public R<Object> hello() {
+        return R.success("ok");
+    }
 
     @PostMapping("/saveCache")
     public R<Object> saveCache(@RequestBody DefGenTestSimple simple) {

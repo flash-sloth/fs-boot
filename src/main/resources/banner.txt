@@ -9,7 +9,7 @@ ${AnsiColor.BRIGHT_YELLOW}
             \|_________|
 
 Spring Boot Version: ${spring-boot.version}
-Application Version: ${project.artifactId} - ${project.version}
-当前服务: ${spring.application.name}   激活环境: ${spring.profiles.active}   当前版本: ${info.version}
+Application Version: @project.artifactId@ - @project.version@
+当前服务: ${spring.application.name}   激活环境: ${spring.profiles.active}
 版权和最终解释权归 ©flash-sloth(https://github.com/flash-sloth) 团队所有
 ${AnsiColor.DEFAULT}

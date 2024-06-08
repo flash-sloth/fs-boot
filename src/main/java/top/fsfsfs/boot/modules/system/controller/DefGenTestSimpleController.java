@@ -7,6 +7,7 @@ import com.mybatisflex.core.query.SqlOperators;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ import static top.fsfsfs.boot.modules.system.entity.table.DefGenTestSimple2Table
 
 @RestController
 @RequestMapping("/system/test2")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "不继承接口")
 @Slf4j
 public class DefGenTestSimpleController {
