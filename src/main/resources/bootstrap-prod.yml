@@ -1,5 +1,5 @@
-
 logging:
+  config: classpath:logback-spring.xml
   file:
     path: /mnt/www/fs-boot/logs
     name: ${logging.file.path}/${spring.application.name}/root.log

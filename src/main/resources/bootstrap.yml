@@ -12,7 +12,7 @@ logging:
   file:
     path: ./logs
     name: ${logging.file.path}/${spring.application.name}/root.log
-  config: classpath:logback-spring.xml
+  config: classpath:logback-spring-dev.xml
   level:
     druid.sql.Statement: debug
 
