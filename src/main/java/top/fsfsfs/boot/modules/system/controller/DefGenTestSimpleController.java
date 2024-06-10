@@ -10,12 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvcflex.request.PageFlexUtil;
@@ -87,6 +82,12 @@ public class DefGenTestSimpleController {
     @PostMapping("/updateById")
     public R<DefGenTestSimple2> updateById(@Validated(SuperEntity.Update.class) @RequestBody DefGenTestSimple2VO simple) {
         return R.success(testSimpleService.updateVoById(simple));
+    }
+
+    @Operation(summary = "获取详情")
+    @GetMapping("/get")
+    public R<DefGenTestSimple2> getById( @RequestParam Long id) {
+        return R.success(testSimpleService.getById(id));
     }
 
     public static void main(String[] args) {
