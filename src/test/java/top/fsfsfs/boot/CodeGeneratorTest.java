@@ -8,12 +8,22 @@ import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.GeneratorFactory;
+import com.mybatisflex.core.table.TableInfo;
+import com.mybatisflex.core.table.TableInfoFactory;
+import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.common.enumeration.Sex;
+import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
 
 public class CodeGeneratorTest {
+
+    @Test
+    public void test1(){
+        TableInfo tableInfo = TableInfoFactory.ofEntityClass(DefGenTestSimple2.class);
+        System.out.println(tableInfo);
+    }
 
     public static void main(String[] args) {
         //配置数据源

@@ -21,6 +21,7 @@ fs:
       audit: true
       auditCollector: DEFAULTS
       logicDeleteProcessor: TIME_STAMP_DEL_BY_LOGIC_DELETE_PROCESSOR
+      delByColumn: del_by
     # id生成策略
     id-type: CACHE
     hutoolId:
