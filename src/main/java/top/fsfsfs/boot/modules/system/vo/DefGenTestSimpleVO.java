@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @Table(value = "def_gen_test_simple")
-public class DefGenTestSimple2VO implements Serializable {
+public class DefGenTestSimpleVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")

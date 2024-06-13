@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @Table(value = "fs_gen_test_tree")
-public class DefGenTestSimple2QueryVO implements Serializable {
+public class DefGenTestTreeQueryVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")

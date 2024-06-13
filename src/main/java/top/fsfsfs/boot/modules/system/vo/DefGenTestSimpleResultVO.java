@@ -1,4 +1,4 @@
-package top.fsfsfs.boot.modules.system.entity;
+package top.fsfsfs.boot.modules.system.vo;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
@@ -6,13 +6,8 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.base.entity.Entity;
-import top.fsfsfs.basic.base.entity.SuperEntity;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,12 +16,11 @@ import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
-@Table(value = "fs_gen_test_tree", onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
-public class DefGenTestSimple2 extends Entity<Long> implements Serializable {
+@Table(value = "def_gen_test_simple")
+public class DefGenTestSimpleResultVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")
-    @NotNull(message = "id不能为空", groups = SuperEntity.Update.class)
     @Id(keyType = KeyType.Generator, value = KeyGenerators.flexId)
     protected Long id;
 
@@ -41,10 +35,6 @@ public class DefGenTestSimple2 extends Entity<Long> implements Serializable {
 
     @Schema(description = "最后修改人ID")
     protected Long updatedBy;
-
-    private Long delFlag;
-    private Long delBy;
-
     /**
      * 名称
      */

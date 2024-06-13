@@ -1,7 +1,7 @@
 package top.fsfsfs.boot.modules.system.service;
 
 import top.fsfsfs.basic.mvcflex.service.SuperService;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
+import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple;
 
 
 /**
@@ -12,7 +12,7 @@ import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
  * @author sz
  * @since 2024-01-22
  */
-public interface DefGenTestSimpleService extends SuperService<DefGenTestSimple2> {
+public interface DefGenTestSimpleService extends SuperService<DefGenTestSimple> {
 
 
 }

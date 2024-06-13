@@ -15,13 +15,13 @@ import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.common.enumeration.Sex;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
+import top.fsfsfs.boot.modules.system.entity.DefGenTestTree;
 
 public class CodeGeneratorTest {
 
     @Test
     public void test1(){
-        TableInfo tableInfo = TableInfoFactory.ofEntityClass(DefGenTestSimple2.class);
+        TableInfo tableInfo = TableInfoFactory.ofEntityClass(DefGenTestTree.class);
         System.out.println(tableInfo);
     }
 

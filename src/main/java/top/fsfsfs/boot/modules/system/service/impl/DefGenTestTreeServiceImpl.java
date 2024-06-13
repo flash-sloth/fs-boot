@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.fsfsfs.basic.model.cache.CacheKeyBuilder;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperCacheServiceImpl;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
-import top.fsfsfs.boot.modules.system.mapper.DefGenTestSimple2Mapper;
-import top.fsfsfs.boot.modules.system.service.DefGenTestSimple3Service;
+import top.fsfsfs.boot.modules.system.entity.DefGenTestTree;
+import top.fsfsfs.boot.modules.system.mapper.DefGenTestTreeMapper;
+import top.fsfsfs.boot.modules.system.service.DefGenTestTreeService;
 
 /**
  * <p>
@@ -18,7 +18,7 @@ import top.fsfsfs.boot.modules.system.service.DefGenTestSimple3Service;
  */
 @Service
 @RequiredArgsConstructor
-public class DefGenTestSimple3ServiceImpl extends SuperCacheServiceImpl<DefGenTestSimple2Mapper, DefGenTestSimple2> implements DefGenTestSimple3Service {
+public class DefGenTestTreeServiceImpl extends SuperCacheServiceImpl<DefGenTestTreeMapper, DefGenTestTree> implements DefGenTestTreeService {
 
     @Override
     protected CacheKeyBuilder cacheKeyBuilder() {

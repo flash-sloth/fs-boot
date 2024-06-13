@@ -2,7 +2,7 @@ package top.fsfsfs.boot.modules.system.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
+import top.fsfsfs.boot.modules.system.entity.DefGenTestTree;
 
 /**
  * <p>
@@ -13,6 +13,6 @@ import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2;
  * @since 2023-08-31
  */
 @Repository
-public interface DefGenTestSimple2Mapper extends SuperMapper<DefGenTestSimple2> {
+public interface DefGenTestTreeMapper extends SuperMapper<DefGenTestTree> {
 
 }
