@@ -1,4 +1,4 @@
-package top.fsfsfs.boot.modules.system.controller;
+package top.fsfsfs.boot.modules.test.controller;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -18,11 +18,11 @@ import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvcflex.request.PageFlexUtil;
 import top.fsfsfs.basic.mvcflex.request.PageParams;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple;
-import top.fsfsfs.boot.modules.system.service.DefGenTestSimpleService;
-import top.fsfsfs.boot.modules.system.vo.DefGenTestSimpleQueryVO;
-import top.fsfsfs.boot.modules.system.vo.DefGenTestSimpleResultVO;
-import top.fsfsfs.boot.modules.system.vo.DefGenTestSimpleVO;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestSimple;
+import top.fsfsfs.boot.modules.test.service.DefGenTestSimpleService;
+import top.fsfsfs.boot.modules.test.vo.DefGenTestSimpleQueryVO;
+import top.fsfsfs.boot.modules.test.vo.DefGenTestSimpleResultVO;
+import top.fsfsfs.boot.modules.test.vo.DefGenTestSimpleVO;
 
 import java.util.List;
 

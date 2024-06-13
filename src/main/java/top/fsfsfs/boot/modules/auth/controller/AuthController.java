@@ -1,6 +1,5 @@
 package top.fsfsfs.boot.modules.auth.controller;
 
-import cn.hutool.system.UserInfo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +9,6 @@ import top.fsfsfs.basic.base.R;
 import top.fsfsfs.boot.modules.auth.dto.LoginDto;
 import top.fsfsfs.boot.modules.auth.vo.LoginVo;
 import top.fsfsfs.boot.modules.auth.vo.UserInfoVo;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple;
-import top.fsfsfs.boot.modules.system.service.TestSimpleService;
 
 import java.util.ArrayList;
 

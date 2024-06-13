@@ -1,4 +1,4 @@
-package top.fsfsfs.boot.modules.system.vo;
+package top.fsfsfs.boot.modules.test.vo;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;

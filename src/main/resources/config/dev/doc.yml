@@ -50,7 +50,47 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: 'fs-boot'
-      displayName: '单体版'
+    - group: '001_system'
+      displayName: '系统功能'
       paths-to-match: '/**'
-      packages-to-scan: top.fsfsfs.boot
+      packages-to-scan: top.fsfsfs.boot.modules.system
+    - group: '005_app'
+      displayName: '移动端接口'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.app
+    - group: '010_auth'
+      displayName: '认证中心'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.auth
+    - group: '015_form'
+      displayName: '表单引擎'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.form
+    - group: '020_generator'
+      displayName: '代码生成器'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.generator
+    - group: '025_liteflow'
+      displayName: '规则引擎'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.liteflow
+    - group: '030_magicapi'
+      displayName: '在线接口'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.magicapi
+    - group: '035_msg'
+      displayName: '消息中心'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.msg
+    - group: '040_organization'
+      displayName: '组织机构'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.organization
+    - group: '045_oss'
+      displayName: '对象存储'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.oss
+    - group: '000_test'
+      displayName: '示例代码'
+      paths-to-match: '/**'
+      packages-to-scan: top.fsfsfs.boot.modules.test

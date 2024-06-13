@@ -1,7 +1,7 @@
-package top.fsfsfs.boot.modules.system.service;
+package top.fsfsfs.boot.modules.test.service;
 
 import top.fsfsfs.basic.mvcflex.service.SuperCacheService;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestTree;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
 
 
 /**

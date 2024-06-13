@@ -15,7 +15,7 @@ import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.common.enumeration.Sex;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestTree;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
 
 public class CodeGeneratorTest {
 

@@ -1,12 +1,12 @@
-package top.fsfsfs.boot.modules.system.service.impl;
+package top.fsfsfs.boot.modules.test.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.fsfsfs.basic.model.cache.CacheKeyBuilder;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperCacheServiceImpl;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestTree;
-import top.fsfsfs.boot.modules.system.mapper.DefGenTestTreeMapper;
-import top.fsfsfs.boot.modules.system.service.DefGenTestTreeService;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
+import top.fsfsfs.boot.modules.test.mapper.DefGenTestTreeMapper;
+import top.fsfsfs.boot.modules.test.service.DefGenTestTreeService;
 
 /**
  * <p>

@@ -1,7 +1,7 @@
-package top.fsfsfs.boot.modules.system.service;
+package top.fsfsfs.boot.modules.test.service;
 
 import top.fsfsfs.basic.mvcflex.service.SuperService;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestSimple;
 
 
 /**
