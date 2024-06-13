@@ -37,7 +37,7 @@ public class DefGenTestTreeController extends SuperController<DefGenTestTreeServ
         List<DefGenTestTree> list = superService.list();
         List<DefGenTestTreeResultVO> treeList = BeanUtil.copyToList(list, DefGenTestTreeResultVO.class);
 
-        List<Tree<Long>> list3 = FsTreeUtil.build2(treeList);
+        List<Tree<Long>> list3 = FsTreeUtil.build(treeList);
 
         return success(list3);
     }
