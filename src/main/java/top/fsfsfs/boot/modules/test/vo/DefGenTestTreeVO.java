@@ -93,7 +93,7 @@ public class DefGenTestTreeVO implements Serializable {
     /**
      * 排序
      */
-    private Integer sortValue;
+    private Integer weight;
     /**
      * 字符字典;
      *

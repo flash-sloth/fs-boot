@@ -1,12 +1,18 @@
 package top.fsfsfs.boot.modules.test.vo;
 
+import cn.hutool.core.lang.tree.TreeNode;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -15,9 +21,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
+@Builder
 @Table(value = "fs_gen_test_tree")
-public class DefGenTestTreeResultVO implements Serializable {
+public class DefGenTestTreeResultVO extends TreeNode<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")
@@ -88,7 +99,7 @@ public class DefGenTestTreeResultVO implements Serializable {
     /**
      * 排序
      */
-    private Integer sortValue;
+    private Integer weight;
     /**
      * 字符字典;
      *

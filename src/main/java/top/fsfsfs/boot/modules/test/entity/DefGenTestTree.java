@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @Table(value = "fs_gen_test_tree", onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
-public class DefGenTestTree extends TreeEntity<DefGenTestTree, Long> implements Serializable {
+public class DefGenTestTree extends TreeEntity<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")
@@ -49,6 +49,13 @@ public class DefGenTestTree extends TreeEntity<DefGenTestTree, Long> implements 
      * 名称
      */
     private String name;
+    /**
+     * 排序
+     */
+    private Integer weight;
+
+
+
     /**
      * 库存
      */
@@ -95,10 +102,7 @@ public class DefGenTestTree extends TreeEntity<DefGenTestTree, Long> implements 
      * 名称
      */
     private String label;
-    /**
-     * 排序
-     */
-    private Integer sortValue;
+
     /**
      * 字符字典;
      *
