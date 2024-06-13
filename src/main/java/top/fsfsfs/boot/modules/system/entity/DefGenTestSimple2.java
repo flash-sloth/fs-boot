@@ -41,6 +41,10 @@ public class DefGenTestSimple2 extends Entity<Long> implements Serializable {
 
     @Schema(description = "最后修改人ID")
     protected Long updatedBy;
+
+    private Long delFlag;
+    private Long delBy;
+
     /**
      * 名称
      */
