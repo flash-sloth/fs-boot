@@ -1,7 +1,7 @@
-package top.fsfsfs.boot.modules.system.service;
+package top.fsfsfs.boot.modules.test.service;
 
 import com.mybatisflex.core.service.IService;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestSimple;
 
 
 /**

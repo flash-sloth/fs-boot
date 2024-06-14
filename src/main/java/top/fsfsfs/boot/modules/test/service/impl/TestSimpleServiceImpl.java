@@ -1,11 +1,11 @@
-package top.fsfsfs.boot.modules.system.service.impl;
+package top.fsfsfs.boot.modules.test.service.impl;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.fsfsfs.boot.modules.system.entity.DefGenTestSimple;
-import top.fsfsfs.boot.modules.system.mapper.DefGenTestSimpleMapper;
-import top.fsfsfs.boot.modules.system.service.TestSimpleService;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestSimple;
+import top.fsfsfs.boot.modules.test.mapper.DefGenTestSimpleMapper;
+import top.fsfsfs.boot.modules.test.service.TestSimpleService;
 
 /**
  * <p>

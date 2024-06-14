@@ -8,17 +8,27 @@ import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.GeneratorFactory;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import com.mybatisflex.core.table.TableInfo;
+import com.mybatisflex.core.table.TableInfoFactory;
+import org.junit.jupiter.api.Test;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.common.enumeration.Sex;
+import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
 
 public class CodeGeneratorTest {
+
+    @Test
+    public void test1(){
+        TableInfo tableInfo = TableInfoFactory.ofEntityClass(DefGenTestTree.class);
+        System.out.println(tableInfo);
+    }
 
     public static void main(String[] args) {
         //配置数据源
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/lamp_column?characterEncoding=utf-8");
+        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/flash_sloth?characterEncoding=utf-8");
         dataSource.setUsername("root");
         dataSource.setPassword("root");
 
@@ -47,14 +57,14 @@ public class CodeGeneratorTest {
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
         globalConfig.setEntityWithLombok(true);
-        globalConfig.setEntitySuperClass(SuperEntity.class);
+        globalConfig.setEntitySuperClass(BaseEntity.class);
         //设置项目的JDK版本，项目的JDK为14及以上时建议设置该项，小于14则可以不设置
         globalConfig.setEntityJdkVersion(17)
 
         ;
         globalConfig.getJavadocConfig();
         globalConfig.getPackageConfig();
-        globalConfig.getStrategyConfig().setIgnoreColumns(SuperEntity.CREATED_BY_FIELD, SuperEntity.CREATED_TIME_FIELD);
+        globalConfig.getStrategyConfig().setIgnoreColumns(BaseEntity.CREATED_BY_FIELD, BaseEntity.CREATED_AT_FIELD);
         globalConfig.getTemplateConfig();
 
         globalConfig.setCustomConfig("aaa","dddd");

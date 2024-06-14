@@ -8,12 +8,8 @@ fs:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/flash_sloth?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&nullCatalogMeansCurrent=true
   database: # 字段介绍参考 DatabaseProperties
-    # COLUMN模式中隔离 租户 的列名
+    # 全局的租户ID字段名
     tenantIdColumn: 'tenant_id'
-    # 是否不允许写入数据  WriteInterceptor
-    isNotWrite: false
-    # 生产环境请设置p6spy = false
-    p6spy: true
     plus:
       maxLimit: -1
       overflow: true
@@ -23,6 +19,9 @@ fs:
       isIllegalSql: false
     flex:
       audit: true
+      auditCollector: DEFAULTS
+      logicDeleteProcessor: TIME_STAMP_DEL_BY_LOGIC_DELETE_PROCESSOR
+      deletedByColumn: deleted_by
     # id生成策略
     id-type: CACHE
     hutoolId:
@@ -46,8 +45,9 @@ mybatis-flex:
     auto-mapping-unknown-column-behavior: none
     auto-mapping-behavior: full
   global-config:
-    deleted-value-of-logic-delete: "1"
-    normal-value-of-logic-delete: "0"
+    # 全局配置逻辑删除字段，表中有该字段就会进行逻辑删除，否则进行物理删除
+    logicDeleteColumn: del_flag
+    tenantColumn: ${fs.database.tenantIdColumn}
     key-config:
       before: true
       key-type: generator

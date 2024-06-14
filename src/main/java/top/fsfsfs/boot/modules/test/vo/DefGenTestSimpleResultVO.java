@@ -1,4 +1,4 @@
-package top.fsfsfs.boot.modules.system.vo;
+package top.fsfsfs.boot.modules.test.vo;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
@@ -16,8 +16,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
-@Table(value = "fs_gen_test_tree")
-public class DefGenTestSimple2QueryVO implements Serializable {
+@Table(value = "fs_gen_test_simple")
+@Schema(description = "单表示例")
+public class DefGenTestSimpleResultVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")

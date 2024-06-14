@@ -1,13 +1,9 @@
-package top.fsfsfs.boot.modules.system.vo;
+package top.fsfsfs.boot.modules.test.entity;
 
 import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import com.mybatisflex.core.keygen.KeyGenerators;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.Accessors;
+import top.fsfsfs.basic.base.entity.SuperEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,26 +11,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@Accessors(chain = true)
-@Table(value = "fs_gen_test_tree")
-public class DefGenTestSimple2ResultVO implements Serializable {
+@Table(value = "fs_gen_test_simple")
+public class DefGenTestSimple extends SuperEntity<Long> implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "主键")
-    @Id(keyType = KeyType.Generator, value = KeyGenerators.flexId)
-    protected Long id;
-
-    @Schema(description = "创建时间")
-    protected LocalDateTime createdTime;
-
-    @Schema(description = "创建人ID")
-    protected Long createdBy;
-
-    @Schema(description = "最后修改时间")
-    protected LocalDateTime updatedTime;
-
-    @Schema(description = "最后修改人ID")
-    protected Long updatedBy;
     /**
      * 名称
      */
@@ -43,6 +24,7 @@ public class DefGenTestSimple2ResultVO implements Serializable {
      * 库存
      */
     private Integer stock;
+
     /**
      * 商品类型;
      * #ProductType{ordinary:普通;gift:赠品}

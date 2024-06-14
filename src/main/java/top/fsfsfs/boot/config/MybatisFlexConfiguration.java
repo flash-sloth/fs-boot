@@ -1,6 +1,6 @@
 package top.fsfsfs.boot.config;
 
-import com.mybatisflex.core.audit.AuditManager;
+import com.mybatisflex.spring.boot.MybatisFlexProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,8 +24,8 @@ import top.fsfsfs.basic.mybatisflex.config.FsMybatisFlexConfiguration;
 @MapperScan(basePackages = {"top.fsfsfs.boot", "top.fsfsfs.basic"}, annotationClass = Repository.class)
 public class MybatisFlexConfiguration extends FsMybatisFlexConfiguration {
 
-    public MybatisFlexConfiguration(final DatabaseProperties databaseProperties) {
-        super(databaseProperties);
+    public MybatisFlexConfiguration(final DatabaseProperties databaseProperties, MybatisFlexProperties mybatisFlexProperties) {
+        super(databaseProperties, mybatisFlexProperties);
     }
 
 }
