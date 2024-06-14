@@ -20,11 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @Table(value = "fs_gen_test_simple")
-<<<<<<< HEAD:src/main/java/top/fsfsfs/boot/modules/system/vo/DefGenTestSimple2VO.java
-public class DefGenTestSimple2VO implements Serializable {
-=======
 public class DefGenTestSimpleVO implements Serializable {
->>>>>>> 017ff41c22e9a6c70992eb0fca028f14550cfc0b:src/main/java/top/fsfsfs/boot/modules/test/vo/DefGenTestSimpleVO.java
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")

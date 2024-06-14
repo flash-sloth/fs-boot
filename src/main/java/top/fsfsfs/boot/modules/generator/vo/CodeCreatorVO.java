@@ -1,6 +1,10 @@
 package top.fsfsfs.boot.modules.generator.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -11,6 +15,10 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
+@EqualsAndHashCode
+@ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class CodeCreatorVO {
     private String vo;
     private String entity;
