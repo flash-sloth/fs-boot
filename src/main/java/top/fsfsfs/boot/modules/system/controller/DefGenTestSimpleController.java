@@ -28,7 +28,7 @@ import top.fsfsfs.boot.modules.system.vo.DefGenTestSimple2VO;
 
 import java.util.List;
 
-import static top.fsfsfs.boot.modules.system.entity.table.DefGenTestSimple2TableDef.DEF_GEN_TEST_SIMPLE2;
+//import static top.fsfsfs.boot.modules.system.entity.DefGenTestSimple2.  //DefGenTestSimple2TableDef.DEF_GEN_TEST_SIMPLE2;
 
 @RestController
 @RequestMapping("/system/test2")
@@ -91,14 +91,14 @@ public class DefGenTestSimpleController {
 
     public static void main(String[] args) {
 
-        DefGenTestSimple2QueryVO vo = new DefGenTestSimple2QueryVO();
-        vo.setName("nihao");
-        QueryWrapper wrapper = QueryWrapper.create(vo, SqlOperators.of().set(DEF_GEN_TEST_SIMPLE2.NAME, SqlOperator.GE));
-        wrapper.select(DEF_GEN_TEST_SIMPLE2.DEFAULT_COLUMNS)
-                .from(DefGenTestSimple2QueryVO.class)
+      //  DefGenTestSimple2QueryVO vo = new DefGenTestSimple2QueryVO();
+       // vo.setName("nihao");
+        //QueryWrapper wrapper = QueryWrapper.create(vo, SqlOperators.of().set(DEF_GEN_TEST_SIMPLE2.NAME, SqlOperator.GE));
+       // wrapper.select(DEF_GEN_TEST_SIMPLE2.DEFAULT_COLUMNS)
+       //         .from(DefGenTestSimple2QueryVO.class)
 //                .where(DEF_GEN_TEST_SIMPLE2.NAME.like("nihao").and(DEF_GEN_TEST_SIMPLE2.TEST11.like("111")))
-        ;
+     //   ;
 
-        System.out.println(wrapper.toSQL());
+       // System.out.println(wrapper.toSQL());
     }
 }

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@Table(value = "def_gen_test_simple")
+@Table(value = "fs_gen_test_simple")
 public class DefGenTestSimple extends Entity<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 
