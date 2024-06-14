@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @Table(value = "fs_gen_test_simple")
+@Schema(description = "单表示例")
 public class DefGenTestSimpleResultVO implements Serializable {
     private static final long serialVersionUID = 1L;
 

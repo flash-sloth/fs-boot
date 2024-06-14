@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.base.entity.TreeEntity;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
@@ -26,24 +26,24 @@ public class DefGenTestTree extends TreeEntity<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")
-    @NotNull(message = "id不能为空", groups = SuperEntity.Update.class)
+    @NotNull(message = "id不能为空", groups = BaseEntity.Update.class)
     @Id(keyType = KeyType.Generator, value = KeyGenerators.flexId)
     protected Long id;
 
     @Schema(description = "创建时间")
-    protected LocalDateTime createdTime;
+    protected LocalDateTime createdAt;
 
     @Schema(description = "创建人ID")
     protected Long createdBy;
 
     @Schema(description = "最后修改时间")
-    protected LocalDateTime updatedTime;
+    protected LocalDateTime updatedAt;
 
     @Schema(description = "最后修改人ID")
     protected Long updatedBy;
 
-    private Long delFlag;
-    private Long delBy;
+    private Long deletedAt;
+    private Long deletedBy;
 
     /**
      * 名称

@@ -1,14 +1,8 @@
 package top.fsfsfs.boot.modules.test.entity;
 
 import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import com.mybatisflex.core.keygen.KeyGenerators;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import top.fsfsfs.basic.base.entity.Entity;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 
 import java.io.Serializable;
@@ -18,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Table(value = "fs_gen_test_simple")
-public class DefGenTestSimple extends Entity<Long> implements Serializable {
+public class DefGenTestSimple extends SuperEntity<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

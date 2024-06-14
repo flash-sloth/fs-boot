@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ public class DefGenTestSimpleVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")
-    @NotNull(message = "id不能为空", groups = SuperEntity.Update.class)
+    @NotNull(message = "id不能为空", groups = BaseEntity.Update.class)
     @Id(keyType = KeyType.Generator, value = KeyGenerators.flexId)
     protected Long id;
 

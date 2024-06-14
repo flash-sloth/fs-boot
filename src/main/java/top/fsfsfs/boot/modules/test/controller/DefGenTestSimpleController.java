@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.fsfsfs.basic.base.R;
-import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.request.PageFlexUtil;
 import top.fsfsfs.basic.mvcflex.request.PageParams;
 import top.fsfsfs.boot.modules.test.entity.DefGenTestSimple;
@@ -81,7 +81,7 @@ public class DefGenTestSimpleController {
 
     @Operation(summary = "修改")
     @PostMapping("/updateById")
-    public R<DefGenTestSimple> updateById(@Validated(SuperEntity.Update.class) @RequestBody DefGenTestSimpleVO simple) {
+    public R<DefGenTestSimple> updateById(@Validated(BaseEntity.Update.class) @RequestBody DefGenTestSimpleVO simple) {
         return R.success(testSimpleService.updateVoById(simple));
     }
 
