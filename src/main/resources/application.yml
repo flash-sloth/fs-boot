@@ -144,22 +144,6 @@ server:
     buffer-size: 2048  # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理 , 每块buffer的空间大小,越小的空间被利用越充分
     direct-buffers: true  # 是否分配的直接内存
 
-  mapper-locations:
-    - classpath*:/mapper/**/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: false
-    jdbc-type-for-null: null
-    auto-mapping-unknown-column-behavior: none
-    auto-mapping-behavior: full
-  global-config:
-    deleted-value-of-logic-delete: "1"
-    normal-value-of-logic-delete: "0"
-    key-config:
-      before: true
-      key-type: generator
-      value: 'uid'
-
 management:
   endpoints:
     web:
