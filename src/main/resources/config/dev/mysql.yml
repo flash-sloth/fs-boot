@@ -46,7 +46,7 @@ mybatis-flex:
     auto-mapping-behavior: full
   global-config:
     # 全局配置逻辑删除字段，表中有该字段就会进行逻辑删除，否则进行物理删除
-    logicDeleteColumn: del_flag
+    logicDeleteColumn: deleted_at
     tenantColumn: ${fs.database.tenantIdColumn}
     key-config:
       before: true
