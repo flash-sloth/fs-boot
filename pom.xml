@@ -51,8 +51,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-codegen</artifactId>
+            <groupId>top.fsfsfs.basic</groupId>
+            <artifactId>fs-codegen</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
