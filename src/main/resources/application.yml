@@ -144,20 +144,6 @@ server:
     buffer-size: 2048  # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理 , 每块buffer的空间大小,越小的空间被利用越充分
     direct-buffers: true  # 是否分配的直接内存
 
-mybatis-flex:
-  datasource:
-    master:
-      type: druid
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/flash_sloth?${fs.db.conn.str}
-      #jdbc-url: jdbc:mysql://127.0.0.1:3306/flash_sloth?${fs.db.conn.str}
-
-    slave:
-      type: druid
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/magic_api?${fs.db.conn.str}
-      #jdbc-url: jdbc:mysql://127.0.0.1:3306/magic_api?${fs.db.conn.str}
-
   mapper-locations:
     - classpath*:/mapper/**/*.xml
   configuration:
