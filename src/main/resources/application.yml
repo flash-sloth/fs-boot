@@ -183,6 +183,10 @@ magic-api:
   #  security: # 安全配置
   #    username: admin # 登录用的用户名
   #    password: 123456 # 登录用的密码
+  # 将接口信息存入到Redis中
+    #type: redis # 存储方式改为redis
+    #prefix: magic-api   # 前缀
+    #readonly: false #是否为只读模式
   prefix: /magic-api
   editor-config: classpath:./magic-editor-config.js #编辑器配置
   date-pattern: # 配置请求参数支持的日期格式
@@ -218,7 +222,7 @@ magic-api:
   debug:
     timeout: 60 # 断点超时时间，默认60s
   throw-exception: true # 执行出错时，异常将抛出处理
-  auto-import-module: db,http,log,request,response,env,magic #自动导入模块
+  auto-import-module: redis,db,http,log,request,response,env,magic #自动导入模块
 
 #    location: classpath:magic-api
 # 其它配置请参考 https://ssssssss.org/magic-api/config/
