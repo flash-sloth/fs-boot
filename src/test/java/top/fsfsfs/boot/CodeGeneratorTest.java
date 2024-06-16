@@ -73,15 +73,15 @@ public class CodeGeneratorTest {
         globalConfig.getStrategyConfig().setIgnoreColumns(BaseEntity.CREATED_BY_FIELD, BaseEntity.CREATED_AT_FIELD);
         globalConfig.getTemplateConfig();
 
-        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setGenericityType(Long.class);
+        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setGenericityType(Long.class).setOverwriteEnable(true);
 //                .setWithBaseClassEnable(true)
         ;
-        globalConfig.enableController().setSuperClass(SuperController.class);
+        globalConfig.enableController().setSuperClass(SuperController.class).setOverwriteEnable(true);
         //设置生成 mapper
-        globalConfig.enableMapper().setSuperClass(SuperMapper.class);
+        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
 
-        globalConfig.enableService().setSuperClass(SuperService.class);
-        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
+        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
+        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();
