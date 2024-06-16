@@ -7,8 +7,6 @@ import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
-import com.mybatisflex.codegen.generator.GeneratorFactory;
-import com.mybatisflex.codegen.generator.impl.VoGenerator;
 import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
 import org.junit.jupiter.api.Test;
@@ -20,8 +18,6 @@ import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.common.enumeration.Sex;
 import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
-
-import java.util.Map;
 
 public class CodeGeneratorTest {
 
@@ -46,9 +42,9 @@ public class CodeGeneratorTest {
         Generator generator = new Generator(dataSource, globalConfig);
 
         //生成代码
-//        generator.generate();
-        Map<String, Map<String, String>> preview = generator.preview();
-        System.out.println(preview);
+        generator.generate();
+//        Map<String, Map<String, String>> preview = generator.preview();
+//        System.out.println(preview);
     }
 
     public static GlobalConfig createGlobalConfigUseStyle1() {
@@ -77,7 +73,9 @@ public class CodeGeneratorTest {
         globalConfig.getStrategyConfig().setIgnoreColumns(BaseEntity.CREATED_BY_FIELD, BaseEntity.CREATED_AT_FIELD);
         globalConfig.getTemplateConfig();
 
-        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setWithBaseClassEnable(true);
+        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setGenericityType(Long.class);
+//                .setWithBaseClassEnable(true)
+        ;
         globalConfig.enableController().setSuperClass(SuperController.class);
         //设置生成 mapper
         globalConfig.enableMapper().setSuperClass(SuperMapper.class);
