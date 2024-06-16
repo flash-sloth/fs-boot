@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.boot.modules.auth.vo.VisibleResourceVO;
@@ -42,6 +43,17 @@ public class ResourceController {
                 .routerList(sysMenuService.listVisibleRouter())
                 .build());
     }
+    /**
+     * 根据用户ID和路由名称判断用户是否具有权限
+     *
+     */
+    @Operation(summary = "判断路由是否可用", description = "根据用户ID和路由名称判断用户是否具有权限")
+    @GetMapping("/isRouteExist")
+    public R<Boolean> isRouteExist(@RequestParam String routeName) {
+        // TODO 实现具体判断逻辑
+        return R.success(true);
+    }
+
 
 
 }
