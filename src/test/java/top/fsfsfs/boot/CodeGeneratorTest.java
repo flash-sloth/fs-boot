@@ -8,14 +8,20 @@ import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.GeneratorFactory;
+import com.mybatisflex.codegen.generator.impl.VoGenerator;
 import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
 import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.BaseEntity;
+import top.fsfsfs.basic.base.entity.TreeEntity;
+import top.fsfsfs.basic.mvcflex.controller.SuperController;
+import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.common.enumeration.Sex;
 import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
+
+import java.util.Map;
 
 public class CodeGeneratorTest {
 
@@ -40,7 +46,9 @@ public class CodeGeneratorTest {
         Generator generator = new Generator(dataSource, globalConfig);
 
         //生成代码
-        generator.generate();
+//        generator.generate();
+        Map<String, Map<String, String>> preview = generator.preview();
+        System.out.println(preview);
     }
 
     public static GlobalConfig createGlobalConfigUseStyle1() {
@@ -49,10 +57,12 @@ public class CodeGeneratorTest {
 
         //设置根包
         globalConfig.setBasePackage("com.fsfsfs.boot");
+//        globalConfig.setBasePackage("top.fsfsfs.boot.modules.system");
+
 
         //设置表前缀和只生成哪些表
-        globalConfig.setTablePrefix("def_");
-        globalConfig.setGenerateTable("fs_gen_test_tree");
+        globalConfig.setTablePrefix("fs_");
+        globalConfig.setGenerateTable("fs_sys_menu");
 
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
@@ -67,16 +77,12 @@ public class CodeGeneratorTest {
         globalConfig.getStrategyConfig().setIgnoreColumns(BaseEntity.CREATED_BY_FIELD, BaseEntity.CREATED_AT_FIELD);
         globalConfig.getTemplateConfig();
 
-        globalConfig.setCustomConfig("aaa","dddd");
-
-        globalConfig.enableController();
+        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setWithBaseClassEnable(true);
+        globalConfig.enableController().setSuperClass(SuperController.class);
         //设置生成 mapper
-        globalConfig.setMapperGenerateEnable(true);
+        globalConfig.enableMapper().setSuperClass(SuperMapper.class);
 
-        globalConfig.enableService().setSuperClass(SuperService.class)
-                .setOverwriteEnable(true)
-        ;
-
+        globalConfig.enableService().setSuperClass(SuperService.class);
         globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
 
         //可以单独配置某个列
@@ -100,7 +106,7 @@ public class CodeGeneratorTest {
 
 
 //        globalConfig.setTemplateEngine();
-        GeneratorFactory.registerGenerator("vo", new VoGenerator());
+//        GeneratorFactory.registerGenerator("vo", new VoGenerator());
 
         return globalConfig;
     }
