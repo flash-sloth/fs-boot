@@ -1,5 +1,6 @@
 package top.fsfsfs.boot;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
@@ -13,6 +14,10 @@ import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.base.entity.TreeEntity;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
+import top.fsfsfs.basic.mvcflex.controller.SuperReadController;
+import top.fsfsfs.basic.mvcflex.controller.SuperSimpleController;
+import top.fsfsfs.basic.mvcflex.controller.SuperTreeController;
+import top.fsfsfs.basic.mvcflex.controller.SuperWriteController;
 import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
@@ -25,6 +30,12 @@ public class CodeGeneratorTest {
     public void test1(){
         TableInfo tableInfo = TableInfoFactory.ofEntityClass(DefGenTestTree.class);
         System.out.println(tableInfo);
+    }
+    @Test
+    public void test2(){
+        StringBuilder genericityStr = new StringBuilder("aaa , ");
+        String s = StrUtil.removeSuffix(genericityStr, ", ");
+        System.out.println(s);
     }
 
     public static void main(String[] args) {
@@ -73,10 +84,16 @@ public class CodeGeneratorTest {
         globalConfig.getStrategyConfig().setIgnoreColumns(BaseEntity.CREATED_BY_FIELD, BaseEntity.CREATED_AT_FIELD);
         globalConfig.getTemplateConfig();
 
-        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setGenericityType(Long.class).setOverwriteEnable(true);
-//                .setWithBaseClassEnable(true)
+        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setGenericityType(Long.class).setOverwriteEnable(true)
+                .setWithBaseClassEnable(true)
         ;
-        globalConfig.enableController().setSuperClass(SuperController.class).setOverwriteEnable(true);
+        globalConfig.enableController()
+                .setSuperClass(SuperController.class)
+//                .setSuperClass(SuperWriteController.class)
+//                .setSuperClass(SuperReadController.class)
+//                .setSuperClass(SuperTreeController.class)
+//                .setSuperClass(SuperSimpleController.class)
+                .setOverwriteEnable(true);
         //设置生成 mapper
         globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
 
@@ -89,8 +106,6 @@ public class CodeGeneratorTest {
         columnConfig.setLarge(true);
         columnConfig.setVersion(true);
         globalConfig.setColumnConfig("fs_gen_test_tree", columnConfig);
-
-
 
         JdbcTypeMapping.setTypeMapper(new JdbcTypeMapping.JdbcTypeMapper() {
             @Override

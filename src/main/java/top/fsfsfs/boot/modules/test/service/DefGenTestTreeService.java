@@ -1,6 +1,6 @@
 package top.fsfsfs.boot.modules.test.service;
 
-import top.fsfsfs.basic.mvcflex.service.SuperCacheService;
+import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
 
 
@@ -12,7 +12,7 @@ import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
  * @author sz
  * @since 2024-01-22
  */
-public interface DefGenTestTreeService extends SuperCacheService<DefGenTestTree> {
+public interface DefGenTestTreeService extends SuperService<DefGenTestTree> {
 
 
 }

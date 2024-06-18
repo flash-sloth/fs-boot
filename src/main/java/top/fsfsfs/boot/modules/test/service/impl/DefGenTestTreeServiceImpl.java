@@ -3,11 +3,10 @@ package top.fsfsfs.boot.modules.test.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.fsfsfs.basic.model.cache.CacheKeyBuilder;
-import top.fsfsfs.basic.mvcflex.service.impl.SuperCacheServiceImpl;
 import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
 import top.fsfsfs.boot.modules.test.mapper.DefGenTestTreeMapper;
 import top.fsfsfs.boot.modules.test.service.DefGenTestTreeService;
-
+import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 /**
  * <p>
  * 系统授权表 服务实现类
@@ -18,10 +17,11 @@ import top.fsfsfs.boot.modules.test.service.DefGenTestTreeService;
  */
 @Service
 @RequiredArgsConstructor
-public class DefGenTestTreeServiceImpl extends SuperCacheServiceImpl<DefGenTestTreeMapper, DefGenTestTree> implements DefGenTestTreeService {
+public class DefGenTestTreeServiceImpl extends SuperServiceImpl<DefGenTestTreeMapper, DefGenTestTree> implements DefGenTestTreeService {
 
     @Override
     protected CacheKeyBuilder cacheKeyBuilder() {
-        return () -> "simple3";
+        return null;
+//        return () -> "simple3";
     }
 }
