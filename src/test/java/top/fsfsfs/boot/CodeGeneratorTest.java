@@ -74,17 +74,19 @@ public class CodeGeneratorTest {
         globalConfig.setTablePrefix("fs_");
         globalConfig.setGenerateTable("fs_sys_menu");
 
-        ;
-        globalConfig.getStrategyConfig().setIgnoreColumns(BaseEntity.CREATED_BY_FIELD, BaseEntity.CREATED_AT_FIELD);
+        globalConfig.setJdkVersion(17);
 
-//        globalConfig.enableEntity().setSuperClass(TreeEntity.class)
-//                .setGenericityType(Long.class).setOverwriteEnable(true)
-//                .setWithLombok(true).setJdkVersion(17)
+        globalConfig.enableEntity().setSuperClass(TreeEntity.class)
+                .setGenericityType(Long.class).setOverwriteEnable(true)
+                .setWithLombok(true)
 //                .setWithBaseClassEnable(true)
-//        ;
+        ;
 
-        globalConfig.enableVo().setSuperClass(TreeNode.class).setGenericityType(Long.class)
-                .setImplInterfaces(Serializable.class).setOverwriteEnable(true);
+        globalConfig.enableVo()
+                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
+                .setWithLombok(true)
+//                .setImplInterfaces(Serializable.class)
+                .setOverwriteEnable(true);
 
 //        globalConfig.enableController()
 //                .setSuperClass(SuperController.class)
