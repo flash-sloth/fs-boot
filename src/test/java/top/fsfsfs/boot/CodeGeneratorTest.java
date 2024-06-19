@@ -79,7 +79,7 @@ public class CodeGeneratorTest {
         globalConfig.enableEntity().setSuperClass(TreeEntity.class)
                 .setGenericityType(Long.class).setOverwriteEnable(true)
                 .setWithLombok(true)
-//                .setWithBaseClassEnable(true)
+                .setWithBaseClassEnable(true)
         ;
 
         globalConfig.enableVo()
