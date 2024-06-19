@@ -76,13 +76,13 @@ public class DefGenTestSimpleController {
     @Operation(summary = "保存")
     @PostMapping("/save")
     public R<DefGenTestSimple> save(@Validated @RequestBody DefGenTestSimpleVO simple) {
-        return R.success(testSimpleService.saveVo(simple));
+        return R.success(testSimpleService.saveDto(simple));
     }
 
     @Operation(summary = "修改")
     @PostMapping("/updateById")
     public R<DefGenTestSimple> updateById(@Validated(BaseEntity.Update.class) @RequestBody DefGenTestSimpleVO simple) {
-        return R.success(testSimpleService.updateVoById(simple));
+        return R.success(testSimpleService.updateDtoById(simple));
     }
 
     @Operation(summary = "获取详情")

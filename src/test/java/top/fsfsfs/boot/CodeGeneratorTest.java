@@ -1,5 +1,6 @@
 package top.fsfsfs.boot;
 
+import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mybatisflex.codegen.Generator;
@@ -23,6 +24,8 @@ import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.common.enumeration.Sex;
 import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
+
+import java.io.Serializable;
 
 public class CodeGeneratorTest {
 
@@ -66,39 +69,35 @@ public class CodeGeneratorTest {
         globalConfig.setBasePackage("com.fsfsfs.boot");
 //        globalConfig.setBasePackage("top.fsfsfs.boot.modules.system");
 
-
+//        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
         globalConfig.setGenerateTable("fs_sys_menu");
 
-        //设置生成 entity 并启用 Lombok
-        globalConfig.setEntityGenerateEnable(true);
-        globalConfig.setEntityWithLombok(true);
-        globalConfig.setEntitySuperClass(BaseEntity.class);
-        //设置项目的JDK版本，项目的JDK为14及以上时建议设置该项，小于14则可以不设置
-        globalConfig.setEntityJdkVersion(17)
-
         ;
-        globalConfig.getJavadocConfig();
-        globalConfig.getPackageConfig();
         globalConfig.getStrategyConfig().setIgnoreColumns(BaseEntity.CREATED_BY_FIELD, BaseEntity.CREATED_AT_FIELD);
-        globalConfig.getTemplateConfig();
 
-        globalConfig.enableEntity().setSuperClass(TreeEntity.class).setGenericityType(Long.class).setOverwriteEnable(true)
-                .setWithBaseClassEnable(true)
-        ;
-        globalConfig.enableController()
-                .setSuperClass(SuperController.class)
-//                .setSuperClass(SuperWriteController.class)
-//                .setSuperClass(SuperReadController.class)
-//                .setSuperClass(SuperTreeController.class)
-//                .setSuperClass(SuperSimpleController.class)
-                .setOverwriteEnable(true);
-        //设置生成 mapper
-        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
+//        globalConfig.enableEntity().setSuperClass(TreeEntity.class)
+//                .setGenericityType(Long.class).setOverwriteEnable(true)
+//                .setWithLombok(true).setJdkVersion(17)
+//                .setWithBaseClassEnable(true)
+//        ;
 
-        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
-        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
+        globalConfig.enableVo().setSuperClass(TreeNode.class).setGenericityType(Long.class)
+                .setImplInterfaces(Serializable.class).setOverwriteEnable(true);
+
+//        globalConfig.enableController()
+//                .setSuperClass(SuperController.class)
+////                .setSuperClass(SuperWriteController.class)
+////                .setSuperClass(SuperReadController.class)
+////                .setSuperClass(SuperTreeController.class)
+////                .setSuperClass(SuperSimpleController.class)
+//                .setOverwriteEnable(true);
+//        //设置生成 mapper
+//        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
+//
+//        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
+//        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();
