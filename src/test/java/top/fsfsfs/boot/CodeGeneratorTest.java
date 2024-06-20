@@ -73,8 +73,9 @@ public class CodeGeneratorTest {
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
         globalConfig.setGenerateTable("fs_sys_menu");
-
         globalConfig.setJdkVersion(17);
+        globalConfig.getJavadocConfig().setColumnCommentFormat(comment-> StrUtil.replace(comment, "\n", "\n     * "));
+        globalConfig.getJavadocConfig().setColumnSwaggerCommentFormat(comment-> StrUtil.replace(comment, "\n", " "));
 
         globalConfig.enableEntity().setSuperClass(TreeEntity.class)
                 .setGenericityType(Long.class).setOverwriteEnable(true)
@@ -85,6 +86,11 @@ public class CodeGeneratorTest {
         globalConfig.enableVo()
                 .setSuperClass(TreeNode.class).setGenericityType(Long.class)
                 .setWithLombok(true)
+//                .setImplInterfaces(Serializable.class)
+                .setOverwriteEnable(true);
+
+        globalConfig.enableDto()
+                .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
 //                .setImplInterfaces(Serializable.class)
                 .setOverwriteEnable(true);
 
