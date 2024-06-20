@@ -25,13 +25,13 @@ public class DefGenTestTreeQueryVO implements Serializable {
     protected Long id;
 
     @Schema(description = "创建时间")
-    protected LocalDateTime createdTime;
+    protected LocalDateTime createdAt;
 
     @Schema(description = "创建人ID")
     protected Long createdBy;
 
     @Schema(description = "最后修改时间")
-    protected LocalDateTime updatedTime;
+    protected LocalDateTime updatedAt;
 
     @Schema(description = "最后修改人ID")
     protected Long updatedBy;

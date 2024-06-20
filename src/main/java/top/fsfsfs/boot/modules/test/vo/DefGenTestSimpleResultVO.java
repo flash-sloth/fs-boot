@@ -25,14 +25,15 @@ public class DefGenTestSimpleResultVO implements Serializable {
     @Id(keyType = KeyType.Generator, value = KeyGenerators.flexId)
     protected Long id;
 
+    @Column("xxxxxx")
     @Schema(description = "创建时间")
-    protected LocalDateTime createdTime;
+    protected LocalDateTime createdAt;
 
     @Schema(description = "创建人ID")
     protected Long createdBy;
 
     @Schema(description = "最后修改时间")
-    protected LocalDateTime updatedTime;
+    protected LocalDateTime updatedAt;
 
     @Schema(description = "最后修改人ID")
     protected Long updatedBy;

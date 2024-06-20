@@ -93,7 +93,12 @@ public class CodeGeneratorTest {
 
         globalConfig.enableVo()
                 .setSuperClass(TreeNode.class).setGenericityType(Long.class)
-                .setWithLombok(true)
+                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
+//                .setImplInterfaces(Serializable.class)
+                .setOverwriteEnable(true);
+
+        globalConfig.enableQuery()
+                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
 //                .setImplInterfaces(Serializable.class)
                 .setOverwriteEnable(true);
 
@@ -105,18 +110,20 @@ public class CodeGeneratorTest {
                         SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)
         ;
 
-//        globalConfig.enableController()
-//                .setSuperClass(SuperController.class)
-////                .setSuperClass(SuperWriteController.class)
-////                .setSuperClass(SuperReadController.class)
-////                .setSuperClass(SuperTreeController.class)
-////                .setSuperClass(SuperSimpleController.class)
-//                .setOverwriteEnable(true);
-//        //设置生成 mapper
-//        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
-//
-//        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
-//        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
+        globalConfig.enableController()
+//                .setWithCrud(true)
+                .setSuperClass(SuperController.class)
+//                .setSuperClass(SuperWriteController.class)
+//                .setSuperClass(SuperReadController.class)
+//                .setSuperClass(SuperTreeController.class)
+//                .setSuperClass(SuperSimpleController.class)
+                .setOverwriteEnable(true);
+
+        //设置生成 mapper
+        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
+
+        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
+        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();
