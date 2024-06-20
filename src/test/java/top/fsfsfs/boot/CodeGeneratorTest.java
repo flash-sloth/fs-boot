@@ -13,6 +13,7 @@ import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
 import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.BaseEntity;
+import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.base.entity.TreeEntity;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
 import top.fsfsfs.basic.mvcflex.controller.SuperReadController;
@@ -33,6 +34,10 @@ public class CodeGeneratorTest {
     public void test1(){
         TableInfo tableInfo = TableInfoFactory.ofEntityClass(DefGenTestTree.class);
         System.out.println(tableInfo);
+    }
+    @Test
+    public void test3(){
+        System.out.println(Integer.MAX_VALUE);
     }
     @Test
     public void test2(){
@@ -72,15 +77,18 @@ public class CodeGeneratorTest {
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-        globalConfig.setGenerateTable("fs_sys_menu");
+        globalConfig.setGenerateTable("fs_gen_test_simple");
+//        globalConfig.setGenerateTable("fs_sys_menu");
         globalConfig.setJdkVersion(17);
         globalConfig.getJavadocConfig().setColumnCommentFormat(comment-> StrUtil.replace(comment, "\n", "\n     * "));
-        globalConfig.getJavadocConfig().setColumnSwaggerCommentFormat(comment-> StrUtil.replace(comment, "\n", " "));
+        globalConfig.getJavadocConfig().setColumnSwaggerCommentFormat(comment-> StrUtil.replace(StrUtil.replace(comment, "\n", " "), "\"", "\\\""));
 
+        
+        
         globalConfig.enableEntity().setSuperClass(TreeEntity.class)
                 .setGenericityType(Long.class).setOverwriteEnable(true)
                 .setWithLombok(true)
-                .setWithBaseClassEnable(true)
+//                .setWithBaseClassEnable(true)
         ;
 
         globalConfig.enableVo()
@@ -92,7 +100,10 @@ public class CodeGeneratorTest {
         globalConfig.enableDto()
                 .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
 //                .setImplInterfaces(Serializable.class)
-                .setOverwriteEnable(true);
+                .setOverwriteEnable(true)
+                .setIgnoreColumns(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD, SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
+                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)
+        ;
 
 //        globalConfig.enableController()
 //                .setSuperClass(SuperController.class)
