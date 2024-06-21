@@ -89,6 +89,13 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+            <scope>compile</scope>
+        </dependency>
+
         <!--magic-api 是一个基于Java的接口快速开发框架 以spring-boot-starter的方式引用 在线文档 https://ssssssss.org-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

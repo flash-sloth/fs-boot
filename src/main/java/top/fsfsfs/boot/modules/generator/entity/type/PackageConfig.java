@@ -15,6 +15,8 @@
 
 package top.fsfsfs.boot.modules.generator.entity.type;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,17 +40,22 @@ public class PackageConfig {
     /**
      * 代码生成目录。
      */
+    @NotEmpty(message = "请填写后端代码生成目录")
     private String sourceDir;
     /**
-     * 根包。
+     * 根包名
      */
+    @NotEmpty(message = "请填写模块根包名")
     private String basePackage;
     /** 模块包名 */
+    @NotEmpty(message = "请填写模块包名")
     private String module;
 
     /** 模块包 描述 */
+    @NotEmpty(message = "请填写模块包描述")
     private String moduleDescription;
     /** 子系统Id */
+    @NotNull(message = "请选择子系统")
     private Long subSystemId;
 
     private String author;

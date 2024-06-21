@@ -15,16 +15,12 @@
 
 package top.fsfsfs.boot.modules.generator.entity.type;
 
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
-
-import java.util.List;
 
 /**
  * 代码生成器 Query类配置
@@ -40,21 +36,39 @@ import java.util.List;
 @AllArgsConstructor
 public class QueryConfig {
     /** 包名 */
-    private String packageName = "query";
+    private String packageName;
     /**
-     * 类的后缀。
+     * 类名
      */
-    private String classSuffix = "Query";
+    private String name;
     /**
-     * 生成策略
+     * swagger注释
      */
-    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
-
+    private String description;
     /**
      * 父类完整类名
      */
-    private String superClassName ;
+    private String superClassName;
+    /** 父类泛型的类型 */
+    private String genericityTypeName;
+    /**
+     * Entity 默认实现的接口。
+     */
+    private String[] implInterfaceNames;
 
-    /** 导入的包 */
-    private List<String> importPackageList;
+
+    /**
+     * 是否使用 Lombok 注解。
+     */
+    private Boolean withLombok;
+    /**
+     * 是否链式
+     */
+    private Boolean withChain;
+    /**
+     *  是否使用 Swagger 注解。
+     */
+    private Boolean withSwagger;
+    /** 导出(@Excel)注解 */
+    private Boolean withExcel;
 }

@@ -15,7 +15,6 @@
 
 package top.fsfsfs.boot.modules.generator.entity.type;
 
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,7 +38,7 @@ public class EntityConfig {
     /** 包名 */
     private String packageName;
     /**
-     * 实体类名
+     * 类名
      */
     private String name;
     /**
@@ -47,20 +46,35 @@ public class EntityConfig {
      */
     private String description;
     /**
-     * Entity 类的父类完整类名
+     * 父类完整类名
      */
     private String superClassName;
+    /** 父类泛型的类型 */
+    private String genericityTypeName;
     /**
-     * 生成策略
+     * 默认实现的接口。
      */
-    private GenerationStrategyEnum generationStrategy;
+    private String[] implInterfaceNames;
+    /**
+     * 是否使用 Lombok 注解。
+     */
+    private Boolean withLombok;
+    /**
+     * 是否链式
+     */
+    private Boolean withChain;
+
+    /**
+     * 是否使用 Swagger 注解。
+     */
+    private Boolean withSwagger;
+    /**
+     * 是否生成base类
+     */
+    private Boolean withBaseClass;
 
     /**
      * 是否总是生成 @Column 注解。
      */
     private Boolean alwaysGenColumnAnnotation;
-
-
-    /** 导入的包 */
-//    private List<String> importPackageList;
 }
