@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -16,6 +17,7 @@ import top.fsfsfs.basic.cache.repository.CacheOps;
 import top.fsfsfs.basic.constant.Constants;
 import top.fsfsfs.basic.log.event.SysLogListener;
 import top.fsfsfs.basic.web.config.BaseConfig;
+import top.fsfsfs.boot.common.interceptor.TokenContextFilter;
 import top.fsfsfs.boot.config.properties.IgnoreProperties;
 import top.fsfsfs.boot.config.properties.SystemProperties;
 
@@ -37,6 +39,10 @@ public class FsWebConfiguration extends BaseConfig implements WebMvcConfigurer {
     @Value("${spring.profiles.active:dev}")
     protected String profiles;
 
+    @Bean
+    public HandlerInterceptor getTokenContextFilter() {
+        return new TokenContextFilter(profiles, ignoreProperties, cacheOps);
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -55,10 +61,10 @@ public class FsWebConfiguration extends BaseConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         String[] commonPathPatterns = getExcludeCommonPathPatterns();
-//        registry.addInterceptor(getAuthenticationFilter())
-//                .addPathPatterns("/**")
-//                .order(10)
-//                .excludePathPatterns(commonPathPatterns);
+        registry.addInterceptor(getTokenContextFilter())
+                .addPathPatterns("/**")
+                .order(5)
+                .excludePathPatterns(commonPathPatterns);
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 
