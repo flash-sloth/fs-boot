@@ -2,18 +2,17 @@ package top.fsfsfs.boot.modules.generator.query;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import top.fsfsfs.boot.modules.generator.entity.base.CodeCreatorBase;
-
-import java.io.Serial;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import top.fsfsfs.boot.modules.generator.entity.base.CodeCreatorBase;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 代码生成 Query类（查询方法入参）。
@@ -75,6 +74,10 @@ public class CodeCreatorQuery implements Serializable {
      */
     @Schema(description = "VO配置")
     private String voConfig;
+    @Schema(description = "Query配置")
+    private String queryConfig;
+    @Schema(description = "DTO配置")
+    private String dtoConfig;
 
     /**
      * Xml配置
@@ -84,7 +87,7 @@ public class CodeCreatorQuery implements Serializable {
 
     /**
      * Mapper配置
-     * 
+     *
      */
     @Schema(description = "Mapper配置 ")
     private String mapperConfig;
@@ -113,23 +116,29 @@ public class CodeCreatorQuery implements Serializable {
     @Schema(description = "主从配置")
     private String slaveConfig;
 
+    @Schema(description = "搜索配置")
+    private String searchDesign;
+
     /**
      * 表格配置
      */
     @Schema(description = "表格配置")
-    private String listConfig;
-
+    private String listDesign;
     /**
      * 树结构配置
      */
     @Schema(description = "树结构配置")
-    private String treeConfig;
+    private String treeDesign;
 
     /**
      * 表单配置
      */
     @Schema(description = "表单配置")
-    private String fromConfig;
+    private String fromDesign;
+    @Schema(description = "属性配置")
+    private String propertyDesign;
+    @Schema(description = "按钮配置")
+    private String buttonDesign;
 
     /**
      * 创建者
