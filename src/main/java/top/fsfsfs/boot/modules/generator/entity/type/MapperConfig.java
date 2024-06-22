@@ -21,10 +21,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
-
-import java.util.List;
 
 /**
  * 代码生成器 Mapper类配置
@@ -40,20 +36,17 @@ import java.util.List;
 @AllArgsConstructor
 public class MapperConfig {
     /** 包名 */
-    private String packageName = "mapper";
+    private String packageName;
     /**
-     * 类的后缀。
+     * 类名
      */
-    private String classSuffix = "Mapper";
+    private String name;
+    /**
+     * swagger注释
+     */
+    private String description;
     /**
      * 父类完整类名
      */
-    private String superClassName = SuperMapper.class.getName();
-    /**
-     * 生成策略
-     */
-    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.EXIST_IGNORE;
-
-    /** 导入的包 */
-    private List<String> importPackageList;
+    private String superClassName;
 }

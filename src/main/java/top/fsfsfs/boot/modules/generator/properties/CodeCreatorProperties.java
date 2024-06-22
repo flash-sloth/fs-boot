@@ -14,6 +14,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.constant.Constants;
+import top.fsfsfs.basic.mvcflex.controller.SuperController;
+import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
+import top.fsfsfs.basic.mvcflex.service.SuperService;
+import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -34,6 +38,11 @@ public class CodeCreatorProperties {
     private VoRule voRule = new VoRule();
     private DtoRule dtoRule = new DtoRule();
     private QueryRule queryRule = new QueryRule();
+    private MapperRule mapperRule = new MapperRule();
+    private XmlRule xmlRule = new XmlRule();
+    private ServiceRule serviceRule = new ServiceRule();
+    private ServiceImplRule serviceImplRule = new ServiceImplRule();
+    private ControllerRule controllerRule = new ControllerRule();
 
     /**
      * 代码生成器 包信息 默认规则
@@ -346,6 +355,137 @@ public class CodeCreatorProperties {
         private Boolean withSwagger = true;
         /** 导出(@Excel)注解 */
         private Boolean withExcel = true;
-
     }
+
+    /**
+     * 生成 Mapper 的默认规则。
+     *
+     * @author tangyh
+     * @since 2024年06月18日15:51:07
+     */
+    @Data
+    public static class MapperRule {
+        /**
+         * 代码生成目录
+         */
+        private String packageName = "mapper";
+
+        /**
+         *  类的前缀。
+         */
+        private String classPrefix = "";
+
+        /**
+         *  类的后缀。
+         */
+        private String classSuffix = "Mapper";
+
+        /**
+         *  类的父类
+         */
+        private Class<?> superClass = SuperMapper.class;
+    }
+
+    @Data
+    public static class ServiceRule {
+        /**
+         * 代码生成目录
+         */
+        private String packageName = "service";
+
+        /**
+         *  类的前缀。
+         */
+        private String classPrefix = "";
+
+        /**
+         *  类的后缀。
+         */
+        private String classSuffix = "Service";
+
+        /**
+         *  类的父类，
+         */
+        private Class<?> superClass = SuperService.class;
+    }
+
+    @Data
+    public static class ServiceImplRule {
+        /**
+         * 代码生成目录
+         */
+        private String packageName = "service.impl";
+
+        /**
+         *  类的前缀。
+         */
+        private String classPrefix = "";
+
+        /**
+         *  类的后缀。
+         */
+        private String classSuffix = "ServiceImpl";
+
+        /**
+         *  类的父类
+         */
+        private Class<?> superClass = SuperServiceImpl.class;
+    }
+
+    @Data
+    public static class ControllerRule {
+        /**
+         * 代码生成目录
+         */
+        private String packageName = "controller";
+
+        /**
+         *  RequestMapping注解，访问路径的前缀。
+         */
+        private String requestMappingPrefix;
+
+        /**
+         *  类的前缀。
+         */
+        private String classPrefix = "";
+
+        /**
+         *  类的后缀。
+         */
+        private String classSuffix = "Controller";
+
+        /**
+         *  类的父类
+         */
+        private Class<?> superClass = SuperController.class;
+
+        /**
+         * 在Controller类中生成CRUD方法。
+         */
+        private Boolean withCrud = false;
+
+        /**
+         * 生成 REST 风格的 Controller。
+         */
+        private Boolean restStyle = true;
+    }
+
+    @Data
+    public static class XmlRule {
+        /**
+         * 代码生成目录
+         */
+        private String path = "mapper";
+
+        /**
+         *  前缀。
+         */
+        private String filePrefix = "";
+
+        /**
+         *  后缀。
+         */
+        private String fileSuffix = "Mapper";
+    }
+
 }

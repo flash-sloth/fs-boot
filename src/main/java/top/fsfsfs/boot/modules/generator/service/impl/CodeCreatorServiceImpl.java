@@ -7,17 +7,23 @@ import com.mybatisflex.codegen.entity.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.boot.modules.generator.GeneratorUtil;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreator;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreatorColumn;
+import top.fsfsfs.boot.modules.generator.entity.type.ControllerConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.EntityConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.MapperConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
 import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorColumnMapper;
 import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.boot.modules.generator.properties.CodeCreatorProperties;
@@ -43,6 +49,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@EnableConfigurationProperties(CodeCreatorProperties.class)
 public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, CodeCreator> implements CodeCreatorService {
     private final UidGenerator uidGenerator;
     private final CodeCreatorProperties codeCreatorProperties;
@@ -101,8 +108,70 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         fillVoConfig(table, codeCreator);
         fillDtoConfig(table, codeCreator);
         fillQueryConfig(table, codeCreator);
-
+        fillMapperConfig(table, codeCreator);
+        fillXmlConfig(table, codeCreator);
+        fillServiceConfig(table, codeCreator);
+        fillServiceImplConfig(table, codeCreator);
+        fillControllerConfig(table, codeCreator);
+        // TODO 其他
         return codeCreator;
+    }
+
+    private void fillControllerConfig(Table table, CodeCreator codeCreator) {
+        CodeCreatorProperties.ControllerRule controllerRule = codeCreatorProperties.getControllerRule();
+        ControllerConfig controllerConfig = new ControllerConfig();
+        controllerConfig.setPackageName(controllerRule.getPackageName())
+                .setName(table.buildMapperClassName())
+                .setDescription(table.getSwaggerComment())
+                .setSuperClassName(controllerRule.getSuperClass() != null ? controllerRule.getSuperClass().getName() : "")
+                .setRequestMappingPrefix(controllerRule.getRequestMappingPrefix())
+                .setWithCrud(controllerRule.getWithCrud())
+                .setRestStyle(controllerRule.getRestStyle())
+        ;
+        codeCreator.setControllerConfig(controllerConfig);
+    }
+
+    private void fillServiceImplConfig(Table table, CodeCreator codeCreator) {
+        CodeCreatorProperties.ServiceImplRule serviceRule = codeCreatorProperties.getServiceImplRule();
+        ServiceImplConfig serviceConfig = new ServiceImplConfig();
+        serviceConfig.setPackageName(serviceRule.getPackageName())
+                .setName(table.buildMapperClassName())
+                .setDescription(table.getSwaggerComment())
+                .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
+        ;
+        codeCreator.setServiceImplConfig(serviceConfig);
+    }
+
+    private void fillServiceConfig(Table table, CodeCreator codeCreator) {
+        CodeCreatorProperties.ServiceRule serviceRule = codeCreatorProperties.getServiceRule();
+        ServiceConfig serviceConfig = new ServiceConfig();
+        serviceConfig.setPackageName(serviceRule.getPackageName())
+                .setName(table.buildMapperClassName())
+                .setDescription(table.getSwaggerComment())
+                .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
+        ;
+        codeCreator.setServiceConfig(serviceConfig);
+    }
+
+    private void fillXmlConfig(Table table, CodeCreator codeCreator) {
+        CodeCreatorProperties.XmlRule xmlRule = codeCreatorProperties.getXmlRule();
+        XmlConfig xmlConfig = new XmlConfig();
+        xmlConfig.setPath(xmlRule.getPath())
+                .setName(table.buildMapperXmlFileName())
+                .setDescription(table.getSwaggerComment())
+        ;
+        codeCreator.setXmlConfig(xmlConfig);
+    }
+
+    private void fillMapperConfig(Table table, CodeCreator codeCreator) {
+        CodeCreatorProperties.MapperRule mapperRule = codeCreatorProperties.getMapperRule();
+        MapperConfig mapperConfig = new MapperConfig();
+        mapperConfig.setPackageName(mapperRule.getPackageName())
+                .setName(table.buildMapperClassName())
+                .setDescription(table.getSwaggerComment())
+                .setSuperClassName(mapperRule.getSuperClass() != null ? mapperRule.getSuperClass().getName() : "")
+        ;
+        codeCreator.setMapperConfig(mapperConfig);
     }
 
     private void fillQueryConfig(Table table, CodeCreator codeCreator) {

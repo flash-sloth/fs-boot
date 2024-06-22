@@ -21,11 +21,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 代码生成器 Service类配置
@@ -43,25 +40,20 @@ public class ServiceImplConfig implements Serializable {
 
 
     /** 包名 */
-    private String packageName = "service.impl";
-
+    private String packageName;
     /**
-     * ServiceImpl 类的后缀。
+     * 类名
      */
-    private String classSuffix = "ServiceImpl";
-
+    private String name;
     /**
-     * 生成策略
+     * swagger注释
      */
-    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.EXIST_IGNORE;
+    private String description;
 
     /**
      * 父类完整类名
      */
-    private String superClassName = SuperServiceImpl.class.getName();
-
-    /** 导入的包 */
-    private List<String> importPackageList;
+    private String superClassName;
 
 
 }

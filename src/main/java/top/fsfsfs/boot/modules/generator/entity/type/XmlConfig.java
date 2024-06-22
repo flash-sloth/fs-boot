@@ -21,7 +21,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 
 /**
  * 代码生成器 Xml类配置
@@ -36,13 +35,13 @@ import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 @NoArgsConstructor
 @AllArgsConstructor
 public class XmlConfig {
-    private String path = "/src/main/resources/mapper";
+    private String path;
     /**
-     * 类的后缀。
+     * 类名
      */
-    private String xmlSuffix = "Mapper";
+    private String name;
     /**
-     * 生成策略
+     * swagger注释
      */
-    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.IGNORE;
+    private String description;
 }

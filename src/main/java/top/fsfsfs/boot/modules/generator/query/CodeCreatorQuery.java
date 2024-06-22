@@ -98,6 +98,10 @@ public class CodeCreatorQuery implements Serializable {
     @Schema(description = "Service配置")
     private String serviceConfig;
 
+
+    @Schema(description = "ServiceImpl配置")
+    private String serviceImplConfig;
+
     /**
      * Controller配置
      */

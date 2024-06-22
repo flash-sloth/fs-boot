@@ -1,5 +1,7 @@
 package top.fsfsfs.boot.modules.generator.dto;
 
+import com.mybatisflex.annotation.Column;
+import com.mybatisflex.core.handler.FastjsonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +20,7 @@ import top.fsfsfs.boot.modules.generator.entity.type.MenuConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.SlaveConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
@@ -129,6 +132,9 @@ public class CodeCreatorDto implements Serializable {
      */
     @Schema(description = "Service配置")
     private ServiceConfig serviceConfig;
+
+    @Schema(description = "ServiceImpl配置")
+    private ServiceImplConfig serviceImplConfig;
 
     /**
      * Controller配置

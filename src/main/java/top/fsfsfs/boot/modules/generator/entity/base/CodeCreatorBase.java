@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.boot.modules.generator.entity.type.ControllerConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.EntityConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.MapperConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.MenuConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.SlaveConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
@@ -113,6 +114,8 @@ public class CodeCreatorBase extends SuperEntity<Long> implements Serializable {
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
     private ServiceConfig serviceConfig;
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private ServiceImplConfig serviceImplConfig;
 
     /**
      * Controller配置

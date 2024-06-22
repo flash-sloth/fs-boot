@@ -21,10 +21,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.mvcflex.service.SuperService;
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
-
-import java.util.List;
 
 /**
  * 代码生成器 Service类配置
@@ -40,21 +36,19 @@ import java.util.List;
 @AllArgsConstructor
 public class ServiceConfig {
     /** 包名 */
-    private String packageName = "service";
+    private String packageName;
     /**
-     * 类的后缀。
+     * 类名
      */
-    private String classSuffix = "Service";
+    private String name;
     /**
-     * 生成策略
+     * swagger注释
      */
-    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.EXIST_IGNORE;
+    private String description;
 
     /**
      * 父类完整类名
      */
-    private String superClassName = SuperService.class.getName();
+    private String superClassName;
 
-    /** 导入的包 */
-    private List<String> importPackageList;
 }
