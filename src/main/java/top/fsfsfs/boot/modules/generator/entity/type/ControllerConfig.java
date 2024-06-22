@@ -42,10 +42,6 @@ public class ControllerConfig {
      */
     private String name;
     /**
-     * swagger注释
-     */
-    private String description;
-    /**
      *  类上面 RequestMapping注解，访问路径的前缀。
      */
     private String requestMappingPrefix;

@@ -21,6 +21,7 @@ import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.MenuConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.SlaveConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
@@ -134,7 +135,9 @@ public class CodeCreatorVo implements Serializable {
     @Schema(description = "Service配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
     private ServiceConfig serviceConfig;
-
+    @Schema(description = "ServiceImpl配置")
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private ServiceImplConfig serviceImplConfig;
     /**
      * Controller配置
      */

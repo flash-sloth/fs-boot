@@ -41,7 +41,11 @@ public class XmlConfig {
      */
     private String name;
     /**
-     * swagger注释
+     * 是否生成返回结果集
      */
-    private String description;
+    private Boolean withResultMap;
+    /**
+     * 是否生成SQL字段名
+     */
+    private Boolean withSql;
 }

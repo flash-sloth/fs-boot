@@ -42,10 +42,6 @@ public class MapperConfig {
      */
     private String name;
     /**
-     * swagger注释
-     */
-    private String description;
-    /**
      * 父类完整类名
      */
     private String superClassName;

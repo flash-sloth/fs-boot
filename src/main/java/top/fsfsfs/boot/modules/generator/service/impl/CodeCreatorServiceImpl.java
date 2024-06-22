@@ -122,7 +122,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         ControllerConfig controllerConfig = new ControllerConfig();
         controllerConfig.setPackageName(controllerRule.getPackageName())
                 .setName(table.buildMapperClassName())
-                .setDescription(table.getSwaggerComment())
                 .setSuperClassName(controllerRule.getSuperClass() != null ? controllerRule.getSuperClass().getName() : "")
                 .setRequestMappingPrefix(controllerRule.getRequestMappingPrefix())
                 .setWithCrud(controllerRule.getWithCrud())
@@ -136,7 +135,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         ServiceImplConfig serviceConfig = new ServiceImplConfig();
         serviceConfig.setPackageName(serviceRule.getPackageName())
                 .setName(table.buildMapperClassName())
-                .setDescription(table.getSwaggerComment())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
         ;
         codeCreator.setServiceImplConfig(serviceConfig);
@@ -147,7 +145,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         ServiceConfig serviceConfig = new ServiceConfig();
         serviceConfig.setPackageName(serviceRule.getPackageName())
                 .setName(table.buildMapperClassName())
-                .setDescription(table.getSwaggerComment())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
         ;
         codeCreator.setServiceConfig(serviceConfig);
@@ -158,7 +155,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         XmlConfig xmlConfig = new XmlConfig();
         xmlConfig.setPath(xmlRule.getPath())
                 .setName(table.buildMapperXmlFileName())
-                .setDescription(table.getSwaggerComment())
         ;
         codeCreator.setXmlConfig(xmlConfig);
     }
@@ -168,7 +164,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         MapperConfig mapperConfig = new MapperConfig();
         mapperConfig.setPackageName(mapperRule.getPackageName())
                 .setName(table.buildMapperClassName())
-                .setDescription(table.getSwaggerComment())
                 .setSuperClassName(mapperRule.getSuperClass() != null ? mapperRule.getSuperClass().getName() : "")
         ;
         codeCreator.setMapperConfig(mapperConfig);

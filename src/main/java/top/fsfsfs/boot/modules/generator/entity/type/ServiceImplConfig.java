@@ -45,10 +45,7 @@ public class ServiceImplConfig implements Serializable {
      * 类名
      */
     private String name;
-    /**
-     * swagger注释
-     */
-    private String description;
+
 
     /**
      * 父类完整类名
