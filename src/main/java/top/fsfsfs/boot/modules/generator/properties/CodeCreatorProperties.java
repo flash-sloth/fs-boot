@@ -57,7 +57,7 @@ public class CodeCreatorProperties {
         /**
          * 代码生成目录。
          */
-        private String sourceDir = System.getProperty("user.dir") + "/src/main/java";
+        private String sourceDir = System.getProperty("user.dir");
         /**
          * 根包。
          */

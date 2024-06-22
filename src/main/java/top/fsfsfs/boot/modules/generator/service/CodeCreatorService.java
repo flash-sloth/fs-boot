@@ -1,8 +1,11 @@
 package top.fsfsfs.boot.modules.generator.service;
 
+import cn.hutool.core.lang.tree.Tree;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreator;
 import top.fsfsfs.boot.modules.generator.vo.TableImportDto;
+
+import java.util.List;
 
 /**
  * 代码生成 服务层。
@@ -18,4 +21,11 @@ public interface CodeCreatorService extends SuperService<CodeCreator> {
      * @return 是否成功
      */
     Boolean importTable(TableImportDto importDto);
+
+    /**
+     * 预览表结构
+     * @param ids 表id
+     * @return 代码预览树
+     */
+    List<Tree<Long>> preview(List<Long> ids);
 }

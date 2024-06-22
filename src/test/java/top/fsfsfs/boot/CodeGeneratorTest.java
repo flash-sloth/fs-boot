@@ -22,6 +22,8 @@ import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.boot.common.enumeration.Sex;
 import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
 
+import java.nio.file.Paths;
+
 public class CodeGeneratorTest {
 
     @Test
@@ -40,6 +42,11 @@ public class CodeGeneratorTest {
         StringBuilder genericityStr = new StringBuilder("aaa , ");
         String s = StrUtil.removeSuffix(genericityStr, ", ");
         System.out.println(s);
+    }
+    @Test
+    public void test4() {
+        String javaDirKey = "src\\main\\java.123";
+        System.out.println(Paths.get(javaDirKey, "aaa", "ddd").toString());
     }
 
     public static void main(String[] args) {

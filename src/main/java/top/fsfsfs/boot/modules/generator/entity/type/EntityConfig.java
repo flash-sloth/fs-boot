@@ -51,10 +51,10 @@ public class EntityConfig {
     private String superClassName;
     /** 父类泛型的类型 */
     private String genericityTypeName;
-    /**
-     * 默认实现的接口。
-     */
-    private String[] implInterfaceNames;
+//    /**
+//     * 默认实现的接口。
+//     */
+//    private String[] implInterfaceNames;
     /**
      * 是否使用 Lombok 注解。
      */

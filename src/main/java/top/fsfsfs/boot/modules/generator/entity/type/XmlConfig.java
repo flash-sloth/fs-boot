@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class XmlConfig {
+    /** 路径 */
     private String path;
     /**
      * 类名
