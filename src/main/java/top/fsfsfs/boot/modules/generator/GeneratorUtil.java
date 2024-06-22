@@ -45,24 +45,12 @@ public class GeneratorUtil {
     private DataSource dataSource;
     private CodeCreatorProperties codeCreatorProperties;
 
-    public void generate() {
-//        generate(getTables());
+    public GeneratorUtil(CodeCreatorProperties codeCreatorProperties) {
+        this.codeCreatorProperties = codeCreatorProperties;
     }
 
-    public void importTables(Set<String> tableNames) {
-
-        List<Table> tables = getTables(tableNames);
-
-        List<CodeCreator> list = new ArrayList<>();
-        for (Table table : tables) {
-            CodeCreator codeCreator = new CodeCreator();
-
-            codeCreator.setTableName(table.getName());
-            codeCreator.setTableDescription(table.getComment());
-
-
-            list.add(codeCreator);
-        }
+    public void generate() {
+//        generate(getTables());
     }
 
     public List<Table> getTables(Set<String> tableNames) {

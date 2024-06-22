@@ -20,6 +20,8 @@ import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -122,6 +124,14 @@ public class CodeCreatorProperties {
          * 乐观锁的字段名称。
          */
         private String versionColumn;
+        /**
+         * 租户字段的字段名称。
+         */
+        private String tenantColumn;
+        /**
+         * 大字段的jdbc类型
+         */
+        private List<String> largeColumnTypes = Arrays.asList("TEXT", "LONGTEXT");
 
         /**
          * 是否生成视图映射。

@@ -36,6 +36,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public class FormDesign {
 
+    /** 字段名 */
+    private String name;
     /** 是否生成该字段 */
     private Boolean show;
     /** 是否隐藏字段 */

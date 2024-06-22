@@ -35,7 +35,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchDesign {
-
+    /** 字段名 */
+    private String name;
     /** 是否生成该字段 */
     private Boolean show;
     /** 是否隐藏字段 */
@@ -48,7 +49,6 @@ public class SearchDesign {
      * 组件类型
      */
     private String componentType;
-
 
     /**
      * 顺序 升序

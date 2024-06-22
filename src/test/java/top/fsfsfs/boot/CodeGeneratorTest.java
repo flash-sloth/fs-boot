@@ -68,13 +68,14 @@ public class CodeGeneratorTest {
         GlobalConfig globalConfig = new GlobalConfig();
 
         //设置根包
-//        globalConfig.setBasePackage("com.fsfsfs.boot");
-        globalConfig.setBasePackage("top.fsfsfs.boot.modules.generator");
+        globalConfig.setBasePackage("com.fsfsfs.boot");
+//        globalConfig.setBasePackage("top.fsfsfs.boot.modules.generator");
 
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-        globalConfig.setGenerateTable("fs_code_creator_column");
+        globalConfig.setGenerateTable("fs_gen_test_simple");
+//        globalConfig.setGenerateTable("fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_sys_menu");
         globalConfig.setJdkVersion(17);
@@ -96,40 +97,40 @@ public class CodeGeneratorTest {
                 .setWithBaseClassEnable(true)
         ;
 
-        globalConfig.enableVo()
-//                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
-                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
-//                .setImplInterfaces(Serializable.class)
-                .setOverwriteEnable(true);
+//        globalConfig.enableVo()
+////                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
+//                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
+////                .setImplInterfaces(Serializable.class)
+//                .setOverwriteEnable(true);
+//
+//        globalConfig.enableQuery()
+//                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
+////                .setImplInterfaces(Serializable.class)
+//                .setOverwriteEnable(true);
+//
+//        globalConfig.enableDto()
+//                .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
+////                .setImplInterfaces(Serializable.class)
+//                .setOverwriteEnable(true)
+//                .setIgnoreColumns(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
+//                        SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
+//                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)
+//        ;
 
-        globalConfig.enableQuery()
-                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
-//                .setImplInterfaces(Serializable.class)
-                .setOverwriteEnable(true);
-
-        globalConfig.enableDto()
-                .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
-//                .setImplInterfaces(Serializable.class)
-                .setOverwriteEnable(true)
-                .setIgnoreColumns(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
-                        SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
-                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)
-        ;
-
-        globalConfig.enableController()
-//                .setWithCrud(true)
-                .setSuperClass(SuperController.class)
-//                .setSuperClass(SuperWriteController.class)
-//                .setSuperClass(SuperReadController.class)
-//                .setSuperClass(SuperTreeController.class)
-//                .setSuperClass(SuperSimpleController.class)
-                .setOverwriteEnable(true);
-
-        //设置生成 mapper
-        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
-
-        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
-        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
+//        globalConfig.enableController()
+////                .setWithCrud(true)
+//                .setSuperClass(SuperController.class)
+////                .setSuperClass(SuperWriteController.class)
+////                .setSuperClass(SuperReadController.class)
+////                .setSuperClass(SuperTreeController.class)
+////                .setSuperClass(SuperSimpleController.class)
+//                .setOverwriteEnable(true);
+//
+//        //设置生成 mapper
+//        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
+//
+//        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
+//        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();
@@ -141,7 +142,7 @@ public class CodeGeneratorTest {
         JdbcTypeMapping.setTypeMapper(new JdbcTypeMapping.JdbcTypeMapper() {
             @Override
             public String getType(String jdbcType, Table table, Column column) {
-                if (column.getName().equals("test7")) {
+                if (column.getName().equals("test1111")) {
                     return Sex.class.getName();
                 }
                 return null;

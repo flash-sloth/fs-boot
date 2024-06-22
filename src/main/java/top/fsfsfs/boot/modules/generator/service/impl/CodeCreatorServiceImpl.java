@@ -1,7 +1,11 @@
 package top.fsfsfs.boot.modules.generator.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baidu.fsg.uid.UidGenerator;
+import com.mybatisflex.codegen.config.GlobalConfig;
+import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,7 @@ import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorColumnMapper;
 import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.boot.modules.generator.properties.CodeCreatorProperties;
@@ -66,15 +71,19 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         GeneratorUtil generatorUtil = new GeneratorUtil(dataSource, codeCreatorProperties);
         List<Table> tables = generatorUtil.getTables(importDto.getTableNames());
 
+        CodeCreatorProperties.StrategyRule strategyRule = codeCreatorProperties.getStrategyRule();
+
+
         List<CodeCreator> list = new ArrayList<>();
         List<CodeCreatorColumn> columnList = new ArrayList<>();
         for (Table table : tables) {
             CodeCreator codeCreator = buildCodeCreator(importDto, table);
-            list.add(codeCreator);
+            List<PropertyDesign> propertyDesignList = codeCreator.getPropertyDesign();
 
             List<Column> allColumns = table.getAllColumns();
-            int weight = 0;
-            for (Column column : allColumns) {
+            for (int i = 0; i < allColumns.size(); i++) {
+                Column column = allColumns.get(i);
+
                 CodeCreatorColumn codeCreatorColumn = new CodeCreatorColumn();
                 codeCreatorColumn.setCodeCreatorId(codeCreator.getId());
                 codeCreatorColumn.setName(column.getName());
@@ -86,9 +95,27 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 codeCreatorColumn.setAutoIncrement(column.getAutoIncrement());
                 codeCreatorColumn.setIsNullable(column.getNullable() == ResultSetMetaData.columnNullable);
                 codeCreatorColumn.setDefValue(column.getPropertyDefaultValue());
-                codeCreatorColumn.setWeight(weight++);
+                codeCreatorColumn.setWeight(i);
                 columnList.add(codeCreatorColumn);
+
+                PropertyDesign propertyDesign = new PropertyDesign();
+                propertyDesign.setProperty(column.buildPropertyName());
+                propertyDesign.setName(column.getName());
+                propertyDesign.setPropertyType(column.getPropertyType());
+                propertyDesign.setPropertySimpleType(column.getPropertySimpleType());
+                propertyDesign.setTsType(column.getTsType());
+
+                propertyDesign.setSwaggerDescription(column.getSwaggerComment());
+                propertyDesign.setRequired(column.getNullable() == ResultSetMetaData.columnNoNulls);
+                propertyDesign.setVersion(StrUtil.equals(column.getName(), strategyRule.getVersionColumn()));
+                propertyDesign.setLarge(CollUtil.contains(strategyRule.getLargeColumnTypes(), column.getRawType()));
+                propertyDesign.setTenant(StrUtil.equals(column.getName(), strategyRule.getTenantColumn()));
+
+                propertyDesignList.add(propertyDesign);
             }
+
+            codeCreator.setPropertyDesign(propertyDesignList);
+            list.add(codeCreator);
         }
 
         saveBatch(list);
@@ -270,4 +297,53 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         packageConfig.setSourceDir(packageRule.getSourceDir()).setBasePackage(packageRule.getBasePackage()).setAuthor(packageRule.getAuthor());
         codeCreator.setPackageConfig(packageConfig);
     }
+
+    public void preview() {
+
+        GeneratorUtil generatorUtil = new GeneratorUtil(codeCreatorProperties);
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setJdkVersion(17);
+
+        CodeCreator codeCreator = new CodeCreator();
+        List<PropertyDesign> propertyDesignList = codeCreator.getPropertyDesign();
+        List<CodeCreatorColumn> columnList = new ArrayList<>();
+
+        List<Table> tables = new ArrayList<>();
+
+        Table table = new Table();
+        table.setGlobalConfig(globalConfig);
+//        table.setTableConfig(strategyConfig.getTableConfig(tableName));
+        table.setEntityConfig(globalConfig.getEntityConfig());
+
+//        table.setSchema(schemaName);
+        table.setName(codeCreator.getTableName());
+        table.setComment(codeCreator.getTableDescription());
+
+        for (CodeCreatorColumn creatorColumn : columnList) {
+            if (creatorColumn.getIsPk()) {
+                table.addPrimaryKey(creatorColumn.getName());
+            }
+            Column column = new Column();
+            column.setName(creatorColumn.getName());
+
+            column.setRawType(creatorColumn.getTypeName());
+            column.setRawLength(creatorColumn.getSize());
+            column.setRawScale(creatorColumn.getDigit());
+
+            column.setAutoIncrement(creatorColumn.getAutoIncrement());
+
+            column.setNullable(creatorColumn.getIsNullable() ? ResultSetMetaData.columnNullable : ResultSetMetaData.columnNoNulls);
+            //注释
+            column.setComment(creatorColumn.getRemarks());
+
+            String jdbcType = creatorColumn.getTypeName();
+            column.setPropertyType(JdbcTypeMapping.getType(jdbcType, table, column));
+
+            table.addColumn(column);
+        }
+
+        tables.add(table);
+    }
+
+
 }

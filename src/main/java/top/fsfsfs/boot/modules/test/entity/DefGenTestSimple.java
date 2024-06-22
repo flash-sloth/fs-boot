@@ -4,6 +4,8 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@Table(value = "fs_gen_test_simple")
+@Table(value = "fs_gen_test_simple", onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
 public class DefGenTestSimple extends SuperEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
