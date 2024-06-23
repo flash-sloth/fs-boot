@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * 代码生成器 Service类配置
  *
@@ -34,7 +36,9 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceConfig {
+public class ServiceImplDesign implements Serializable {
+
+
     /** 包名 */
     private String packageName;
     /**
@@ -47,5 +51,6 @@ public class ServiceConfig {
      * 父类完整类名
      */
     private String superClassName;
+
 
 }

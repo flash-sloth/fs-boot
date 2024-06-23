@@ -23,7 +23,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * 代码生成器 Xml类配置
+ * 代码生成器 VO类配置
  *
  * @author tangyh
  * @since 2021-08-01 16:04
@@ -34,19 +34,42 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class XmlConfig {
-    /** 路径 */
-    private String path;
+public class VoDesign {
+    /** 包名 */
+    private String packageName;
     /**
      * 类名
      */
     private String name;
     /**
-     * 是否生成返回结果集
+     * swagger注释
      */
-    private Boolean withResultMap;
+    private String description;
+
     /**
-     * 是否生成SQL字段名
+     * 父类完整类名
      */
-    private Boolean withSql;
+    private String superClassName;
+    /** 父类泛型的类型 */
+    private String genericityTypeName;
+    /**
+     * Entity 默认实现的接口。
+     */
+    private String[] implInterfaceNames;
+
+
+    /**
+     * 是否使用 Lombok 注解。
+     */
+    private Boolean withLombok;
+    /**
+     * 是否链式
+     */
+    private Boolean withChain;
+    /**
+     *  是否使用 Swagger 注解。
+     */
+    private Boolean withSwagger;
+    /** 导出(@Excel)注解 */
+    private Boolean withExcel;
 }

@@ -23,7 +23,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * 代码生成器 Controller配置
+ * 代码生成器 实体类配置
  *
  * @author tangyh
  * @since 2021-08-01 16:04
@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ControllerConfig {
+public class EntityDesign {
     /** 包名 */
     private String packageName;
     /**
@@ -42,19 +42,39 @@ public class ControllerConfig {
      */
     private String name;
     /**
-     *  类上面 RequestMapping注解，访问路径的前缀。
+     * swagger注释
      */
-    private String requestMappingPrefix;
-
-    /** 在Controller中生成 CRUD 方法 */
-    private Boolean withCrud;
-    /**
-     * 生成 REST 风格的 Controller。
-     */
-    private Boolean restStyle;
-
+    private String description;
     /**
      * 父类完整类名
      */
     private String superClassName;
+    /** 父类泛型的类型 */
+    private String genericityTypeName;
+//    /**
+//     * 默认实现的接口。
+//     */
+//    private String[] implInterfaceNames;
+    /**
+     * 是否使用 Lombok 注解。
+     */
+    private Boolean withLombok;
+    /**
+     * 是否链式
+     */
+    private Boolean withChain;
+
+    /**
+     * 是否使用 Swagger 注解。
+     */
+    private Boolean withSwagger;
+    /**
+     * 是否生成base类
+     */
+    private Boolean withBaseClass;
+
+    /**
+     * 是否总是生成 @Column 注解。
+     */
+    private Boolean alwaysGenColumnAnnotation;
 }

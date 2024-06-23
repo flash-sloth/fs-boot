@@ -36,16 +36,16 @@ import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.boot.modules.generator.GeneratorUtil;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreator;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreatorColumn;
-import top.fsfsfs.boot.modules.generator.entity.type.ControllerConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.EntityConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.MapperConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ControllerDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.DtoDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.EntityDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.MapperDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.PackageDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.QueryDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.VoDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.XmlDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorColumnMapper;
 import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorMapper;
@@ -177,7 +177,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillControllerConfig(Table table, CodeCreator codeCreator) {
         CodeCreatorProperties.ControllerRule controllerRule = codeCreatorProperties.getControllerRule();
-        ControllerConfig controllerConfig = new ControllerConfig();
+        ControllerDesign controllerConfig = new ControllerDesign();
         controllerConfig.setPackageName(controllerRule.getPackageName())
                 .setName(table.buildControllerClassName())
                 .setSuperClassName(controllerRule.getSuperClass() != null ? controllerRule.getSuperClass().getName() : "")
@@ -190,7 +190,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillServiceImplConfig(Table table, CodeCreator codeCreator) {
         CodeCreatorProperties.ServiceImplRule serviceRule = codeCreatorProperties.getServiceImplRule();
-        ServiceImplConfig serviceConfig = new ServiceImplConfig();
+        ServiceImplDesign serviceConfig = new ServiceImplDesign();
         serviceConfig.setPackageName(serviceRule.getPackageName())
                 .setName(table.buildServiceImplClassName())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
@@ -200,7 +200,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillServiceConfig(Table table, CodeCreator codeCreator) {
         CodeCreatorProperties.ServiceRule serviceRule = codeCreatorProperties.getServiceRule();
-        ServiceConfig serviceConfig = new ServiceConfig();
+        ServiceDesign serviceConfig = new ServiceDesign();
         serviceConfig.setPackageName(serviceRule.getPackageName())
                 .setName(table.buildServiceClassName())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
@@ -210,7 +210,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillXmlConfig(Table table, CodeCreator codeCreator) {
         CodeCreatorProperties.XmlRule xmlRule = codeCreatorProperties.getXmlRule();
-        XmlConfig xmlConfig = new XmlConfig();
+        XmlDesign xmlConfig = new XmlDesign();
         xmlConfig.setPath(xmlRule.getPath())
                 .setName(table.buildMapperXmlFileName())
         ;
@@ -219,7 +219,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillMapperConfig(Table table, CodeCreator codeCreator) {
         CodeCreatorProperties.MapperRule mapperRule = codeCreatorProperties.getMapperRule();
-        MapperConfig mapperConfig = new MapperConfig();
+        MapperDesign mapperConfig = new MapperDesign();
         mapperConfig.setPackageName(mapperRule.getPackageName())
                 .setName(table.buildMapperClassName())
                 .setSuperClassName(mapperRule.getSuperClass() != null ? mapperRule.getSuperClass().getName() : "")
@@ -229,7 +229,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillQueryConfig(Table table, CodeCreator codeCreator) {
         QueryRule queryRule = codeCreatorProperties.getQueryRule();
-        QueryConfig queryConfig = new QueryConfig();
+        QueryDesign queryConfig = new QueryDesign();
         queryConfig.setPackageName(queryRule.getPackageName())
                 .setName(table.buildQueryClassName())
                 .setDescription(table.getSwaggerComment())
@@ -252,7 +252,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillDtoConfig(Table table, CodeCreator codeCreator) {
         DtoRule dtoRule = codeCreatorProperties.getDtoRule();
-        DtoConfig dtoConfig = new DtoConfig();
+        DtoDesign dtoConfig = new DtoDesign();
         dtoConfig.setPackageName(dtoRule.getPackageName())
                 .setName(table.buildDtoClassName())
                 .setDescription(table.getSwaggerComment())
@@ -276,7 +276,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillVoConfig(Table table, CodeCreator codeCreator) {
         VoRule voRule = codeCreatorProperties.getVoRule();
-        VoConfig voConfig = new VoConfig();
+        VoDesign voConfig = new VoDesign();
         voConfig.setPackageName(voRule.getPackageName())
                 .setName(table.buildVoClassName())
                 .setDescription(table.getSwaggerComment())
@@ -299,7 +299,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void fillEntityConfig(Table table, CodeCreator codeCreator) {
         EntityRule entityRule = codeCreatorProperties.getEntityRule();
-        EntityConfig entityConfig = new EntityConfig();
+        EntityDesign entityConfig = new EntityDesign();
         entityConfig
                 .setPackageName(entityRule.getPackageName())
                 .setName(table.buildEntityClassName())
@@ -323,7 +323,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     }
 
     private void fillPackageConfig(Table table, CodeCreator codeCreator) {
-        PackageConfig packageConfig = new PackageConfig();
+        PackageDesign packageConfig = new PackageDesign();
         PackageRule packageRule = codeCreatorProperties.getPackageRule();
         packageConfig.setSourceDir(packageRule.getSourceDir()).setBasePackage(packageRule.getBasePackage()).setAuthor(packageRule.getAuthor());
         codeCreator.setPackageConfig(packageConfig);
@@ -383,16 +383,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         GlobalConfig globalConfig = table.getGlobalConfig();
         Map<String, Object> customConfig = globalConfig.getCustomConfig();
         CodeCreator codeCreator = (CodeCreator) customConfig.get(GLOBAL_CONFIG_KEY);
-        PackageConfig packageConfig = codeCreator.getPackageConfig();
-        ControllerConfig controllerConfig = codeCreator.getControllerConfig();
-        ServiceConfig serviceConfig = codeCreator.getServiceConfig();
-        ServiceImplConfig serviceImplConfig = codeCreator.getServiceImplConfig();
-        MapperConfig mapperConfig = codeCreator.getMapperConfig();
-        EntityConfig entityConfig = codeCreator.getEntityConfig();
-        VoConfig voConfig = codeCreator.getVoConfig();
-        DtoConfig dtoConfig = codeCreator.getDtoConfig();
-        QueryConfig queryConfig = codeCreator.getQueryConfig();
-        XmlConfig xmlConfig = codeCreator.getXmlConfig();
+        PackageDesign packageConfig = codeCreator.getPackageConfig();
+        ControllerDesign controllerConfig = codeCreator.getControllerConfig();
+        ServiceDesign serviceConfig = codeCreator.getServiceConfig();
+        ServiceImplDesign serviceImplConfig = codeCreator.getServiceImplConfig();
+        MapperDesign mapperConfig = codeCreator.getMapperConfig();
+        EntityDesign entityConfig = codeCreator.getEntityConfig();
+        VoDesign voConfig = codeCreator.getVoConfig();
+        DtoDesign dtoConfig = codeCreator.getDtoConfig();
+        QueryDesign queryConfig = codeCreator.getQueryConfig();
+        XmlDesign xmlConfig = codeCreator.getXmlConfig();
 
         Preview root = cache.get(packageConfig.getSourceDir());
         if (root == null) {
@@ -475,7 +475,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     }
 
 
-    private void buildControlerLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ControllerConfig controllerConfig, Preview backPackageDir) {
+    private void buildControlerLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ControllerDesign controllerConfig, Preview backPackageDir) {
         Preview controllerDir = cache.get(controllerConfig.getPackageName());
         if (controllerDir == null) {
             controllerDir = new Preview();
@@ -505,7 +505,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         previews.add(controllerFile);
     }
 
-    private void buildServiceLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ServiceConfig serviceConfig, Preview backPackageDir) {
+    private void buildServiceLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ServiceDesign serviceConfig, Preview backPackageDir) {
         Preview serviceDir = cache.get(serviceConfig.getPackageName());
         if (serviceDir == null) {
             serviceDir = new Preview();
@@ -533,7 +533,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         previews.add(serviceFile);
     }
 
-    private void buildServiceImplLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ServiceImplConfig serviceImplConfig, Preview backPackageDir) {
+    private void buildServiceImplLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ServiceImplDesign serviceImplConfig, Preview backPackageDir) {
         Preview serviceImplDir = cache.get(serviceImplConfig.getPackageName());
         if (serviceImplDir == null) {
             serviceImplDir = new Preview();
@@ -561,7 +561,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         previews.add(serviceImplFile);
     }
 
-    private void buildMapperLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, MapperConfig mapperConfig, Preview backPackageDir) {
+    private void buildMapperLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, MapperDesign mapperConfig, Preview backPackageDir) {
         Preview mapperDir = cache.get(mapperConfig.getPackageName());
         if (mapperDir == null) {
             mapperDir = new Preview();
@@ -588,7 +588,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         previews.add(mapperFile);
     }
 
-    private void buildXml(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, XmlConfig xmlConfig, Preview resourceDir) {
+    private void buildXml(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, XmlDesign xmlConfig, Preview resourceDir) {
         Preview xmlDir = cache.get(resourceDir.getPath() + File.separator + xmlConfig.getPath());
         if (xmlDir == null) {
             xmlDir = new Preview();
@@ -644,7 +644,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         previews.add(codeFile);
     }
 
-    private void buildEntityLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, EntityConfig entityConfig, Preview backPackageDir) {
+    private void buildEntityLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, EntityDesign entityConfig, Preview backPackageDir) {
         Preview layerDir = cache.get(entityConfig.getPackageName());
         if (layerDir == null) {
             layerDir = new Preview();
@@ -753,16 +753,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         QueryRule queryRule = codeCreatorProperties.getQueryRule();
         CodeCreatorProperties.ControllerRule controllerRule = codeCreatorProperties.getControllerRule();
 
-        PackageConfig packageConfig = codeCreator.getPackageConfig();
-        ControllerConfig controllerConfig = codeCreator.getControllerConfig();
-        ServiceConfig serviceConfig = codeCreator.getServiceConfig();
-        ServiceImplConfig serviceImplConfig = codeCreator.getServiceImplConfig();
-        MapperConfig mapperConfig = codeCreator.getMapperConfig();
-        EntityConfig entityConfig = codeCreator.getEntityConfig();
-        VoConfig voConfig = codeCreator.getVoConfig();
-        DtoConfig dtoConfig = codeCreator.getDtoConfig();
-        QueryConfig queryConfig = codeCreator.getQueryConfig();
-        XmlConfig xmlConfig = codeCreator.getXmlConfig();
+        PackageDesign packageConfig = codeCreator.getPackageConfig();
+        ControllerDesign controllerConfig = codeCreator.getControllerConfig();
+        ServiceDesign serviceConfig = codeCreator.getServiceConfig();
+        ServiceImplDesign serviceImplConfig = codeCreator.getServiceImplConfig();
+        MapperDesign mapperConfig = codeCreator.getMapperConfig();
+        EntityDesign entityConfig = codeCreator.getEntityConfig();
+        VoDesign voConfig = codeCreator.getVoConfig();
+        DtoDesign dtoConfig = codeCreator.getDtoConfig();
+        QueryDesign queryConfig = codeCreator.getQueryConfig();
+        XmlDesign xmlConfig = codeCreator.getXmlConfig();
 
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setCustomConfig(GLOBAL_CONFIG_KEY, codeCreator);

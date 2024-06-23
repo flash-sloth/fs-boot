@@ -21,10 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 
 /**
- * 代码生成器 菜单类配置
+ * 代码生成器 主从表配置
  *
  * @author tangyh
  * @since 2021-08-01 16:04
@@ -35,10 +34,8 @@ import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuConfig {
+public class SlaveDesign {
+    private String vo;
 
-    /**
-     * 生成策略
-     */
-    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
+
 }

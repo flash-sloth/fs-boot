@@ -9,18 +9,18 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import top.fsfsfs.basic.base.entity.SuperEntity;
-import top.fsfsfs.boot.modules.generator.entity.type.ControllerConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.EntityConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.MapperConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.MenuConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.SlaveConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ControllerDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.DtoDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.EntityDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.MapperDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.MenuDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.PackageDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.QueryDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.SlaveDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.VoDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.XmlDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ButtonDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.FormDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ListDesign;
@@ -70,70 +70,70 @@ public class CodeCreatorBase extends SuperEntity<Long> implements Serializable {
      * 包信息配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private PackageConfig packageConfig;
+    private PackageDesign packageConfig;
 
     /**
      * 实体类配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private EntityConfig entityConfig;
+    private EntityDesign entityConfig;
 
     /**
      * VO配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private VoConfig voConfig;
+    private VoDesign voConfig;
 
     /**
      * Query配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private QueryConfig queryConfig;
+    private QueryDesign queryConfig;
 
     /**
      * DTO配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private DtoConfig dtoConfig;
+    private DtoDesign dtoConfig;
 
     /**
      * Xml配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private XmlConfig xmlConfig;
+    private XmlDesign xmlConfig;
 
     /**
      * Mapper配置
      *
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private MapperConfig mapperConfig;
+    private MapperDesign mapperConfig;
 
     /**
      * Service配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private ServiceConfig serviceConfig;
+    private ServiceDesign serviceConfig;
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private ServiceImplConfig serviceImplConfig;
+    private ServiceImplDesign serviceImplConfig;
 
     /**
      * Controller配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private ControllerConfig controllerConfig;
+    private ControllerDesign controllerConfig;
 
     /**
      * 菜单配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private MenuConfig menuConfig;
+    private MenuDesign menuConfig;
 
     /**
      * 主从配置
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private SlaveConfig slaveConfig;
+    private SlaveDesign slaveConfig;
 
     /**
      * 搜索配置

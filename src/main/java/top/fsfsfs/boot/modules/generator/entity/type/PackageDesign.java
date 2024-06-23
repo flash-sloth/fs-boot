@@ -15,6 +15,8 @@
 
 package top.fsfsfs.boot.modules.generator.entity.type;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,10 +24,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
-
 /**
- * 代码生成器 Dto类配置
+ * 代码生成器 包信息
  *
  * @author tangyh
  * @since 2021-08-01 16:04
@@ -36,49 +36,28 @@ import java.util.Set;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class DtoConfig {
-    /** 包名 */
-    private String packageName;
+public class PackageDesign {
     /**
-     * 类名
+     * 代码生成目录。
      */
-    private String name;
+    @NotEmpty(message = "请填写后端代码生成目录")
+    private String sourceDir;
     /**
-     * swagger注释
+     * 根包名
      */
-    private String description;
+    @NotEmpty(message = "请填写模块根包名")
+    private String basePackage;
+    /** 模块包名 */
+    @NotEmpty(message = "请填写模块包名")
+    private String module;
 
-    /**
-     * 父类完整类名
-     */
-    private String superClassName;
-    /** 父类泛型的类型 */
-    private String genericityTypeName;
-    /**
-     * 默认实现的接口。
-     */
-    private String[] implInterfaceNames;
-    /**
-     * 是否使用 Lombok 注解。
-     */
-    private Boolean withLombok;
-    /**
-     * 是否链式
-     */
-    private Boolean withChain;
+    /** 模块包 描述 */
+    @NotEmpty(message = "请填写模块包描述")
+    private String moduleDescription;
+    /** 子系统Id */
+    @NotNull(message = "请选择子系统")
+    private Long subSystemId;
 
-    /**
-     * 是否使用 Validator 注解。
-     */
-    private Boolean withValidator;
+    private String author;
 
-    /**
-     * 是否使用 Swagger 注解。
-     */
-    private Boolean withSwagger;
-
-    /**
-     * 需要忽略的列 全局配置。
-     */
-    private Set<String> ignoreColumns;
 }

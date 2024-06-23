@@ -21,9 +21,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 
 /**
- * 代码生成器 Query类配置
+ * 代码生成器 菜单类配置
  *
  * @author tangyh
  * @since 2021-08-01 16:04
@@ -34,41 +35,10 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueryConfig {
-    /** 包名 */
-    private String packageName;
-    /**
-     * 类名
-     */
-    private String name;
-    /**
-     * swagger注释
-     */
-    private String description;
-    /**
-     * 父类完整类名
-     */
-    private String superClassName;
-    /** 父类泛型的类型 */
-    private String genericityTypeName;
-    /**
-     * Entity 默认实现的接口。
-     */
-    private String[] implInterfaceNames;
-
+public class MenuDesign {
 
     /**
-     * 是否使用 Lombok 注解。
+     * 生成策略
      */
-    private Boolean withLombok;
-    /**
-     * 是否链式
-     */
-    private Boolean withChain;
-    /**
-     *  是否使用 Swagger 注解。
-     */
-    private Boolean withSwagger;
-    /** 导出(@Excel)注解 */
-    private Boolean withExcel;
+    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
 }

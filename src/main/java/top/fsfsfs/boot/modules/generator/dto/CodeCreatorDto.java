@@ -1,7 +1,5 @@
 package top.fsfsfs.boot.modules.generator.dto;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.core.handler.FastjsonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,18 +10,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import top.fsfsfs.basic.base.entity.BaseEntity;
-import top.fsfsfs.boot.modules.generator.entity.type.ControllerConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.EntityConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.MapperConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.MenuConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.SlaveConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.VoConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.XmlConfig;
+import top.fsfsfs.boot.modules.generator.entity.type.ControllerDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.DtoDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.EntityDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.MapperDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.MenuDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.PackageDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.QueryDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.SlaveDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.VoDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.XmlDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ButtonDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.FormDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ListDesign;
@@ -88,71 +86,71 @@ public class CodeCreatorDto implements Serializable {
      * 包信息配置
      */
     @Schema(description = "包信息配置")
-    private PackageConfig packageConfig;
+    private PackageDesign packageConfig;
 
     /**
      * 实体类配置
      */
     @Schema(description = "实体类配置")
-    private EntityConfig entityConfig;
+    private EntityDesign entityConfig;
 
     /**
      * VO配置
      */
     @Schema(description = "VO配置")
-    private VoConfig voConfig;
+    private VoDesign voConfig;
 
     /**
      * Query配置
      */
     @Schema(description = "Query配置")
-    private QueryConfig queryConfig;
+    private QueryDesign queryConfig;
 
     /**
      * DTO配置
      */
     @Schema(description = "DTO配置")
-    private DtoConfig dtoConfig;
+    private DtoDesign dtoConfig;
 
     /**
      * Xml配置
      */
     @Schema(description = "Xml配置")
-    private XmlConfig xmlConfig;
+    private XmlDesign xmlConfig;
 
     /**
      * Mapper配置
      *
      */
     @Schema(description = "Mapper配置 ")
-    private MapperConfig mapperConfig;
+    private MapperDesign mapperConfig;
 
     /**
      * Service配置
      */
     @Schema(description = "Service配置")
-    private ServiceConfig serviceConfig;
+    private ServiceDesign serviceConfig;
 
     @Schema(description = "ServiceImpl配置")
-    private ServiceImplConfig serviceImplConfig;
+    private ServiceImplDesign serviceImplConfig;
 
     /**
      * Controller配置
      */
     @Schema(description = "Controller配置")
-    private ControllerConfig controllerConfig;
+    private ControllerDesign controllerConfig;
 
     /**
      * 菜单配置
      */
     @Schema(description = "菜单配置")
-    private MenuConfig menuConfig;
+    private MenuDesign menuConfig;
 
     /**
      * 主从配置
      */
     @Schema(description = "主从配置")
-    private SlaveConfig slaveConfig;
+    private SlaveDesign slaveConfig;
 
     /**
      * 搜索配置
