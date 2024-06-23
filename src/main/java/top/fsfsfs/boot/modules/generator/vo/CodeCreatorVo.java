@@ -19,7 +19,6 @@ import top.fsfsfs.boot.modules.generator.entity.type.MapperConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.QueryConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.DtoConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.MenuConfig;
-import top.fsfsfs.boot.modules.generator.entity.type.PackageConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.ServiceConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.ServiceImplConfig;
 import top.fsfsfs.boot.modules.generator.entity.type.SlaveConfig;
