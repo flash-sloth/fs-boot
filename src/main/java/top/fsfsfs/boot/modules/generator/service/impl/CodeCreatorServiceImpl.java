@@ -57,7 +57,6 @@ import top.fsfsfs.boot.modules.generator.properties.CodeCreatorProperties.QueryR
 import top.fsfsfs.boot.modules.generator.properties.CodeCreatorProperties.VoRule;
 import top.fsfsfs.boot.modules.generator.service.CodeCreatorService;
 import top.fsfsfs.boot.modules.generator.vo.TableImportDto;
-import top.fsfsfs.boot.modules.system.vo.SysMenuResultVo;
 import top.fsfsfs.util.utils.CollHelper;
 import top.fsfsfs.util.utils.FsTreeUtil;
 
@@ -193,7 +192,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         CodeCreatorProperties.ServiceImplRule serviceRule = codeCreatorProperties.getServiceImplRule();
         ServiceImplConfig serviceConfig = new ServiceImplConfig();
         serviceConfig.setPackageName(serviceRule.getPackageName())
-                .setName(table.buildServiceClassName())
+                .setName(table.buildServiceImplClassName())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
         ;
         codeCreator.setServiceImplConfig(serviceConfig);
@@ -203,7 +202,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         CodeCreatorProperties.ServiceRule serviceRule = codeCreatorProperties.getServiceRule();
         ServiceConfig serviceConfig = new ServiceConfig();
         serviceConfig.setPackageName(serviceRule.getPackageName())
-                .setName(table.buildServiceImplClassName())
+                .setName(table.buildServiceClassName())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
         ;
         codeCreator.setServiceConfig(serviceConfig);
@@ -411,7 +410,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             previews.add(root);
         }
 
-
         String javaDirKey = StrPool.SRC_MAIN_JAVA;
         Preview javaDir = cache.get(javaDirKey);
         if (javaDir == null) {
@@ -428,6 +426,22 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             previews.add(javaDir);
         }
 
+        String resourceDirKey = StrPool.SRC_MAIN_RESOURCES;
+        Preview resourceDir = cache.get(resourceDirKey);
+        if (resourceDir == null) {
+            resourceDir = new Preview();
+            resourceDir.setPath(root.getPath() + File.separator + resourceDirKey)
+                    .setType("dir")
+                    .setIsReadonly(true)
+                    .setId(uidGenerator.getUid())
+                    .setWeight(2)
+                    .setName(resourceDirKey)
+                    .setParentId(root.getId());
+
+            cache.put(resourceDirKey, resourceDir);
+//            resourceDir.setWeight(resourceDir.getWeight() + 1);
+            previews.add(resourceDir);
+        }
 
         String packageKey = packageConfig.getBasePackage() + "." + packageConfig.getModule();
         Preview backPackageDir = cache.get(packageKey);
@@ -445,6 +459,23 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             previews.add(backPackageDir);
         }
 
+        buildControlerLayer(previews, cache, codeMap, tableIndex, controllerConfig, backPackageDir);
+        buildServiceLayer(previews, cache, codeMap, tableIndex, serviceConfig, backPackageDir);
+        buildServiceImplLayer(previews, cache, codeMap, tableIndex, serviceImplConfig, backPackageDir);
+        buildMapperLayer(previews, cache, codeMap, tableIndex, mapperConfig, backPackageDir);
+        buildEntityLayer(previews, cache, codeMap, tableIndex, entityConfig, backPackageDir);
+        buildLayer(previews, cache, backPackageDir, tableIndex, 6, voConfig.getPackageName(), voConfig.getName(), codeMap.get(GenTypeConst.VO));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 7, dtoConfig.getPackageName(), dtoConfig.getName(), codeMap.get(GenTypeConst.DTO));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 8, queryConfig.getPackageName(), queryConfig.getName(), codeMap.get(GenTypeConst.QUERY));
+//        buildVoLayer(previews, cache, codeMap, tableIndex, voConfig, backPackageDir);
+//        buildDtoLayer(previews, cache, codeMap, tableIndex, dtoConfig, backPackageDir);
+//        buildQueryLayer(previews, cache, codeMap, tableIndex, queryConfig, backPackageDir);
+
+        buildXml(previews, cache, codeMap, tableIndex, xmlConfig, resourceDir);
+    }
+
+
+    private void buildControlerLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ControllerConfig controllerConfig, Preview backPackageDir) {
         Preview controllerDir = cache.get(controllerConfig.getPackageName());
         if (controllerDir == null) {
             controllerDir = new Preview();
@@ -472,8 +503,9 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         cache.put(controllerConfig.getName(), controllerFile);
 //            controllerDir.setWeight(controllerDir.getWeight() + 1);
         previews.add(controllerFile);
+    }
 
-
+    private void buildServiceLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ServiceConfig serviceConfig, Preview backPackageDir) {
         Preview serviceDir = cache.get(serviceConfig.getPackageName());
         if (serviceDir == null) {
             serviceDir = new Preview();
@@ -485,7 +517,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                     .setName(serviceConfig.getPackageName())
                     .setParentId(backPackageDir.getId());
             cache.put(serviceConfig.getPackageName(), serviceDir);
-//            controllerDir.setWeight(controllerDir.getWeight() + 1);
             previews.add(serviceDir);
         }
 
@@ -493,37 +524,75 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         serviceFile.setPath(serviceDir.getPath() + File.separator + serviceConfig.getName())
                 .setType("file")
                 .setIsReadonly(false)
-                .setContent(codeMap.get(GenTypeConst.CONTROLLER))
+                .setContent(codeMap.get(GenTypeConst.SERVICE))
                 .setId(uidGenerator.getUid())
                 .setWeight(tableIndex + 1)
                 .setName(serviceConfig.getName())
                 .setParentId(serviceDir.getId());
         cache.put(serviceConfig.getName(), serviceFile);
-//            controllerDir.setWeight(controllerDir.getWeight() + 1);
         previews.add(serviceFile);
+    }
 
-
-        String resourceDirKey = StrPool.SRC_MAIN_RESOURCES;
-        Preview resourceDir = cache.get(resourceDirKey);
-        if (resourceDir == null) {
-            resourceDir = new Preview();
-            resourceDir.setPath(resourceDirKey)
+    private void buildServiceImplLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, ServiceImplConfig serviceImplConfig, Preview backPackageDir) {
+        Preview serviceImplDir = cache.get(serviceImplConfig.getPackageName());
+        if (serviceImplDir == null) {
+            serviceImplDir = new Preview();
+            serviceImplDir.setPath(backPackageDir.getPath() + File.separator + serviceImplConfig.getPackageName())
                     .setType("dir")
                     .setIsReadonly(true)
                     .setId(uidGenerator.getUid())
-                    .setWeight(2)
-                    .setName(resourceDirKey)
-                    .setParentId(root.getId());
-
-            cache.put(resourceDirKey, resourceDir);
-//            resourceDir.setWeight(resourceDir.getWeight() + 1);
-            previews.add(resourceDir);
+                    .setWeight(tableIndex + 3)
+                    .setName(serviceImplConfig.getPackageName())
+                    .setParentId(backPackageDir.getId());
+            cache.put(serviceImplConfig.getPackageName(), serviceImplDir);
+            previews.add(serviceImplDir);
         }
 
-        Preview xmlDir = cache.get(xmlConfig.getPath());
+        Preview serviceImplFile = new Preview();
+        serviceImplFile.setPath(serviceImplDir.getPath() + File.separator + serviceImplConfig.getName())
+                .setType("file")
+                .setIsReadonly(false)
+                .setContent(codeMap.get(GenTypeConst.SERVICE_IMPL))
+                .setId(uidGenerator.getUid())
+                .setWeight(tableIndex + 1)
+                .setName(serviceImplConfig.getName())
+                .setParentId(serviceImplDir.getId());
+//        cache.put(serviceImplConfig.getName(), serviceFile);
+        previews.add(serviceImplFile);
+    }
+
+    private void buildMapperLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, MapperConfig mapperConfig, Preview backPackageDir) {
+        Preview mapperDir = cache.get(mapperConfig.getPackageName());
+        if (mapperDir == null) {
+            mapperDir = new Preview();
+            mapperDir.setPath(backPackageDir.getPath() + File.separator + mapperConfig.getPackageName())
+                    .setType("dir")
+                    .setIsReadonly(true)
+                    .setId(uidGenerator.getUid())
+                    .setWeight(tableIndex + 4)
+                    .setName(mapperConfig.getPackageName())
+                    .setParentId(backPackageDir.getId());
+            cache.put(mapperConfig.getPackageName(), mapperDir);
+            previews.add(mapperDir);
+        }
+
+        Preview mapperFile = new Preview();
+        mapperFile.setPath(mapperDir.getPath() + File.separator + mapperConfig.getName())
+                .setType("file")
+                .setIsReadonly(false)
+                .setContent(codeMap.get(GenTypeConst.MAPPER))
+                .setId(uidGenerator.getUid())
+                .setWeight(tableIndex + 1)
+                .setName(mapperConfig.getName() + ".java")
+                .setParentId(mapperDir.getId());
+        previews.add(mapperFile);
+    }
+
+    private void buildXml(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, XmlConfig xmlConfig, Preview resourceDir) {
+        Preview xmlDir = cache.get(resourceDir.getPath() + File.separator + xmlConfig.getPath());
         if (xmlDir == null) {
             xmlDir = new Preview();
-            xmlDir.setPath(xmlConfig.getPath())
+            xmlDir.setPath(resourceDir.getPath() + File.separator + xmlConfig.getPath())
                     .setType("dir")
                     .setIsReadonly(true)
                     .setId(uidGenerator.getUid())
@@ -536,16 +605,70 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         }
 
         Preview xmlFile = new Preview();
-        xmlFile.setPath(xmlConfig.getName())
+        xmlFile.setPath(xmlDir.getPath() + File.separator + xmlConfig.getName())
                 .setType("file")
                 .setIsReadonly(false)
                 .setContent(codeMap.get(GenTypeConst.MAPPER_XML))
                 .setId(uidGenerator.getUid())
                 .setWeight(tableIndex + 1)
-                .setName(xmlConfig.getName())
+                .setName(xmlConfig.getName() + ".xml")
                 .setParentId(xmlDir.getId());
-
         previews.add(xmlFile);
+    }
+
+    private void buildLayer(List<Preview> previews, Map<String, Preview> cache, Preview backPackageDir,
+                            int tableIndex, int dirIndex, String packageName, String name, String content) {
+        Preview layerDir = cache.get(packageName);
+        if (layerDir == null) {
+            layerDir = new Preview();
+            layerDir.setPath(backPackageDir.getPath() + File.separator + packageName)
+                    .setType("dir")
+                    .setIsReadonly(true)
+                    .setId(uidGenerator.getUid())
+                    .setWeight(tableIndex + dirIndex)
+                    .setName(packageName)
+                    .setParentId(backPackageDir.getId());
+            cache.put(packageName, layerDir);
+            previews.add(layerDir);
+        }
+
+        Preview codeFile = new Preview();
+        codeFile.setPath(layerDir.getPath() + File.separator + name)
+                .setType("file")
+                .setIsReadonly(false)
+                .setContent(content)
+                .setId(uidGenerator.getUid())
+                .setWeight(tableIndex + 1)
+                .setName(name)
+                .setParentId(layerDir.getId());
+        previews.add(codeFile);
+    }
+
+    private void buildEntityLayer(List<Preview> previews, Map<String, Preview> cache, Map<String, String> codeMap, int tableIndex, EntityConfig entityConfig, Preview backPackageDir) {
+        Preview layerDir = cache.get(entityConfig.getPackageName());
+        if (layerDir == null) {
+            layerDir = new Preview();
+            layerDir.setPath(backPackageDir.getPath() + File.separator + entityConfig.getPackageName())
+                    .setType("dir")
+                    .setIsReadonly(true)
+                    .setId(uidGenerator.getUid())
+                    .setWeight(tableIndex + 5)
+                    .setName(entityConfig.getPackageName())
+                    .setParentId(backPackageDir.getId());
+            cache.put(entityConfig.getPackageName(), layerDir);
+            previews.add(layerDir);
+        }
+
+        Preview codeFile = new Preview();
+        codeFile.setPath(layerDir.getPath() + File.separator + entityConfig.getName())
+                .setType("file")
+                .setIsReadonly(false)
+                .setContent(codeMap.get(GenTypeConst.ENTITY))
+                .setId(uidGenerator.getUid())
+                .setWeight(tableIndex + 1)
+                .setName(entityConfig.getName())
+                .setParentId(layerDir.getId());
+        previews.add(codeFile);
     }
 
     @Data
@@ -622,7 +745,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     @NotNull
     @SneakyThrows
-    private GlobalConfig buildGlobalConfig(CodeCreator codeCreator)   {
+    private GlobalConfig buildGlobalConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.StrategyRule strategyRule = codeCreatorProperties.getStrategyRule();
         EntityRule entityRule = codeCreatorProperties.getEntityRule();
         PackageConfig packageConfig = codeCreator.getPackageConfig();
@@ -679,7 +802,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 //                .setWithChain(entityConfig.getWithChain())
                 .setWithBaseClassEnable(entityConfig.getWithBaseClass())
                 .setAlwaysGenColumnAnnotation(entityConfig.getAlwaysGenColumnAnnotation())
-;
+        ;
 
 
         globalConfig.enableVo();
