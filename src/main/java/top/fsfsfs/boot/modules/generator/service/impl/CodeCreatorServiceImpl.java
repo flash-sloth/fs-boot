@@ -748,6 +748,11 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     private GlobalConfig buildGlobalConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.StrategyRule strategyRule = codeCreatorProperties.getStrategyRule();
         EntityRule entityRule = codeCreatorProperties.getEntityRule();
+        VoRule voRule = codeCreatorProperties.getVoRule();
+        DtoRule dtoRule = codeCreatorProperties.getDtoRule();
+        QueryRule queryRule = codeCreatorProperties.getQueryRule();
+        CodeCreatorProperties.ControllerRule controllerRule = codeCreatorProperties.getControllerRule();
+
         PackageConfig packageConfig = codeCreator.getPackageConfig();
         ControllerConfig controllerConfig = codeCreator.getControllerConfig();
         ServiceConfig serviceConfig = codeCreator.getServiceConfig();
@@ -804,9 +809,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 .setAlwaysGenColumnAnnotation(entityConfig.getAlwaysGenColumnAnnotation())
         ;
 
+        globalConfig.enableVo()
+                .setSuperClass(Class.forName(voConfig.getSuperClassName()))
+                .setGenericityType(voRule.getGenericityType())
+                .setImplInterfaces(voRule.getImplInterfaces())
+                .setWithLombok(voConfig.getWithLombok())
+                .setWithSwagger(voConfig.getWithSwagger())
+                .setWithExcel(voConfig.getWithExcel())
+                .setSwaggerVersion(com.mybatisflex.codegen.config.EntityConfig.SwaggerVersion.DOC)
+        ;
 
-        globalConfig.enableVo();
-        globalConfig.enableDto();
         globalConfig.enableQuery();
         globalConfig.enableMapper();
         globalConfig.enableMapperXml();
