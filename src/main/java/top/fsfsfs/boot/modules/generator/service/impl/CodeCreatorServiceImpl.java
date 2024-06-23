@@ -185,7 +185,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 .setWithCrud(controllerRule.getWithCrud())
                 .setRestStyle(controllerRule.getRestStyle())
         ;
-        codeCreator.setControllerConfig(controllerConfig);
+        codeCreator.setControllerDesign(controllerConfig);
     }
 
     private void fillServiceImplConfig(Table table, CodeCreator codeCreator) {
@@ -195,7 +195,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 .setName(table.buildServiceImplClassName())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
         ;
-        codeCreator.setServiceImplConfig(serviceConfig);
+        codeCreator.setServiceImplDesign(serviceConfig);
     }
 
     private void fillServiceConfig(Table table, CodeCreator codeCreator) {
@@ -205,7 +205,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 .setName(table.buildServiceClassName())
                 .setSuperClassName(serviceRule.getSuperClass() != null ? serviceRule.getSuperClass().getName() : "")
         ;
-        codeCreator.setServiceConfig(serviceConfig);
+        codeCreator.setServiceDesign(serviceConfig);
     }
 
     private void fillXmlConfig(Table table, CodeCreator codeCreator) {
@@ -214,7 +214,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         xmlConfig.setPath(xmlRule.getPath())
                 .setName(table.buildMapperXmlFileName())
         ;
-        codeCreator.setXmlConfig(xmlConfig);
+        codeCreator.setXmlDesign(xmlConfig);
     }
 
     private void fillMapperConfig(Table table, CodeCreator codeCreator) {
@@ -224,7 +224,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 .setName(table.buildMapperClassName())
                 .setSuperClassName(mapperRule.getSuperClass() != null ? mapperRule.getSuperClass().getName() : "")
         ;
-        codeCreator.setMapperConfig(mapperConfig);
+        codeCreator.setMapperDesign(mapperConfig);
     }
 
     private void fillQueryConfig(Table table, CodeCreator codeCreator) {
@@ -247,7 +247,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         } else {
             queryConfig.setImplInterfaceNames(new String[0]);
         }
-        codeCreator.setQueryConfig(queryConfig);
+        codeCreator.setQueryDesign(queryConfig);
     }
 
     private void fillDtoConfig(Table table, CodeCreator codeCreator) {
@@ -271,7 +271,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         } else {
             dtoConfig.setImplInterfaceNames(new String[0]);
         }
-        codeCreator.setDtoConfig(dtoConfig);
+        codeCreator.setDtoDesign(dtoConfig);
     }
 
     private void fillVoConfig(Table table, CodeCreator codeCreator) {
@@ -294,7 +294,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         } else {
             voConfig.setImplInterfaceNames(new String[0]);
         }
-        codeCreator.setVoConfig(voConfig);
+        codeCreator.setVoDesign(voConfig);
     }
 
     private void fillEntityConfig(Table table, CodeCreator codeCreator) {
@@ -319,14 +319,14 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 //        } else {
 //            entityConfig.setImplInterfaceNames(new String[0]);
 //        }
-        codeCreator.setEntityConfig(entityConfig);
+        codeCreator.setEntityDesign(entityConfig);
     }
 
     private void fillPackageConfig(Table table, CodeCreator codeCreator) {
         PackageDesign packageConfig = new PackageDesign();
         PackageRule packageRule = codeCreatorProperties.getPackageRule();
         packageConfig.setSourceDir(packageRule.getSourceDir()).setBasePackage(packageRule.getBasePackage()).setAuthor(packageRule.getAuthor());
-        codeCreator.setPackageConfig(packageConfig);
+        codeCreator.setPackageDesign(packageConfig);
     }
 
     @Override
@@ -383,16 +383,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         GlobalConfig globalConfig = table.getGlobalConfig();
         Map<String, Object> customConfig = globalConfig.getCustomConfig();
         CodeCreator codeCreator = (CodeCreator) customConfig.get(GLOBAL_CONFIG_KEY);
-        PackageDesign packageConfig = codeCreator.getPackageConfig();
-        ControllerDesign controllerConfig = codeCreator.getControllerConfig();
-        ServiceDesign serviceConfig = codeCreator.getServiceConfig();
-        ServiceImplDesign serviceImplConfig = codeCreator.getServiceImplConfig();
-        MapperDesign mapperConfig = codeCreator.getMapperConfig();
-        EntityDesign entityConfig = codeCreator.getEntityConfig();
-        VoDesign voConfig = codeCreator.getVoConfig();
-        DtoDesign dtoConfig = codeCreator.getDtoConfig();
-        QueryDesign queryConfig = codeCreator.getQueryConfig();
-        XmlDesign xmlConfig = codeCreator.getXmlConfig();
+        PackageDesign packageConfig = codeCreator.getPackageDesign();
+        ControllerDesign controllerConfig = codeCreator.getControllerDesign();
+        ServiceDesign serviceConfig = codeCreator.getServiceDesign();
+        ServiceImplDesign serviceImplConfig = codeCreator.getServiceImplDesign();
+        MapperDesign mapperConfig = codeCreator.getMapperDesign();
+        EntityDesign entityConfig = codeCreator.getEntityDesign();
+        VoDesign voConfig = codeCreator.getVoDesign();
+        DtoDesign dtoConfig = codeCreator.getDtoDesign();
+        QueryDesign queryConfig = codeCreator.getQueryDesign();
+        XmlDesign xmlConfig = codeCreator.getXmlDesign();
 
         Preview root = cache.get(packageConfig.getSourceDir());
         if (root == null) {
@@ -753,16 +753,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         QueryRule queryRule = codeCreatorProperties.getQueryRule();
         CodeCreatorProperties.ControllerRule controllerRule = codeCreatorProperties.getControllerRule();
 
-        PackageDesign packageConfig = codeCreator.getPackageConfig();
-        ControllerDesign controllerConfig = codeCreator.getControllerConfig();
-        ServiceDesign serviceConfig = codeCreator.getServiceConfig();
-        ServiceImplDesign serviceImplConfig = codeCreator.getServiceImplConfig();
-        MapperDesign mapperConfig = codeCreator.getMapperConfig();
-        EntityDesign entityConfig = codeCreator.getEntityConfig();
-        VoDesign voConfig = codeCreator.getVoConfig();
-        DtoDesign dtoConfig = codeCreator.getDtoConfig();
-        QueryDesign queryConfig = codeCreator.getQueryConfig();
-        XmlDesign xmlConfig = codeCreator.getXmlConfig();
+        PackageDesign packageConfig = codeCreator.getPackageDesign();
+        ControllerDesign controllerConfig = codeCreator.getControllerDesign();
+        ServiceDesign serviceConfig = codeCreator.getServiceDesign();
+        ServiceImplDesign serviceImplConfig = codeCreator.getServiceImplDesign();
+        MapperDesign mapperConfig = codeCreator.getMapperDesign();
+        EntityDesign entityConfig = codeCreator.getEntityDesign();
+        VoDesign voConfig = codeCreator.getVoDesign();
+        DtoDesign dtoConfig = codeCreator.getDtoDesign();
+        QueryDesign queryConfig = codeCreator.getQueryDesign();
+        XmlDesign xmlConfig = codeCreator.getXmlDesign();
 
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setCustomConfig(GLOBAL_CONFIG_KEY, codeCreator);
