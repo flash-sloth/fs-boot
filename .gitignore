@@ -37,3 +37,7 @@ generatorConfig.xml
 **/config/liy/**
 **/config/liulh/**
 **/config/hukz/**
+*-tangyh.yml
+*-liy.yml
+*-liulh.yml
+*-hukz.yml
