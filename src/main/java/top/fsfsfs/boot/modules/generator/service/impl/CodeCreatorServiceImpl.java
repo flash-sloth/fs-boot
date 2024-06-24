@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -133,7 +134,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             log.info("find tables: {}", tables.stream().map(Table::getName).collect(Collectors.toSet()));
         }
 
-        Map<String, PreviewVo> cache = new HashMap<>();
+        Map<String, PreviewVo> cache = new LinkedHashMap<>();
         List<PreviewVo> previews = new ArrayList<>();
 
         for (int i = 0; i < tables.size(); i++) {
@@ -181,7 +182,12 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         buildLayer(previews, cache, backPackageDir, tableIndex, 2, serviceConfig.getPackageName(), table.buildServiceClassName(), codeMap.get(GenTypeConst.SERVICE));
         buildLayer(previews, cache, backPackageDir, tableIndex, 3, serviceImplConfig.getPackageName(), table.buildServiceImplClassName(), codeMap.get(GenTypeConst.SERVICE_IMPL));
         buildLayer(previews, cache, backPackageDir, tableIndex, 4, mapperConfig.getPackageName(), table.buildMapperClassName(), codeMap.get(GenTypeConst.MAPPER));
-        buildLayer(previews, cache, backPackageDir, tableIndex, 5, entityConfig.getPackageName(), table.buildEntityClassName(), codeMap.get(GenTypeConst.ENTITY));
+        PreviewVo entityDir = buildLayer(previews, cache, backPackageDir, tableIndex, 5, entityConfig.getPackageName(), table.buildEntityClassName(), codeMap.get(GenTypeConst.ENTITY));
+        CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
+        if (entityRule.getWithBaseClassEnabled()) {
+            buildLayer(previews, cache, entityDir, tableIndex, 0, "base", table.buildEntityBaseClassName(), codeMap.get(GenTypeConst.ENTITY_BASE));
+        }
+
         buildLayer(previews, cache, backPackageDir, tableIndex, 6, voConfig.getPackageName(), table.buildVoClassName(), codeMap.get(GenTypeConst.VO));
         buildLayer(previews, cache, backPackageDir, tableIndex, 7, dtoConfig.getPackageName(), table.buildDtoClassName(), codeMap.get(GenTypeConst.DTO));
         buildLayer(previews, cache, backPackageDir, tableIndex, 8, queryConfig.getPackageName(), table.buildQueryClassName(), codeMap.get(GenTypeConst.QUERY));
@@ -204,7 +210,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         PreviewVo backPackageDir = cache.get(packageKey);
         if (backPackageDir == null) {
             backPackageDir = new PreviewVo();
-            backPackageDir.setPath(javaDir.getPath() + File.separator + StrUtil.replace(packageKey, ".", File.separator))
+            backPackageDir.setPath(packageKey)
                     .setType("dir")
                     .setIsReadonly(true)
                     .setId(uidGenerator.getUid())
@@ -219,12 +225,12 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     @NotNull
     private PreviewVo buildSrcMainResource(List<PreviewVo> previews, Map<String, PreviewVo> cache, PreviewVo root) {
-//        String resourceDirKey = StrPool.SRC_MAIN_RESOURCES;
+
         String resourceDirKey = root.getPath() + File.separator + StrPool.SRC_MAIN_RESOURCES;
         PreviewVo resourceDir = cache.get(resourceDirKey);
         if (resourceDir == null) {
             resourceDir = new PreviewVo();
-            resourceDir.setPath(root.getPath() + File.separator + resourceDirKey)
+            resourceDir.setPath(resourceDirKey)
                     .setType("dir")
                     .setIsReadonly(true)
                     .setId(uidGenerator.getUid())
@@ -246,7 +252,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         PreviewVo javaDir = cache.get(javaDirKey);
         if (javaDir == null) {
             javaDir = new PreviewVo();
-            javaDir.setPath(root.getPath() + File.separator + StrUtil.replace(javaDirKey, "/", File.separator))
+            javaDir.setPath(javaDirKey)
                     .setType("dir")
                     .setIsReadonly(true)
                     .setId(uidGenerator.getUid())
@@ -280,7 +286,8 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     private void buildXml(List<PreviewVo> previews, Map<String, PreviewVo> cache, PreviewVo resourceDir,
                           int tableIndex, XmlDesign xmlConfig, String name, String content) {
-        PreviewVo xmlDir = cache.get(resourceDir.getPath() + File.separator + xmlConfig.getPath());
+        String cacheKey = resourceDir.getPath() + File.separator + xmlConfig.getPath();
+        PreviewVo xmlDir = cache.get(cacheKey);
         if (xmlDir == null) {
             xmlDir = new PreviewVo();
             xmlDir.setPath(resourceDir.getPath() + File.separator + xmlConfig.getPath())
@@ -290,7 +297,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                     .setWeight(tableIndex + 1)
                     .setName(xmlConfig.getPath())
                     .setParentId(resourceDir.getId());
-            cache.put(xmlConfig.getPath(), xmlDir);
+            cache.put(cacheKey, xmlDir);
             previews.add(xmlDir);
         }
 
@@ -306,8 +313,8 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         previews.add(xmlFile);
     }
 
-    private void buildLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, PreviewVo backPackageDir,
-                            int tableIndex, int dirIndex, String packageName, String name, String content) {
+    private PreviewVo buildLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, PreviewVo backPackageDir,
+                                 int tableIndex, int dirIndex, String packageName, String name, String content) {
         String path = backPackageDir.getPath() + File.separator + packageName;
         PreviewVo layerDir = cache.get(path);
         if (layerDir == null) {
@@ -319,7 +326,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                     .setWeight(tableIndex + dirIndex)
                     .setName(packageName)
                     .setParentId(backPackageDir.getId());
-            cache.put(packageName, layerDir);
+            cache.put(path, layerDir);
             previews.add(layerDir);
         }
 
@@ -330,9 +337,10 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 .setContent(content)
                 .setId(uidGenerator.getUid())
                 .setWeight(tableIndex + 1)
-                .setName(name)
+                .setName(name + ".java")
                 .setParentId(layerDir.getId());
         previews.add(codeFile);
+        return layerDir;
     }
 
     public List<Table> getTables(List<Long> ids) {
