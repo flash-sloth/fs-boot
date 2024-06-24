@@ -38,9 +38,14 @@ public class XmlDesign {
     /** 路径 */
     private String path;
     /**
-     * 类名
+     * 类的前缀。
      */
-    private String name;
+    private String filePrefix;
+
+    /**
+     * 类的后缀。
+     */
+    private String fileSuffix;
     /**
      * 是否生成返回结果集
      */

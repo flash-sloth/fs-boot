@@ -38,9 +38,14 @@ public class ServiceDesign {
     /** 包名 */
     private String packageName;
     /**
-     * 类名
+     * 类的前缀。
      */
-    private String name;
+    private String classPrefix;
+
+    /**
+     * 类的后缀。
+     */
+    private String classSuffix;
 
 
     /**

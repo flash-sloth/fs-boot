@@ -38,13 +38,14 @@ public class QueryDesign {
     /** 包名 */
     private String packageName;
     /**
-     * 类名
+     * 类的前缀。
      */
-    private String name;
+    private String classPrefix;
+
     /**
-     * swagger注释
+     * 类的后缀。
      */
-    private String description;
+    private String classSuffix;
     /**
      * 父类完整类名
      */

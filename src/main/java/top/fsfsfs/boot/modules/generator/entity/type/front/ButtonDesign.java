@@ -16,6 +16,7 @@
 package top.fsfsfs.boot.modules.generator.entity.type.front;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,11 +35,17 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ButtonDesign {
 
     /** 是否生成该字段 */
-    private Boolean show;
-    /** 是否隐藏字段 */
-    private Boolean hidden;
-
+    private Boolean state;
+    /** 按钮名称 */
+    private String name;
+    /** 按钮编码 */
+    private String code;
+    /** 图标 */
+    private String icon;
+    /** 权限编码 */
+    private String authCode;
 }

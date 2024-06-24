@@ -71,7 +71,7 @@ public class EntityDesign {
     /**
      * 是否生成base类
      */
-    private Boolean withBaseClass;
+    private Boolean withBaseClassEnable;
 
     /**
      * 是否总是生成 @Column 注解。

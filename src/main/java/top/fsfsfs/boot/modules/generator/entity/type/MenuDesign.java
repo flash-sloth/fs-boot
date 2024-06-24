@@ -16,6 +16,7 @@
 package top.fsfsfs.boot.modules.generator.entity.type;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -35,10 +36,18 @@ import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MenuDesign {
-
-    /**
-     * 生成策略
-     */
-    private GenerationStrategyEnum generationStrategy = GenerationStrategyEnum.OVERWRITE;
+    /** 立即执行 */
+    private Boolean execute;
+    /** 菜单编码 */
+    private String code;
+    /** 菜单名称 */
+    private String name;
+    /** 图标 */
+    private String icon;
+    /** 排序 */
+    private String weight;
+    /** 父菜单 */
+    private Long parentId;
 }

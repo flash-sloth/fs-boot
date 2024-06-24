@@ -1,4 +1,4 @@
-package top.fsfsfs.boot.modules.generator.vo;
+package top.fsfsfs.boot.modules.generator.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;

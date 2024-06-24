@@ -16,7 +16,7 @@ import top.fsfsfs.boot.modules.generator.entity.CodeCreator;
 import top.fsfsfs.boot.modules.generator.query.CodeCreatorQuery;
 import top.fsfsfs.boot.modules.generator.service.CodeCreatorService;
 import top.fsfsfs.boot.modules.generator.vo.CodeCreatorVo;
-import top.fsfsfs.boot.modules.generator.vo.TableImportDto;
+import top.fsfsfs.boot.modules.generator.dto.TableImportDto;
 
 import java.util.List;
 

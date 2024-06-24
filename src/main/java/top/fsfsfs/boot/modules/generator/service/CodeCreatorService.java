@@ -3,7 +3,7 @@ package top.fsfsfs.boot.modules.generator.service;
 import cn.hutool.core.lang.tree.Tree;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreator;
-import top.fsfsfs.boot.modules.generator.vo.TableImportDto;
+import top.fsfsfs.boot.modules.generator.dto.TableImportDto;
 
 import java.util.List;
 

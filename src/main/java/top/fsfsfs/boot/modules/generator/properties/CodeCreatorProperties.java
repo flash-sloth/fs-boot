@@ -255,7 +255,7 @@ public class CodeCreatorProperties {
         /**
          * 是否生成base类
          */
-        private Boolean withBaseClass = true;
+        private Boolean withBaseClassEnabled = true;
         /**
          * 是否总是生成 @Column 注解。
          */
