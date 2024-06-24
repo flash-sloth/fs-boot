@@ -6,6 +6,9 @@ import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import top.fsfsfs.basic.base.entity.BaseEntity;
+import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.TreeEntity;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreator;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreatorColumn;
 import top.fsfsfs.boot.modules.generator.entity.type.ControllerDesign;
@@ -32,6 +35,9 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -43,6 +49,14 @@ public class ImportTableBuilder {
     private final Table table;
     private final CodeCreatorProperties codeCreatorProperties;
     private final Long id;
+
+    private final static Set<String> UPDATED_COLUMN_NAMES = Set.of(SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD);
+    private final static Set<String> TREE_COLUMN_NAMES = Set.of(TreeEntity.PARENT_ID_FIELD, TreeEntity.WEIGHT_FIELD);
+    private final static Set<String> BASE_ENTITY_COLUMN_NAMES = Set.of(BaseEntity.ID_FIELD, BaseEntity.CREATED_AT_FIELD, BaseEntity.CREATED_BY_FIELD);
+    private final static Set<String> SUPER_ENTITY_COLUMN_NAMES = Stream.of(BASE_ENTITY_COLUMN_NAMES, UPDATED_COLUMN_NAMES)
+            .flatMap(Set::stream).collect(Collectors.toSet());
+    private final static Set<String> TREE_ENTITY_COLUMN_NAMES = Stream.of(SUPER_ENTITY_COLUMN_NAMES, TREE_COLUMN_NAMES)
+            .flatMap(Set::stream).collect(Collectors.toSet());
 
     @NotNull
     public CodeCreator buildCodeCreator(Long dsId) {
@@ -190,7 +204,10 @@ public class ImportTableBuilder {
         codeCreator.setVoDesign(voConfig);
     }
 
+
     private void fillEntityConfig(Table table, CodeCreator codeCreator) {
+
+
         CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         EntityDesign entityConfig = new EntityDesign();
         entityConfig
@@ -205,6 +222,16 @@ public class ImportTableBuilder {
                 .setWithSwagger(entityRule.getWithSwagger())
                 .setAlwaysGenColumnAnnotation(entityRule.getAlwaysGenColumnAnnotation())
         ;
+        if (entityRule.getAutoRecognitionSuperClass()) {
+            Set<String> allColumnNames = table.getAllColumns().stream().map(Column::getName).collect(Collectors.toSet());
+            if (CollUtil.containsAll(allColumnNames, TREE_ENTITY_COLUMN_NAMES)) {
+                entityConfig.setSuperClassName(TreeEntity.class.getName());
+            } else if (CollUtil.containsAll(allColumnNames, SUPER_ENTITY_COLUMN_NAMES)) {
+                entityConfig.setSuperClassName(SuperEntity.class.getName());
+            } else if (CollUtil.containsAll(allColumnNames, BASE_ENTITY_COLUMN_NAMES)) {
+                entityConfig.setSuperClassName(BaseEntity.class.getName());
+            }
+        }
 //        Class<?>[] implInterfaces = entityRule.getImplInterfaces();
 //        if (implInterfaces != null) {
 //            String[] implInterfaceNames = Arrays.stream(implInterfaces).map(Class::getName).toArray(String[]::new);

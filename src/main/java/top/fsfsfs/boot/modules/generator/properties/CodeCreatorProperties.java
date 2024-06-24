@@ -223,6 +223,8 @@ public class CodeCreatorProperties {
          * Entity 类的后缀。
          */
         private String classSuffix = "";
+        /** 自动识别父类 */
+        private Boolean autoRecognitionSuperClass = true;
         /**
          * Entity 类的父类，可以自定义一些 BaseEntity 类。
          */
@@ -422,9 +424,9 @@ public class CodeCreatorProperties {
     @Data
     public static class ServiceImplRule {
         /**
-         * 代码生成目录
+         * 代码生成目录 (在service目录下级）
          */
-        private String packageName = "service.impl";
+        private String packageName = "impl";
 
         /**
          *  类的前缀。

@@ -124,7 +124,7 @@ public class GeneratorUtil {
 
         globalConfig.getPackageConfig().setSourceDir(packageRule.getSourceDir()).setBasePackage(packageRule.getBasePackage())
                 .setControllerPackage(controllerRule.getPackageName())
-                .setServicePackage(serviceRule.getPackageName()).setServiceImplPackage(serviceImplRule.getPackageName())
+                .setServicePackage(serviceRule.getPackageName()).setServiceImplPackage(serviceRule.getPackageName() + StrPool.DOT + serviceImplRule.getPackageName())
                 .setMapperPackage(mapperRule.getPackageName()).setMapperXmlPath(xmlRule.getPath())
                 .setEntityPackage(entityRule.getPackageName()).setDtoPackage(dtoRule.getPackageName())
                 .setQueryPackage(queryRule.getPackageName()).setVoPackage(voRule.getPackageName())
@@ -203,7 +203,7 @@ public class GeneratorUtil {
                 .setMapperPackage(basePackage + StrPool.DOT + mapperDesign.getPackageName())
                 .setMapperXmlPath(packageDesign.getSourceDir() + StrPool.SLASH + StrPool.SRC_MAIN_RESOURCES + StrPool.SLASH + xmlDesign.getPath())
                 .setServicePackage(basePackage + StrPool.DOT + serviceDesign.getPackageName())
-                .setServiceImplPackage(basePackage + StrPool.DOT + serviceImplDesign.getPackageName())
+                .setServiceImplPackage(basePackage + StrPool.DOT + serviceDesign.getPackageName() + StrPool.DOT + serviceImplDesign.getPackageName())
                 .setControllerPackage(basePackage + StrPool.DOT + controllerDesign.getPackageName());
 
         StrategyConfig strategyConfig = globalConfig.getStrategyConfig();
