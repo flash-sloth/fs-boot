@@ -92,4 +92,4 @@ springdoc:
       - group: '900_test'
         displayName: '示例代码'
         paths-to-match: '/**'
-        packages-to-scan: top.fsfsfs.main.test
+        packages-to-scan: top.fsfsfs.demo.test
