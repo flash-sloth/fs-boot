@@ -11,6 +11,7 @@
 
 
     <modelVersion>4.0.0</modelVersion>
+    <groupId>top.fsfsfs.boot</groupId>
     <artifactId>fs-boot</artifactId>
     <name>${project.artifactId}</name>
     <description>fs单体项目</description>

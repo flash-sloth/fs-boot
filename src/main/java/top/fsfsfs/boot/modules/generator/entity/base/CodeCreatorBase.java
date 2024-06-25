@@ -23,6 +23,7 @@ import top.fsfsfs.boot.modules.generator.entity.type.VoDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.XmlDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ButtonDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.FormDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.front.FrontDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ListDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.SearchDesign;
@@ -134,6 +135,12 @@ public class CodeCreatorBase extends SuperEntity<Long> implements Serializable {
      */
     @Column(typeHandler = FastjsonTypeHandler.class)
     private SlaveDesign slaveDesign;
+
+    /**
+     * 前端配置
+     */
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private FrontDesign frontDesign;
 
     /**
      * 搜索配置

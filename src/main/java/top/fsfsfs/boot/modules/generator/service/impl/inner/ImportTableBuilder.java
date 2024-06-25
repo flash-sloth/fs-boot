@@ -1,4 +1,4 @@
-package top.fsfsfs.boot.modules.generator.service.impl;
+package top.fsfsfs.boot.modules.generator.service.impl.inner;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
@@ -24,6 +24,7 @@ import top.fsfsfs.boot.modules.generator.entity.type.VoDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.XmlDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ButtonDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.FormDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.front.FrontDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ListDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.SearchDesign;
@@ -65,18 +66,22 @@ public class ImportTableBuilder {
         codeCreator.setDsId(dsId);
         codeCreator.setTableName(table.getName());
         codeCreator.setTableDescription(table.getComment());
-        fillPackageConfig(table, codeCreator);
-        fillEntityConfig(table, codeCreator);
+        fillPackageConfig(codeCreator);
+        fillEntityConfig(codeCreator);
         fillVoConfig(codeCreator);
         fillDtoConfig(codeCreator);
-        fillQueryConfig(table, codeCreator);
-        fillMapperConfig(table, codeCreator);
-        fillXmlConfig(table, codeCreator);
-        fillServiceConfig(table, codeCreator);
-        fillServiceImplConfig(table, codeCreator);
-        fillControllerConfig(table, codeCreator);
+        fillQueryConfig(codeCreator);
+        fillMapperConfig(codeCreator);
+        fillXmlConfig(codeCreator);
+        fillServiceConfig(codeCreator);
+        fillServiceImplConfig(codeCreator);
+        fillControllerConfig(codeCreator);
         fillMenuDesign(codeCreator);
         fillButtonDesign(codeCreator);
+
+        FrontDesign frontDesign = new FrontDesign();
+
+        codeCreator.setFrontDesign(frontDesign);
         return codeCreator;
     }
 
@@ -99,7 +104,7 @@ public class ImportTableBuilder {
     }
 
 
-    private void fillControllerConfig(Table table, CodeCreator codeCreator) {
+    private void fillControllerConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.ControllerRule controllerRule = codeCreatorProperties.getControllerRule();
         ControllerDesign controllerConfig = new ControllerDesign();
         controllerConfig.setPackageName(controllerRule.getPackageName())
@@ -112,7 +117,7 @@ public class ImportTableBuilder {
         codeCreator.setControllerDesign(controllerConfig);
     }
 
-    private void fillServiceImplConfig(Table table, CodeCreator codeCreator) {
+    private void fillServiceImplConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.ServiceImplRule serviceRule = codeCreatorProperties.getServiceImplRule();
         ServiceImplDesign serviceConfig = new ServiceImplDesign();
         serviceConfig.setPackageName(serviceRule.getPackageName())
@@ -122,7 +127,7 @@ public class ImportTableBuilder {
         codeCreator.setServiceImplDesign(serviceConfig);
     }
 
-    private void fillServiceConfig(Table table, CodeCreator codeCreator) {
+    private void fillServiceConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.ServiceRule serviceRule = codeCreatorProperties.getServiceRule();
         ServiceDesign serviceConfig = new ServiceDesign();
         serviceConfig.setPackageName(serviceRule.getPackageName())
@@ -132,14 +137,14 @@ public class ImportTableBuilder {
         codeCreator.setServiceDesign(serviceConfig);
     }
 
-    private void fillXmlConfig(Table table, CodeCreator codeCreator) {
+    private void fillXmlConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.XmlRule xmlRule = codeCreatorProperties.getXmlRule();
         XmlDesign xmlConfig = new XmlDesign();
         xmlConfig.setPath(xmlRule.getPath()).setFilePrefix(xmlRule.getFilePrefix()).setFileSuffix(xmlRule.getFileSuffix());
         codeCreator.setXmlDesign(xmlConfig);
     }
 
-    private void fillMapperConfig(Table table, CodeCreator codeCreator) {
+    private void fillMapperConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.MapperRule mapperRule = codeCreatorProperties.getMapperRule();
         MapperDesign mapperConfig = new MapperDesign();
         mapperConfig.setPackageName(mapperRule.getPackageName())
@@ -149,7 +154,7 @@ public class ImportTableBuilder {
         codeCreator.setMapperDesign(mapperConfig);
     }
 
-    private void fillQueryConfig(Table table, CodeCreator codeCreator) {
+    private void fillQueryConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.QueryRule queryRule = codeCreatorProperties.getQueryRule();
         QueryDesign queryConfig = new QueryDesign();
         queryConfig.setPackageName(queryRule.getPackageName())
@@ -205,9 +210,7 @@ public class ImportTableBuilder {
     }
 
 
-    private void fillEntityConfig(Table table, CodeCreator codeCreator) {
-
-
+    private void fillEntityConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         EntityDesign entityConfig = new EntityDesign();
         entityConfig
@@ -242,7 +245,7 @@ public class ImportTableBuilder {
         codeCreator.setEntityDesign(entityConfig);
     }
 
-    private void fillPackageConfig(Table table, CodeCreator codeCreator) {
+    private void fillPackageConfig(CodeCreator codeCreator) {
         PackageDesign packageConfig = new PackageDesign();
         CodeCreatorProperties.PackageRule packageRule = codeCreatorProperties.getPackageRule();
         packageConfig.setSourceDir(packageRule.getSourceDir()).setBasePackage(packageRule.getBasePackage()).setAuthor(packageRule.getAuthor());

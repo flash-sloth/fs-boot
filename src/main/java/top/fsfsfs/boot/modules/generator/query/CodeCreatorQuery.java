@@ -119,7 +119,11 @@ public class CodeCreatorQuery implements Serializable {
      */
     @Schema(description = "主从配置")
     private String slaveConfig;
-
+    /**
+     * 前端配置
+     */
+    @Schema(description = "前端配置")
+    private String frontDesign;
     @Schema(description = "搜索配置")
     private String searchDesign;
 

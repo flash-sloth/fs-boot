@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.utils.StrPool;
-import top.fsfsfs.boot.modules.generator.GeneratorUtil;
 import top.fsfsfs.boot.modules.generator.dto.TableImportDto;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreator;
 import top.fsfsfs.boot.modules.generator.entity.CodeCreatorColumn;
@@ -44,6 +43,8 @@ import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorColumnMapper;
 import top.fsfsfs.boot.modules.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.boot.modules.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.boot.modules.generator.service.CodeCreatorService;
+import top.fsfsfs.boot.modules.generator.service.impl.inner.GeneratorUtil;
+import top.fsfsfs.boot.modules.generator.service.impl.inner.ImportTableBuilder;
 import top.fsfsfs.boot.modules.generator.vo.PreviewVo;
 import top.fsfsfs.util.utils.CollHelper;
 import top.fsfsfs.util.utils.FsTreeUtil;
@@ -360,146 +361,4 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
         return new GeneratorUtil(codeCreatorProperties).getTableByCodeCreatorList(codeCreatorList, map);
     }
-
-    /*
-    private void buildControllerLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, Map<String, String> codeMap, int tableIndex, ControllerDesign controllerConfig, PreviewVo backPackageDir) {
-        PreviewVo controllerDir = cache.get(controllerConfig.getPackageName());
-        if (controllerDir == null) {
-            controllerDir = new PreviewVo();
-            controllerDir.setPath(backPackageDir.getPath() + File.separator + controllerConfig.getPackageName())
-                    .setType("dir")
-                    .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
-                    .setWeight(tableIndex + 1)
-                    .setName(controllerConfig.getPackageName())
-                    .setParentId(backPackageDir.getId());
-            cache.put(controllerConfig.getPackageName(), controllerDir);
-//            controllerDir.setWeight(controllerDir.getWeight() + 1);
-            previews.add(controllerDir);
-        }
-
-        PreviewVo controllerFile = new PreviewVo();
-        controllerFile.setPath(controllerDir.getPath() + File.separator + controllerConfig.getName())
-                .setType("file")
-                .setIsReadonly(false)
-                .setContent(codeMap.get(GenTypeConst.CONTROLLER))
-                .setId(uidGenerator.getUid())
-                .setWeight(tableIndex + 1)
-                .setName(controllerConfig.getName())
-                .setParentId(controllerDir.getId());
-        cache.put(controllerConfig.getName(), controllerFile);
-//            controllerDir.setWeight(controllerDir.getWeight() + 1);
-        previews.add(controllerFile);
-    }
-
-    private void buildServiceLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, Map<String, String> codeMap, int tableIndex, ServiceDesign serviceConfig, PreviewVo backPackageDir) {
-        PreviewVo serviceDir = cache.get(serviceConfig.getPackageName());
-        if (serviceDir == null) {
-            serviceDir = new PreviewVo();
-            serviceDir.setPath(backPackageDir.getPath() + File.separator + serviceConfig.getPackageName())
-                    .setType("dir")
-                    .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
-                    .setWeight(tableIndex + 2)
-                    .setName(serviceConfig.getPackageName())
-                    .setParentId(backPackageDir.getId());
-            cache.put(serviceConfig.getPackageName(), serviceDir);
-            previews.add(serviceDir);
-        }
-
-        PreviewVo serviceFile = new PreviewVo();
-        serviceFile.setPath(serviceDir.getPath() + File.separator + serviceConfig.getName())
-                .setType("file")
-                .setIsReadonly(false)
-                .setContent(codeMap.get(GenTypeConst.SERVICE))
-                .setId(uidGenerator.getUid())
-                .setWeight(tableIndex + 1)
-                .setName(serviceConfig.getName())
-                .setParentId(serviceDir.getId());
-        cache.put(serviceConfig.getName(), serviceFile);
-        previews.add(serviceFile);
-    }
-
-    private void buildServiceImplLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, Map<String, String> codeMap, int tableIndex, ServiceImplDesign serviceImplConfig, PreviewVo backPackageDir) {
-        PreviewVo serviceImplDir = cache.get(serviceImplConfig.getPackageName());
-        if (serviceImplDir == null) {
-            serviceImplDir = new PreviewVo();
-            serviceImplDir.setPath(backPackageDir.getPath() + File.separator + serviceImplConfig.getPackageName())
-                    .setType("dir")
-                    .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
-                    .setWeight(tableIndex + 3)
-                    .setName(serviceImplConfig.getPackageName())
-                    .setParentId(backPackageDir.getId());
-            cache.put(serviceImplConfig.getPackageName(), serviceImplDir);
-            previews.add(serviceImplDir);
-        }
-
-        PreviewVo serviceImplFile = new PreviewVo();
-        serviceImplFile.setPath(serviceImplDir.getPath() + File.separator + serviceImplConfig.getName())
-                .setType("file")
-                .setIsReadonly(false)
-                .setContent(codeMap.get(GenTypeConst.SERVICE_IMPL))
-                .setId(uidGenerator.getUid())
-                .setWeight(tableIndex + 1)
-                .setName(serviceImplConfig.getName())
-                .setParentId(serviceImplDir.getId());
-//        cache.put(serviceImplConfig.getName(), serviceFile);
-        previews.add(serviceImplFile);
-    }
-
-    private void buildMapperLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, Map<String, String> codeMap, int tableIndex, MapperDesign mapperConfig, PreviewVo backPackageDir) {
-        PreviewVo mapperDir = cache.get(mapperConfig.getPackageName());
-        if (mapperDir == null) {
-            mapperDir = new PreviewVo();
-            mapperDir.setPath(backPackageDir.getPath() + File.separator + mapperConfig.getPackageName())
-                    .setType("dir")
-                    .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
-                    .setWeight(tableIndex + 4)
-                    .setName(mapperConfig.getPackageName())
-                    .setParentId(backPackageDir.getId());
-            cache.put(mapperConfig.getPackageName(), mapperDir);
-            previews.add(mapperDir);
-        }
-
-        PreviewVo mapperFile = new PreviewVo();
-        mapperFile.setPath(mapperDir.getPath() + File.separator + mapperConfig.getName())
-                .setType("file")
-                .setIsReadonly(false)
-                .setContent(codeMap.get(GenTypeConst.MAPPER))
-                .setId(uidGenerator.getUid())
-                .setWeight(tableIndex + 1)
-                .setName(mapperConfig.getName() + ".java")
-                .setParentId(mapperDir.getId());
-        previews.add(mapperFile);
-    }
-
-    private void buildEntityLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, Map<String, String> codeMap, int tableIndex, EntityDesign entityConfig, PreviewVo backPackageDir) {
-        PreviewVo layerDir = cache.get(entityConfig.getPackageName());
-        if (layerDir == null) {
-            layerDir = new PreviewVo();
-            layerDir.setPath(backPackageDir.getPath() + File.separator + entityConfig.getPackageName())
-                    .setType("dir")
-                    .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
-                    .setWeight(tableIndex + 5)
-                    .setName(entityConfig.getPackageName())
-                    .setParentId(backPackageDir.getId());
-            cache.put(entityConfig.getPackageName(), layerDir);
-            previews.add(layerDir);
-        }
-
-        PreviewVo codeFile = new PreviewVo();
-        codeFile.setPath(layerDir.getPath() + File.separator + entityConfig.getName())
-                .setType("file")
-                .setIsReadonly(false)
-                .setContent(codeMap.get(GenTypeConst.ENTITY))
-                .setId(uidGenerator.getUid())
-                .setWeight(tableIndex + 1)
-                .setName(entityConfig.getName())
-                .setParentId(layerDir.getId());
-        previews.add(codeFile);
-    }
-*/
 }

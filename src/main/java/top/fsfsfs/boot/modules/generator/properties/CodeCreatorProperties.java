@@ -8,6 +8,7 @@
 
 package top.fsfsfs.boot.modules.generator.properties;
 
+import com.mybatisflex.codegen.config.FrontConfig;
 import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -34,6 +35,7 @@ import java.util.Set;
 @ConfigurationProperties(prefix = CodeCreatorProperties.PREFIX)
 public class CodeCreatorProperties {
     public static final String PREFIX = Constants.PROJECT_PREFIX + ".generator";
+    private FrontRule frontRule = new FrontRule();
     private PackageRule packageRule = new PackageRule();
     private StrategyRule strategyRule = new StrategyRule();
     private EntityRule entityRule = new EntityRule();
@@ -63,47 +65,7 @@ public class CodeCreatorProperties {
          */
         private String basePackage = "top.fsfsfs.boot.modules";
         private String author = System.getProperty("user.name");
-//    /**
-//     * Vo 所在包。
-//     */
-//    private String voPackage = "vo";
-//    /**
-//     * Dto 所在包。
-//     */
-//    private String dtoPackage = "dto";
-//    /**
-//     * Query 所在包。
-//     */
-//    private String queryPackage = "query";
-//
-//    /**
-//     * Entity 所在包。
-//     */
-//    private String entityPackage = "entity";
-//    /**
-//     * Mapper 所在包。
-//     */
-//    private String mapperPackage = "mapper";
-//
-//    /**
-//     * Service 所在包。
-//     */
-//    private String servicePackage = "service";
-//
-//    /**
-//     * ServiceImpl 所在包。
-//     */
-//    private String serviceImplPackage = "service.impl";
-//
-//    /**
-//     * Controller 所在包。
-//     */
-//    private String controllerPackage = "controller";
-//
-//    /**
-//     * MapperXml 文件所在位置。
-//     */
-//    private String mapperXmlPath = "/mapper";
+
     }
 
 
@@ -499,5 +461,41 @@ public class CodeCreatorProperties {
          */
         private String fileSuffix = "Mapper";
     }
+
+    @Data
+    public static class FrontRule {
+
+        /**
+         * 代码生成目录。
+         */
+        private String sourceDir;
+        /**
+         * 表单打开方式。
+         */
+        private FrontConfig.OpenMode openMode = FrontConfig.OpenMode.MODAL;
+
+        /**
+         * 布局方式。
+         */
+        private FrontConfig.Layout layout = FrontConfig.Layout.SIMPLE;
+        /**
+         * 是否启用国际化。
+         */
+        private Boolean i18n = true;
+        /**
+         * 页面缓存。
+         */
+        private Boolean keepAlive = true;
+        /**
+         * 复选框。
+         */
+        private Boolean checkbox = true;
+
+        /**
+         * 单选框。
+         */
+        private Boolean radio = false;
+    }
+
 
 }

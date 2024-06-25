@@ -24,6 +24,7 @@ import top.fsfsfs.boot.modules.generator.entity.type.VoDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.XmlDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ButtonDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.FormDesign;
+import top.fsfsfs.boot.modules.generator.entity.type.front.FrontDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.ListDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.boot.modules.generator.entity.type.front.SearchDesign;
@@ -151,7 +152,11 @@ public class CodeCreatorDto implements Serializable {
      */
     @Schema(description = "主从配置")
     private SlaveDesign slaveConfig;
-
+    /**
+     * 前端配置
+     */
+    @Schema(description = "前端配置")
+    private FrontDesign frontDesign;
     /**
      * 搜索配置
      */

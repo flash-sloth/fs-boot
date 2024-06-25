@@ -78,7 +78,7 @@ public class MagicAPIConfiguration {
 	 *
 	 * @see MagicDynamicDataSource
 	 */
-	@Bean
+//	@Bean
 	public MagicDynamicDataSource magicDynamicDataSource() {
 		MagicDynamicDataSource dynamicDataSource = new MagicDynamicDataSource();
 		dynamicDataSource.setDefault(MasterDataSource()); // 设置默认数据源

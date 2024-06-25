@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package top.fsfsfs.boot.modules.generator;
+package top.fsfsfs.boot.modules.generator.service.impl.inner;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -162,7 +162,7 @@ public class GeneratorUtil {
 
     @NotNull
     @SneakyThrows
-    public GlobalConfig buildGlobalConfig(CodeCreator codeCreator) {
+    private GlobalConfig buildGlobalConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.StrategyRule strategyRule = codeCreatorProperties.getStrategyRule();
         CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         CodeCreatorProperties.VoRule voRule = codeCreatorProperties.getVoRule();
