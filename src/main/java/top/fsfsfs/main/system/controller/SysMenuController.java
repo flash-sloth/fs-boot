@@ -16,7 +16,7 @@ import top.fsfsfs.main.system.vo.SysMenuVo;
  * @since 2024-06-15
  */
 @RestController
-@RequestMapping("/sysMenu")
+@RequestMapping("/main/sysMenu")
 public class SysMenuController extends SuperController<SysMenuService, Long, SysMenu, SysMenuVo, SysMenuQueryVo, SysMenuResultVo> {
 
 
