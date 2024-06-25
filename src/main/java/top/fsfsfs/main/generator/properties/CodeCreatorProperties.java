@@ -6,7 +6,7 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package top.fsfsfs.boot.modules.generator.properties;
+package top.fsfsfs.main.generator.properties;
 
 import com.mybatisflex.codegen.config.FrontConfig;
 import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
@@ -63,7 +63,7 @@ public class CodeCreatorProperties {
         /**
          * 根包。
          */
-        private String basePackage = "top.fsfsfs.boot.modules";
+        private String basePackage = "top.fsfsfs.main";
         private String author = System.getProperty("user.name");
 
     }
