@@ -2,7 +2,7 @@
 <configuration>
     <include resource="logback/defaults-sync-logger.xml"/>
 
-    <logger name="top.fsfsfs.boot.modules" additivity="true" level="${log.level.modules}">
+    <logger name="top.fsfsfs.main" additivity="true" level="${log.level.modules}">
         <appender-ref ref="MODULES_APPENDER"/>
     </logger>
 

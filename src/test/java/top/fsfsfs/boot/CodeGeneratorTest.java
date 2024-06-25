@@ -13,14 +13,10 @@ import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
 import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.SuperEntity;
-import top.fsfsfs.basic.mvcflex.controller.SuperController;
-import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
-import top.fsfsfs.basic.mvcflex.service.SuperService;
-import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
-import top.fsfsfs.boot.common.enumeration.Sex;
-import top.fsfsfs.boot.modules.test.entity.DefGenTestTree;
+import top.fsfsfs.common.enumeration.Sex;
+import top.fsfsfs.main.test.entity.DefGenTestTree;
 
 import java.nio.file.Paths;
 
@@ -76,7 +72,7 @@ public class CodeGeneratorTest {
 
         //设置根包
         globalConfig.setBasePackage("com.fsfsfs.boot");
-//        globalConfig.setBasePackage("top.fsfsfs.boot.modules.generator");
+//        globalConfig.setBasePackage("top.fsfsfs.main.generator");
 
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表

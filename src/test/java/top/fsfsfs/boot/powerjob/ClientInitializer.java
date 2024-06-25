@@ -1,8 +1,8 @@
 package top.fsfsfs.boot.powerjob;
 
 import org.junit.jupiter.api.BeforeAll;
-import top.fsfsfs.boot.modules.powerjob.client.IPowerJobClient;
-import top.fsfsfs.boot.modules.powerjob.client.PowerJobClient;
+import top.fsfsfs.main.powerjob.client.IPowerJobClient;
+import top.fsfsfs.main.powerjob.client.PowerJobClient;
 
 /**
  * Initialize OhMyClient
