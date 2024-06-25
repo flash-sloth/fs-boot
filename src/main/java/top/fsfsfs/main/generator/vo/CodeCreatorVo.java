@@ -84,42 +84,42 @@ public class CodeCreatorVo implements Serializable {
      */
     @Schema(description = "包信息配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private PackageDesign packageConfig;
+    private PackageDesign packageDesign;
 
     /**
      * 实体类配置
      */
     @Schema(description = "实体类配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private EntityDesign entityConfig;
+    private EntityDesign entityDesign;
 
     /**
      * VO配置
      */
     @Schema(description = "VO配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private VoDesign voConfig;
+    private VoDesign voDesign;
 
     /**
      * Query配置
      */
     @Schema(description = "Query配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private QueryDesign queryConfig;
+    private QueryDesign queryDesign;
 
     /**
      * DTO配置
      */
     @Schema(description = "DTO配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private DtoDesign dtoConfig;
+    private DtoDesign dtoDesign;
 
     /**
      * Xml配置
      */
     @Schema(description = "Xml配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private XmlDesign xmlConfig;
+    private XmlDesign xmlDesign;
 
     /**
      * Mapper配置
@@ -127,37 +127,38 @@ public class CodeCreatorVo implements Serializable {
      */
     @Schema(description = "Mapper配置 ")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private MapperDesign mapperConfig;
+    private MapperDesign mapperDesign;
 
     /**
      * Service配置
      */
     @Schema(description = "Service配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private ServiceDesign serviceConfig;
+    private ServiceDesign serviceDesign;
+
     @Schema(description = "ServiceImpl配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private ServiceImplDesign serviceImplConfig;
+    private ServiceImplDesign serviceImplDesign;
     /**
      * Controller配置
      */
     @Schema(description = "Controller配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private ControllerDesign controllerConfig;
+    private ControllerDesign controllerDesign;
 
     /**
      * 菜单配置
      */
     @Schema(description = "菜单配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private MenuDesign menuConfig;
+    private MenuDesign menuDesign;
 
     /**
      * 主从配置
      */
     @Schema(description = "主从配置")
     @Column(typeHandler = FastjsonTypeHandler.class)
-    private SlaveDesign slaveConfig;
+    private SlaveDesign slaveDesign;
     /**
      * 前端配置
      */

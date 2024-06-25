@@ -61,64 +61,64 @@ public class CodeCreatorQuery implements Serializable {
      * 包信息配置
      */
     @Schema(description = "包信息配置")
-    private String packageConfig;
+    private String packageDesign;
 
     /**
      * 实体类配置
      */
     @Schema(description = "实体类配置")
-    private String entityConfig;
+    private String entityDesign;
 
     /**
      * VO配置
      */
     @Schema(description = "VO配置")
-    private String voConfig;
+    private String voDesign;
     @Schema(description = "Query配置")
-    private String queryConfig;
+    private String queryDesign;
     @Schema(description = "DTO配置")
-    private String dtoConfig;
+    private String dtoDesign;
 
     /**
      * Xml配置
      */
     @Schema(description = "Xml配置")
-    private String xmlConfig;
+    private String xmlDesign;
 
     /**
      * Mapper配置
      *
      */
     @Schema(description = "Mapper配置 ")
-    private String mapperConfig;
+    private String mapperDesign;
 
     /**
      * Service配置
      */
     @Schema(description = "Service配置")
-    private String serviceConfig;
+    private String serviceDesign;
 
 
     @Schema(description = "ServiceImpl配置")
-    private String serviceImplConfig;
+    private String serviceImplDesign;
 
     /**
      * Controller配置
      */
     @Schema(description = "Controller配置")
-    private String controllerConfig;
+    private String controllerDesign;
 
     /**
      * 菜单配置
      */
     @Schema(description = "菜单配置")
-    private String menuConfig;
+    private String menuDesign;
 
     /**
      * 主从配置
      */
     @Schema(description = "主从配置")
-    private String slaveConfig;
+    private String slaveDesign;
     /**
      * 前端配置
      */

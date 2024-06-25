@@ -87,71 +87,71 @@ public class CodeCreatorDto implements Serializable {
      * 包信息配置
      */
     @Schema(description = "包信息配置")
-    private PackageDesign packageConfig;
+    private PackageDesign packageDesign;
 
     /**
      * 实体类配置
      */
     @Schema(description = "实体类配置")
-    private EntityDesign entityConfig;
+    private EntityDesign entityDesign;
 
     /**
      * VO配置
      */
     @Schema(description = "VO配置")
-    private VoDesign voConfig;
+    private VoDesign voDesign;
 
     /**
      * Query配置
      */
     @Schema(description = "Query配置")
-    private QueryDesign queryConfig;
+    private QueryDesign queryDesign;
 
     /**
      * DTO配置
      */
     @Schema(description = "DTO配置")
-    private DtoDesign dtoConfig;
+    private DtoDesign dtoDesign;
 
     /**
      * Xml配置
      */
     @Schema(description = "Xml配置")
-    private XmlDesign xmlConfig;
+    private XmlDesign xmlDesign;
 
     /**
      * Mapper配置
      *
      */
     @Schema(description = "Mapper配置 ")
-    private MapperDesign mapperConfig;
+    private MapperDesign mapperDesign;
 
     /**
      * Service配置
      */
     @Schema(description = "Service配置")
-    private ServiceDesign serviceConfig;
+    private ServiceDesign serviceDesign;
 
     @Schema(description = "ServiceImpl配置")
-    private ServiceImplDesign serviceImplConfig;
+    private ServiceImplDesign serviceImplDesign;
 
     /**
      * Controller配置
      */
     @Schema(description = "Controller配置")
-    private ControllerDesign controllerConfig;
+    private ControllerDesign controllerDesign;
 
     /**
      * 菜单配置
      */
     @Schema(description = "菜单配置")
-    private MenuDesign menuConfig;
+    private MenuDesign menuDesign;
 
     /**
      * 主从配置
      */
     @Schema(description = "主从配置")
-    private SlaveDesign slaveConfig;
+    private SlaveDesign slaveDesign;
     /**
      * 前端配置
      */
@@ -169,17 +169,12 @@ public class CodeCreatorDto implements Serializable {
     @Schema(description = "表格配置")
     private List<ListDesign> listDesign;
 
-    /**
-     * 树结构配置
-     */
-    @Schema(description = "树结构配置")
-    private List<ListDesign> treeConfig;
 
     /**
      * 树结构配置
      */
     @Schema(description = "树结构配置")
-    private List<TreeDesign> fromConfig;
+    private List<TreeDesign> treeDesign;
 
     /**
      * 表单配置
