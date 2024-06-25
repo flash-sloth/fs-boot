@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @Validated
 @Tag(name = "代码生成接口")
-@RequestMapping("/codeCreator")
+@RequestMapping("/main/codeCreator")
 public class CodeCreatorController extends SuperController<CodeCreatorService, Long, CodeCreator, CodeCreatorDto, CodeCreatorQuery, CodeCreatorVo> {
     @Operation(summary = "导入表结构", description = "导入表结构")
     @PostMapping(value = "/importTable")

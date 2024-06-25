@@ -22,6 +22,6 @@ import top.fsfsfs.main.generator.vo.CodeCreatorColumnVo;
 @RestController
 @Validated
 @Tag(name = "代码生成字段接口")
-@RequestMapping("/codeCreatorColumn")
+@RequestMapping("/main/codeCreatorColumn")
 public class CodeCreatorColumnController extends SuperController<CodeCreatorColumnService, Long, CodeCreatorColumn, CodeCreatorColumnDto, CodeCreatorColumnQuery, CodeCreatorColumnVo> {
 }
