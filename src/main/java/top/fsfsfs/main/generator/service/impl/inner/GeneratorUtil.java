@@ -274,10 +274,11 @@ public class GeneratorUtil {
             Map<String, PropertyDesign> propertyDesignMap = CollUtil.isNotEmpty(propertyDesignList) ? CollHelper.uniqueIndex(propertyDesignList, PropertyDesign::getName, item -> item) : Collections.emptyMap();
 
             Table table = new Table();
-            table.setGlobalConfig(globalConfig);
-            table.setEntityConfig(globalConfig.getEntityConfig());
             table.setName(codeCreator.getTableName());
             table.setComment(codeCreator.getTableDescription());
+            table.setGlobalConfig(globalConfig);
+            table.setEntityConfig(globalConfig.getEntityConfig());
+            table.setTableConfig(globalConfig.getTableConfig(codeCreator.getTableName()));
 
             Collection<CodeCreatorColumn> columnList = map.get(codeCreator.getId());
             for (CodeCreatorColumn creatorColumn : columnList) {

@@ -104,6 +104,7 @@ spring:
       - classpath:config/${spring.profiles.active}/mysql.yml
       - classpath:config/${spring.profiles.active}/redis.yml
       - classpath:config/${spring.profiles.active}/powerjob.yml
+      - classpath:config/${spring.profiles.active}/generator.yml
   mvc:
     pathmatch:
       # 升级springboot2.6.6后临时处理，防止swagger报错

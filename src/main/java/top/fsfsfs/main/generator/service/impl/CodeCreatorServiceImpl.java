@@ -22,9 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
+import top.fsfsfs.main.generator.entity.CodeCreatorContent;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.entity.type.DtoDesign;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;
@@ -40,6 +42,7 @@ import top.fsfsfs.main.generator.entity.type.front.ListDesign;
 import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.main.generator.entity.type.front.SearchDesign;
 import top.fsfsfs.main.generator.mapper.CodeCreatorColumnMapper;
+import top.fsfsfs.main.generator.mapper.CodeCreatorContentMapper;
 import top.fsfsfs.main.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.service.CodeCreatorService;
@@ -73,6 +76,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     private final UidGenerator uidGenerator;
     private final CodeCreatorProperties codeCreatorProperties;
     private final CodeCreatorColumnMapper codeCreatorColumnMapper;
+    private final CodeCreatorContentMapper codeCreatorContentMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -141,10 +145,30 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
         for (int i = 0; i < tables.size(); i++) {
             Table table = tables.get(i);
-            Collection<IGenerator> generators = GeneratorFactory.getGenerators();
-            Map<String, String> codeMap = new HashMap(generators.size());
-            for (IGenerator generator : generators) {
-                codeMap.put(generator.getGenType(), generator.preview(table, table.getGlobalConfig()));
+            GlobalConfig globalConfig = table.getGlobalConfig();
+            Map<String, Object> customConfig = globalConfig.getCustomConfig();
+            CodeCreator codeCreator = (CodeCreator) customConfig.get(GeneratorUtil.GLOBAL_CONFIG_KEY);
+            List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId()));
+
+            if (CollUtil.isEmpty(codeCreatorContentList)) {
+                Collection<IGenerator> generators = GeneratorFactory.getGenerators();
+                for (IGenerator generator : generators) {
+                    String previewCode = generator.preview(table, globalConfig);
+
+                    CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
+                    codeCreatorContent.setGenType(generator.getGenType());
+                    codeCreatorContent.setContent(previewCode);
+                    codeCreatorContent.setCodeCreatorId(codeCreator.getId());
+
+                    codeCreatorContentList.add(codeCreatorContent);
+                }
+
+                codeCreatorContentMapper.insertBatch(codeCreatorContentList);
+            }
+
+            Map<String, String> codeMap = new HashMap<>(codeCreatorContentList.size());
+            for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
+                codeMap.put(codeCreatorContent.getGenType(), codeCreatorContent.getContent());
             }
 
             buildCodeTree(table, previews, cache, codeMap, i);
@@ -182,26 +206,17 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
         buildLayer(previews, cache, backPackageDir, tableIndex, 1, controllerConfig.getPackageName(), table.buildControllerClassName(), codeMap.get(GenTypeConst.CONTROLLER));
         PreviewVo serviceDir = buildLayer(previews, cache, backPackageDir, tableIndex, 2, serviceConfig.getPackageName(), table.buildServiceClassName(), codeMap.get(GenTypeConst.SERVICE));
-//        buildLayer(previews, cache, backPackageDir, tableIndex, 3, serviceImplConfig.getPackageName(), table.buildServiceImplClassName(), codeMap.get(GenTypeConst.SERVICE_IMPL));
         buildLayer(previews, cache, serviceDir, tableIndex, 0, serviceImplConfig.getPackageName(), table.buildServiceImplClassName(), codeMap.get(GenTypeConst.SERVICE_IMPL));
 
-        buildLayer(previews, cache, backPackageDir, tableIndex, 4, mapperConfig.getPackageName(), table.buildMapperClassName(), codeMap.get(GenTypeConst.MAPPER));
-        PreviewVo entityDir = buildLayer(previews, cache, backPackageDir, tableIndex, 5, entityConfig.getPackageName(), table.buildEntityClassName(), codeMap.get(GenTypeConst.ENTITY));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 3, mapperConfig.getPackageName(), table.buildMapperClassName(), codeMap.get(GenTypeConst.MAPPER));
+        PreviewVo entityDir = buildLayer(previews, cache, backPackageDir, tableIndex, 4, entityConfig.getPackageName(), table.buildEntityClassName(), codeMap.get(GenTypeConst.ENTITY));
         CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         if (entityRule.getWithBaseClassEnabled()) {
             buildLayer(previews, cache, entityDir, tableIndex, 0, "base", table.buildEntityBaseClassName(), codeMap.get(GenTypeConst.ENTITY_BASE));
         }
-        buildLayer(previews, cache, backPackageDir, tableIndex, 6, voConfig.getPackageName(), table.buildVoClassName(), codeMap.get(GenTypeConst.VO));
-        buildLayer(previews, cache, backPackageDir, tableIndex, 7, dtoConfig.getPackageName(), table.buildDtoClassName(), codeMap.get(GenTypeConst.DTO));
-        buildLayer(previews, cache, backPackageDir, tableIndex, 8, queryConfig.getPackageName(), table.buildQueryClassName(), codeMap.get(GenTypeConst.QUERY));
-//        buildControllerLayer(previews, cache, codeMap, tableIndex, controllerConfig, backPackageDir);
-//        buildServiceLayer(previews, cache, codeMap, tableIndex, serviceConfig, backPackageDir);
-//        buildServiceImplLayer(previews, cache, codeMap, tableIndex, serviceImplConfig, backPackageDir);
-//        buildMapperLayer(previews, cache, codeMap, tableIndex, mapperConfig, backPackageDir);
-//        buildEntityLayer(previews, cache, codeMap, tableIndex, entityConfig, backPackageDir);
-//        buildVoLayer(previews, cache, codeMap, tableIndex, voConfig, backPackageDir);
-//        buildDtoLayer(previews, cache, codeMap, tableIndex, dtoConfig, backPackageDir);
-//        buildQueryLayer(previews, cache, codeMap, tableIndex, queryConfig, backPackageDir);
+        buildLayer(previews, cache, backPackageDir, tableIndex, 5, voConfig.getPackageName(), table.buildVoClassName(), codeMap.get(GenTypeConst.VO));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 6, dtoConfig.getPackageName(), table.buildDtoClassName(), codeMap.get(GenTypeConst.DTO));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 7, queryConfig.getPackageName(), table.buildQueryClassName(), codeMap.get(GenTypeConst.QUERY));
 
         buildXml(previews, cache, resourceDir, tableIndex, xmlConfig, table.buildMapperXmlFileName(), codeMap.get(GenTypeConst.MAPPER_XML));
     }
@@ -360,5 +375,47 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         Multimap<Long, CodeCreatorColumn> map = CollHelper.iterableToMultiMap(allColumnList, CodeCreatorColumn::getCodeCreatorId, item -> item);
 
         return new GeneratorUtil(codeCreatorProperties).getTableByCodeCreatorList(codeCreatorList, map);
+    }
+
+    @Override
+    public void generator(CodeGenDto genDto) {
+        List<Table> tables = getTables(genDto.getIds());
+        if (tables == null || tables.isEmpty()) {
+            log.error("table not found.");
+            return;
+        } else {
+            log.info("find tables: {}", tables.stream().map(Table::getName).collect(Collectors.toSet()));
+        }
+
+        for (int i = 0; i < tables.size(); i++) {
+            Table table = tables.get(i);
+            GlobalConfig globalConfig = table.getGlobalConfig();
+            Map<String, Object> customConfig = globalConfig.getCustomConfig();
+            CodeCreator codeCreator = (CodeCreator) customConfig.get(GeneratorUtil.GLOBAL_CONFIG_KEY);
+            List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId()));
+
+            if (CollUtil.isEmpty(codeCreatorContentList)) {
+                Collection<IGenerator> generators = GeneratorFactory.getGenerators();
+                for (IGenerator generator : generators) {
+                    String previewCode = generator.preview(table, globalConfig);
+
+                    CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
+                    codeCreatorContent.setGenType(generator.getGenType());
+                    codeCreatorContent.setContent(previewCode);
+                    codeCreatorContent.setCodeCreatorId(codeCreator.getId());
+
+                    codeCreatorContentList.add(codeCreatorContent);
+                }
+
+                codeCreatorContentMapper.insertBatch(codeCreatorContentList);
+            }
+
+            for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
+                IGenerator generator = GeneratorFactory.getGenerator(codeCreatorContent.getGenType());
+                generator.setTemplateContent(codeCreatorContent.getContent());
+                generator.generate(table, table.getGlobalConfig());
+            }
+        }
+        log.info("Code is generated successfully.");
     }
 }

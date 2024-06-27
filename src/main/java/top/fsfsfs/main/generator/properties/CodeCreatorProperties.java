@@ -487,12 +487,12 @@ public class CodeCreatorProperties {
          */
         private Boolean keepAlive = true;
         /**
-         * 复选框。
+         * 表格生成复选框列。
          */
         private Boolean checkbox = true;
 
         /**
-         * 单选框。
+         * 表格生成单选框列。
          */
         private Boolean radio = false;
     }

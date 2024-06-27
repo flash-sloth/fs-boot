@@ -1,0 +1,51 @@
+fs:
+  generator:
+    front-rule:
+      source-dir: /Users/tangyh/github/fs-web
+      open-mode: modal
+      layout: simple
+      i18n: true
+      keep-alive: true
+      checkbox: true
+      radio: false
+    package-rule:
+      base-package: top.fsfsfs.main
+    strategy-rule:
+      table-prefix: 'fs_'
+      generate-for-view: true
+    entity-rule:
+      auto-recognition-super-class: true
+      with-lombok: true
+      with-chain: true
+      with-base-class-enabled: true
+      with-swagger: false
+      always-gen-column-annotation: false
+    dto-rule:
+      with-lombok: true
+      with-chain: true
+      with-validator: true
+      with-swagger: true
+    vo-rule:
+      implInterfaces:
+        - java.io.Serializable
+      with-chain: true
+      with-excel: true
+      with-lombok: true
+      with-swagger: true
+    query-rule:
+      implInterfaces:
+        - java.io.Serializable
+      with-chain: true
+      with-excel: true
+      with-lombok: true
+      with-swagger: true
+    mapper-rule:
+      super-class: top.fsfsfs.basic.mvcflex.mapper.SuperMapper
+    service-rule:
+      super-class: top.fsfsfs.basic.mvcflex.service.SuperService
+    service-impl-rule:
+      super-class: top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl
+    controller-rule:
+      super-class: top.fsfsfs.basic.mvcflex.controller.SuperController
+      with-crud: false
+      rest-style: true

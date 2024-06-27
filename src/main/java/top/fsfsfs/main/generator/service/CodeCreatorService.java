@@ -2,8 +2,9 @@ package top.fsfsfs.main.generator.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
-import top.fsfsfs.main.generator.entity.CodeCreator;
+import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
+import top.fsfsfs.main.generator.entity.CodeCreator;
 
 import java.util.List;
 
@@ -28,4 +29,10 @@ public interface CodeCreatorService extends SuperService<CodeCreator> {
      * @return 代码预览树
      */
     List<Tree<Long>> preview(List<Long> ids);
+
+    /**
+     * 生成代码
+     * @param genDto 生成参数
+     */
+    void generator(CodeGenDto genDto);
 }
