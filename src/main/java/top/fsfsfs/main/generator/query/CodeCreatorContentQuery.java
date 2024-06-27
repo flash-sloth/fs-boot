@@ -2,6 +2,7 @@ package top.fsfsfs.main.generator.query;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,7 +52,7 @@ public class CodeCreatorContentQuery implements Serializable {
      * 代码类型
      */
     @Schema(description = "代码类型")
-    private String genType;
+    private GenTypeEnum genType;
 
     /**
      * 包信息配置

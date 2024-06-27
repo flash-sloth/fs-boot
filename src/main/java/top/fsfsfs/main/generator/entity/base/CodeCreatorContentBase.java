@@ -1,6 +1,8 @@
 package top.fsfsfs.main.generator.entity.base;
 
 import java.io.Serializable;
+
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 
 import java.io.Serial;
@@ -43,7 +45,7 @@ public class CodeCreatorContentBase extends SuperEntity<Long> implements Seriali
      * 代码类型
      */
     @Schema(description = "代码类型")
-    private String genType;
+    private GenTypeEnum genType;
 
     /**
      * 包信息配置

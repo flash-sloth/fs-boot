@@ -7,7 +7,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.baidu.fsg.uid.UidGenerator;
 import com.google.common.collect.Multimap;
 import com.mybatisflex.codegen.config.GlobalConfig;
-import com.mybatisflex.codegen.constant.GenTypeConst;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.mybatisflex.codegen.generator.GeneratorFactory;
@@ -166,7 +166,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 codeCreatorContentMapper.insertBatch(codeCreatorContentList);
             }
 
-            Map<String, String> codeMap = new HashMap<>(codeCreatorContentList.size());
+            Map<GenTypeEnum, String> codeMap = new HashMap<>(codeCreatorContentList.size());
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
                 codeMap.put(codeCreatorContent.getGenType(), codeCreatorContent.getContent());
             }
@@ -182,7 +182,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     }
 
 
-    public void buildCodeTree(Table table, List<PreviewVo> previews, Map<String, PreviewVo> cache, Map<String, String> codeMap, int tableIndex) {
+    public void buildCodeTree(Table table, List<PreviewVo> previews, Map<String, PreviewVo> cache, Map<GenTypeEnum, String> codeMap, int tableIndex) {
 
         GlobalConfig globalConfig = table.getGlobalConfig();
         Map<String, Object> customConfig = globalConfig.getCustomConfig();
@@ -204,21 +204,21 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
         PreviewVo backPackageDir = buildModule(previews, cache, tableIndex, packageConfig, javaDir);
 
-        buildLayer(previews, cache, backPackageDir, tableIndex, 1, controllerConfig.getPackageName(), table.buildControllerClassName(), codeMap.get(GenTypeConst.CONTROLLER));
-        PreviewVo serviceDir = buildLayer(previews, cache, backPackageDir, tableIndex, 2, serviceConfig.getPackageName(), table.buildServiceClassName(), codeMap.get(GenTypeConst.SERVICE));
-        buildLayer(previews, cache, serviceDir, tableIndex, 0, serviceImplConfig.getPackageName(), table.buildServiceImplClassName(), codeMap.get(GenTypeConst.SERVICE_IMPL));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 1, controllerConfig.getPackageName(), table.buildControllerClassName(), codeMap.get(GenTypeEnum.CONTROLLER));
+        PreviewVo serviceDir = buildLayer(previews, cache, backPackageDir, tableIndex, 2, serviceConfig.getPackageName(), table.buildServiceClassName(), codeMap.get(GenTypeEnum.SERVICE));
+        buildLayer(previews, cache, serviceDir, tableIndex, 0, serviceImplConfig.getPackageName(), table.buildServiceImplClassName(), codeMap.get(GenTypeEnum.SERVICE_IMPL));
 
-        buildLayer(previews, cache, backPackageDir, tableIndex, 3, mapperConfig.getPackageName(), table.buildMapperClassName(), codeMap.get(GenTypeConst.MAPPER));
-        PreviewVo entityDir = buildLayer(previews, cache, backPackageDir, tableIndex, 4, entityConfig.getPackageName(), table.buildEntityClassName(), codeMap.get(GenTypeConst.ENTITY));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 3, mapperConfig.getPackageName(), table.buildMapperClassName(), codeMap.get(GenTypeEnum.MAPPER));
+        PreviewVo entityDir = buildLayer(previews, cache, backPackageDir, tableIndex, 4, entityConfig.getPackageName(), table.buildEntityClassName(), codeMap.get(GenTypeEnum.ENTITY));
         CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         if (entityRule.getWithBaseClassEnabled()) {
-            buildLayer(previews, cache, entityDir, tableIndex, 0, "base", table.buildEntityBaseClassName(), codeMap.get(GenTypeConst.ENTITY_BASE));
+            buildLayer(previews, cache, entityDir, tableIndex, 0, "base", table.buildEntityBaseClassName(), codeMap.get(GenTypeEnum.ENTITY_BASE));
         }
-        buildLayer(previews, cache, backPackageDir, tableIndex, 5, voConfig.getPackageName(), table.buildVoClassName(), codeMap.get(GenTypeConst.VO));
-        buildLayer(previews, cache, backPackageDir, tableIndex, 6, dtoConfig.getPackageName(), table.buildDtoClassName(), codeMap.get(GenTypeConst.DTO));
-        buildLayer(previews, cache, backPackageDir, tableIndex, 7, queryConfig.getPackageName(), table.buildQueryClassName(), codeMap.get(GenTypeConst.QUERY));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 5, voConfig.getPackageName(), table.buildVoClassName(), codeMap.get(GenTypeEnum.VO));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 6, dtoConfig.getPackageName(), table.buildDtoClassName(), codeMap.get(GenTypeEnum.DTO));
+        buildLayer(previews, cache, backPackageDir, tableIndex, 7, queryConfig.getPackageName(), table.buildQueryClassName(), codeMap.get(GenTypeEnum.QUERY));
 
-        buildXml(previews, cache, resourceDir, tableIndex, xmlConfig, table.buildMapperXmlFileName(), codeMap.get(GenTypeConst.MAPPER_XML));
+        buildXml(previews, cache, resourceDir, tableIndex, xmlConfig, table.buildMapperXmlFileName(), codeMap.get(GenTypeEnum.MAPPER_XML));
     }
 
     @NotNull

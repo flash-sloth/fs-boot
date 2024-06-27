@@ -1,6 +1,7 @@
 package top.fsfsfs.main.generator.dto;
 
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.codegen.constant.GenTypeEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -54,7 +55,7 @@ public class CodeCreatorContentDto implements Serializable {
     @NotEmpty(message = "请填写代码类型")
     @Size(max = 255, message = "代码类型长度不能超过{max}")
     @Schema(description = "代码类型")
-    private String genType;
+    private GenTypeEnum genType;
 
     /**
      * 包信息配置
