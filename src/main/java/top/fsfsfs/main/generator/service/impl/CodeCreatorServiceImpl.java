@@ -287,7 +287,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
                     CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
                     codeCreatorContent.setGenType(generator.getGenType());
-                    codeCreatorContent.setPath(generator.getPath(globalConfig, false));
+                    codeCreatorContent.setPath(generator.getFilePath(table, globalConfig, false));
                     codeCreatorContent.setContent(previewCode);
                     codeCreatorContent.setCodeCreatorId(codeCreator.getId());
 

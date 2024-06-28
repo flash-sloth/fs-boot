@@ -197,7 +197,7 @@ public class TableBuilder {
                 .setQueryPackage(basePackage + StrPool.DOT + queryDesign.getPackageName())
                 .setEntityPackage(basePackage + StrPool.DOT + entityDesign.getPackageName())
                 .setMapperPackage(basePackage + StrPool.DOT + mapperDesign.getPackageName())
-                .setMapperXmlPath(packageDesign.getSourceDir() + StrPool.SLASH + StrPool.SRC_MAIN_RESOURCES + StrPool.SLASH + xmlDesign.getPath())
+                .setMapperXmlPath(xmlDesign.getPath())
                 .setServicePackage(basePackage + StrPool.DOT + serviceDesign.getPackageName())
                 .setServiceImplPackage(basePackage + StrPool.DOT + serviceDesign.getPackageName() + StrPool.DOT + serviceImplDesign.getPackageName())
                 .setControllerPackage(basePackage + StrPool.DOT + controllerDesign.getPackageName());
