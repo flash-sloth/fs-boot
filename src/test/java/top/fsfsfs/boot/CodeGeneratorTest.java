@@ -1,6 +1,8 @@
 package top.fsfsfs.boot;
 
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.ZipUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
@@ -8,6 +10,7 @@ import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.TableConfig;
 import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
@@ -16,11 +19,17 @@ import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
+import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.main.system.entity.SysMenu;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class CodeGeneratorTest {
 
@@ -41,6 +50,34 @@ public class CodeGeneratorTest {
         String s = StrUtil.removeSuffix(genericityStr, ", ");
         System.out.println(s);
     }
+
+    @Test
+    public void zipTest() throws Exception {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+
+        String zipOutputFile = "/Users/tangyh/Downloads/src/main/java/com/xxx/test.java";
+        zip.putNextEntry(new ZipEntry(zipOutputFile));
+        IOUtils.write("package sss;", zip, StrPool.UTF8);
+        zip.closeEntry();
+        IoUtil.flush(zip);
+
+        zipOutputFile = "/Users/tangyh/Downloads/src/main/java/com/ddd/aaaa.java";
+        zip.putNextEntry(new ZipEntry(zipOutputFile));
+        IOUtils.write("package aaaa;", zip, StrPool.UTF8);
+        zip.closeEntry();
+        IoUtil.flush(zip);
+
+        IoUtil.close(zip);
+        Files.write(Paths.get("/Users/tangyh/Downloads/z2.zip"), outputStream.toByteArray());
+    }
+
+    @Test
+    public void hutoolZip () throws Exception {
+        File file = new File("/Users/tangyh/Downloads", "汤云汉测试.pdf");
+        System.out.println(file.exists());
+    }
+
 
     @Test
     public void test4() {
@@ -71,13 +108,13 @@ public class CodeGeneratorTest {
         GlobalConfig globalConfig = new GlobalConfig();
 
         //设置根包
-        globalConfig.setBasePackage("top.fsfsfs.demo");
+        globalConfig.setBasePackage("com.fsfsfs.tttt");
 //        globalConfig.setBasePackage("top.fsfsfs.main.generator");
 
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-        globalConfig.setGenerateTable("fs_gen_test_simple");
+        globalConfig.setGenerateTable("fs_code_test_simple");
 //        globalConfig.setGenerateTable("fs_gen_test_tree");
 //        globalConfig.setGenerateTable("fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
@@ -133,7 +170,9 @@ public class CodeGeneratorTest {
 //                .setSuperClass(SuperSimpleController.class)
                 .setOverwriteEnable(true);
 
-        //设置生成 mapper
+        globalConfig.enableMapperXml();
+
+//        //设置生成 mapper
         globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
         globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
         globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);

@@ -234,6 +234,53 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 generator.generate(table, table.getGlobalConfig());
             }
         }
-        log.info("Code is generated successfully.");
+        log.info("生成完成");
+    }
+
+    public void download(CodeGenDto genDto) {
+        List<Table> tables = getTables(genDto.getIds());
+        if (tables == null || tables.isEmpty()) {
+            log.error("table not found.");
+            return;
+        } else {
+            log.info("find tables: {}", tables.stream().map(Table::getName).collect(Collectors.toSet()));
+        }
+
+        for (int i = 0; i < tables.size(); i++) {
+            Table table = tables.get(i);
+            GlobalConfig globalConfig = table.getGlobalConfig();
+            Map<String, Object> customConfig = globalConfig.getCustomConfig();
+            CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
+
+            QueryWrapper wrapper = QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId());
+            if (genDto.getReload() != null && genDto.getReload()) {
+                codeCreatorContentMapper.deleteByQuery(wrapper);
+            }
+
+            List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId()));
+
+            if (CollUtil.isEmpty(codeCreatorContentList)) {
+                Collection<IGenerator> generators = GeneratorFactory.getGenerators();
+                for (IGenerator generator : generators) {
+
+                    String previewCode = generator.preview(table, globalConfig);
+
+                    CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
+                    codeCreatorContent.setGenType(generator.getGenType());
+                    codeCreatorContent.setContent(previewCode);
+                    codeCreatorContent.setCodeCreatorId(codeCreator.getId());
+
+                    codeCreatorContentList.add(codeCreatorContent);
+                }
+
+                codeCreatorContentMapper.insertBatch(codeCreatorContentList);
+            }
+
+            for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
+                String content = codeCreatorContent.getContent();
+//                String path  = codeCreatorContent.getPath();
+            }
+        }
+        log.info("下载完成");
     }
 }
