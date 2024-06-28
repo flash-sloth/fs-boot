@@ -31,7 +31,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class GenTestSimpleBase extends SuperEntity<Long> implements Serializable {
     /** 表名称 */
-    public static final String TABLE_NAME = "fs_gen_test_simple";
+    public static final String TABLE_NAME = "fs_code_test_simple";
 
     @Serial
     private static final long serialVersionUID = 1L;

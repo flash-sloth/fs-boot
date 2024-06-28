@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class GenTestTreeBase extends TreeEntity<Long> implements Serializable {
     /** 表名称 */
-    public static final String TABLE_NAME = "fs_gen_test_tree";
+    public static final String TABLE_NAME = "fs_code_test_tree";
 
     @Serial
     private static final long serialVersionUID = 1L;
