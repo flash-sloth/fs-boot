@@ -223,8 +223,8 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     @NotNull
     private PreviewVo buildModule(List<PreviewVo> previews, Map<String, PreviewVo> cache, int tableIndex, PackageDesign packageConfig, PreviewVo javaDir) {
-        String name = packageConfig.getBasePackage() + "." + packageConfig.getModule();
-        String packageKey = javaDir.getPath() + File.separator + StrUtil.replace(name, ".", File.separator);
+        String name = StrUtil.isEmpty(packageConfig.getModule()) ? packageConfig.getBasePackage() : packageConfig.getBasePackage() + StrPool.DOT + packageConfig.getModule();
+        String packageKey = javaDir.getPath() + File.separator + StrUtil.replace(name, StrPool.DOT, File.separator);
         PreviewVo backPackageDir = cache.get(packageKey);
         if (backPackageDir == null) {
             backPackageDir = new PreviewVo();

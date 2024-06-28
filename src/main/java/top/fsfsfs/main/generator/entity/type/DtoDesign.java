@@ -15,6 +15,8 @@
 
 package top.fsfsfs.main.generator.entity.type;
 
+import com.mybatisflex.codegen.config.DtoConfig;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,6 +38,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@AutoMapper(target = DtoConfig.class)
 public class DtoDesign {
     /** 包名 */
     private String packageName;

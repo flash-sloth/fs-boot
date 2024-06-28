@@ -5,6 +5,7 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.parser.NodeParser;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @author tangyh
  * @since 2024/6/23 22:38
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
 public class PreviewVo extends TreeNode<Long> {

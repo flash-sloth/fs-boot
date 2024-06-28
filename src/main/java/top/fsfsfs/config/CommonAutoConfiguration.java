@@ -1,6 +1,7 @@
 package top.fsfsfs.config;
 
 import cn.hutool.core.util.StrUtil;
+import io.github.linpeilie.annotations.ComponentModelConfig;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import top.fsfsfs.config.properties.SystemProperties;
 @RequiredArgsConstructor
 @ConditionalOnWebApplication
 @EnableConfigurationProperties(SystemProperties.class)
+@ComponentModelConfig(componentModel = "default")
 public class CommonAutoConfiguration {
     private final SystemProperties systemProperties;
 

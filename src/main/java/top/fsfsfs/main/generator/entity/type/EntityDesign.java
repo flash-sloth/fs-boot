@@ -15,6 +15,8 @@
 
 package top.fsfsfs.main.generator.entity.type;
 
+import com.mybatisflex.codegen.config.EntityConfig;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,6 +36,7 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@AutoMapper(target = EntityConfig.class)
 public class EntityDesign {
     /** 包名 */
     private String packageName;

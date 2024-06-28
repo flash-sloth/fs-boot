@@ -15,6 +15,9 @@
 
 package top.fsfsfs.main.generator.entity.type;
 
+import com.mybatisflex.codegen.config.MapperXmlConfig;
+import com.mybatisflex.codegen.config.VoConfig;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,6 +37,7 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@AutoMapper(target = MapperXmlConfig.class)
 public class XmlDesign {
     /** 路径 */
     private String path;

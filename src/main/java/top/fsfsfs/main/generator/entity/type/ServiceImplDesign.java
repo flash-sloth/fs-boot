@@ -15,6 +15,8 @@
 
 package top.fsfsfs.main.generator.entity.type;
 
+import com.mybatisflex.codegen.config.ServiceImplConfig;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,6 +38,7 @@ import java.io.Serializable;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@AutoMapper(target = ServiceImplConfig.class)
 public class ServiceImplDesign implements Serializable {
 
 

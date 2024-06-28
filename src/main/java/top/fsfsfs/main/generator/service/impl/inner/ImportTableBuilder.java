@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
+import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.fsfsfs.basic.base.entity.BaseEntity;
@@ -28,8 +29,6 @@ import top.fsfsfs.main.generator.entity.type.front.FrontDesign;
 import top.fsfsfs.main.generator.entity.type.front.ListDesign;
 import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.main.generator.entity.type.front.SearchDesign;
-import top.fsfsfs.main.generator.mapping.DtoDesignMapping;
-import top.fsfsfs.main.generator.mapping.VoDesignMapping;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 
 import java.sql.ResultSetMetaData;
@@ -51,6 +50,7 @@ public class ImportTableBuilder {
     private final CodeCreatorProperties codeCreatorProperties;
     private final Long id;
 
+    private final static Converter CONVERTER = new Converter();
     private final static Set<String> UPDATED_COLUMN_NAMES = Set.of(SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD);
     private final static Set<String> TREE_COLUMN_NAMES = Set.of(TreeEntity.PARENT_ID_FIELD, TreeEntity.WEIGHT_FIELD);
     private final static Set<String> BASE_ENTITY_COLUMN_NAMES = Set.of(BaseEntity.ID_FIELD, BaseEntity.CREATED_AT_FIELD, BaseEntity.CREATED_BY_FIELD);
@@ -179,7 +179,7 @@ public class ImportTableBuilder {
     private void fillDtoConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.DtoRule dtoRule = codeCreatorProperties.getDtoRule();
         DtoDesign dtoConfig = new DtoDesign();
-        DtoDesignMapping.INSTANCE.copySourceProperties(dtoRule, dtoConfig);
+        CONVERTER.convert(dtoRule, dtoConfig);
         dtoConfig.setSuperClassName(dtoRule.getSuperClass() != null ? dtoRule.getSuperClass().getName() : "")
                 .setGenericityTypeName(dtoRule.getGenericityType() != null ? dtoRule.getGenericityType().getName() : "")
         ;
@@ -196,7 +196,7 @@ public class ImportTableBuilder {
     private void fillVoConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.VoRule voRule = codeCreatorProperties.getVoRule();
         VoDesign voConfig = new VoDesign();
-        VoDesignMapping.INSTANCE.copySourceProperties(voRule, voConfig);
+        CONVERTER.convert(voRule, voConfig);
         voConfig.setSuperClassName(voRule.getSuperClass() != null ? voRule.getSuperClass().getName() : "")
                 .setGenericityTypeName(voRule.getGenericityType() != null ? voRule.getGenericityType().getName() : "");
         Class<?>[] implInterfaces = voRule.getImplInterfaces();
@@ -212,7 +212,7 @@ public class ImportTableBuilder {
 
     private void fillEntityConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
-        EntityDesign entityConfig = new EntityDesign();
+        EntityDesign entityConfig = CONVERTER.convert(entityRule, EntityDesign.class);
         entityConfig
                 .setPackageName(entityRule.getPackageName())
                 .setName(table.buildEntityClassName())
@@ -261,7 +261,7 @@ public class ImportTableBuilder {
         codeCreatorColumn.setRemarks(column.getComment());
         codeCreatorColumn.setSize(column.getRawLength());
         codeCreatorColumn.setDigit(column.getRawScale());
-        codeCreatorColumn.setIsPk(column.isPrimaryKey());
+        codeCreatorColumn.setIsPk(column.getPrimaryKey());
         codeCreatorColumn.setAutoIncrement(column.getAutoIncrement());
         codeCreatorColumn.setIsNullable(column.getNullable() == ResultSetMetaData.columnNullable);
         codeCreatorColumn.setDefValue(column.getPropertyDefaultValue());

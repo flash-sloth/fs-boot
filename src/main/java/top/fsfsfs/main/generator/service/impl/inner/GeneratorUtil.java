@@ -35,6 +35,7 @@ import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.mybatisflex.codegen.dialect.TsTypeMapping;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
+import io.github.linpeilie.Converter;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -55,14 +56,6 @@ import top.fsfsfs.main.generator.entity.type.ServiceImplDesign;
 import top.fsfsfs.main.generator.entity.type.VoDesign;
 import top.fsfsfs.main.generator.entity.type.XmlDesign;
 import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
-import top.fsfsfs.main.generator.mapping.ControllerDesignMapping;
-import top.fsfsfs.main.generator.mapping.DtoDesignMapping;
-import top.fsfsfs.main.generator.mapping.EntityDesignMapping;
-import top.fsfsfs.main.generator.mapping.MapperDesignMapping;
-import top.fsfsfs.main.generator.mapping.QueryDesignMapping;
-import top.fsfsfs.main.generator.mapping.ServiceDesignMapping;
-import top.fsfsfs.main.generator.mapping.ServiceImplDesignMapping;
-import top.fsfsfs.main.generator.mapping.VoDesignMapping;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties.DtoRule;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties.EntityRule;
@@ -91,6 +84,7 @@ import java.util.Set;
 public class GeneratorUtil {
     private DataSource dataSource;
     private CodeCreatorProperties codeCreatorProperties;
+    private final static Converter CONVERTER = new Converter();
     public final static String GLOBAL_CONFIG_KEY = "$codeCreator";
 
     public GeneratorUtil(CodeCreatorProperties codeCreatorProperties) {
@@ -144,20 +138,22 @@ public class GeneratorUtil {
         globalConfig.enableDto().setClassPrefix(dtoRule.getClassPrefix()).setClassSuffix(dtoRule.getClassSuffix());
 
         ControllerConfig controllerConfig = globalConfig.enableController();
-        ControllerDesignMapping.INSTANCE.copySourceProperties(controllerRule, controllerConfig);
+        CONVERTER.convert(controllerRule, controllerConfig);
 
         MapperConfig mapperConfig = globalConfig.enableMapper();
-        MapperDesignMapping.INSTANCE.copySourceProperties(mapperRule, mapperConfig);
+        CONVERTER.convert(mapperRule, mapperConfig);
 
         ServiceConfig serviceConfig = globalConfig.enableService();
-        ServiceDesignMapping.INSTANCE.copySourceProperties(serviceRule, serviceConfig);
+        CONVERTER.convert(serviceRule, serviceConfig);
 
         ServiceImplConfig serviceImplConfig = globalConfig.enableServiceImpl();
-        ServiceImplDesignMapping.INSTANCE.copySourceProperties(serviceImplRule, serviceImplConfig);
+        CONVERTER.convert(serviceImplRule, serviceImplConfig);
 
         Generator generator = new Generator(dataSource, globalConfig);
         return generator.getTables();
     }
+
+
 
 
     @NotNull
@@ -192,7 +188,7 @@ public class GeneratorUtil {
                 .setAuthor(packageDesign.getAuthor())
         ;
 
-        String basePackage = packageDesign.getBasePackage() + StrPool.DOT + packageDesign.getModule();
+        String basePackage = StrUtil.isNotEmpty(packageDesign.getModule()) ? packageDesign.getBasePackage() + StrPool.DOT + packageDesign.getModule(): packageDesign.getBasePackage();
         globalConfig.getPackageConfig().
                 setSourceDir(packageDesign.getSourceDir() + StrPool.SLASH + StrPool.SRC_MAIN_JAVA)
                 .setBasePackage(basePackage)
@@ -214,7 +210,7 @@ public class GeneratorUtil {
                 .setUpdateListenerClass(DefaultUpdateListener.class));
 
         EntityConfig entityConfig = globalConfig.enableEntity();
-        EntityDesignMapping.INSTANCE.copySourceProperties(entityDesign, entityConfig);
+        CONVERTER.convert(entityDesign, entityConfig);
         entityConfig.setSuperClass(ClassUtils.forName(entityDesign.getSuperClassName()))
                 .setGenericityType(entityRule.getGenericityType())
                 .setImplInterfaces(entityRule.getImplInterfaces())
@@ -222,43 +218,43 @@ public class GeneratorUtil {
                 .setWithActiveRecord(false);
 
         VoConfig voConfig = globalConfig.enableVo();
-        VoDesignMapping.INSTANCE.copySourceProperties(voDesign, voConfig);
+        CONVERTER.convert(voDesign, voConfig);
         voConfig.setSuperClass(ClassUtils.forName(voDesign.getSuperClassName()))
                 .setGenericityType(voRule.getGenericityType())
                 .setImplInterfaces(voRule.getImplInterfaces())
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.DOC);
 
         DtoConfig dtoConfig = globalConfig.enableDto();
-        DtoDesignMapping.INSTANCE.copySourceProperties(dtoDesign, dtoConfig);
+        CONVERTER.convert(dtoDesign, dtoConfig);
         dtoConfig.setSuperClass(ClassUtils.forName(dtoDesign.getSuperClassName()))
                 .setGenericityType(dtoRule.getGenericityType())
                 .setImplInterfaces(dtoRule.getImplInterfaces())
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.DOC);
 
         QueryConfig queryConfig = globalConfig.enableQuery();
-        QueryDesignMapping.INSTANCE.copySourceProperties(queryDesign, queryConfig);
+        CONVERTER.convert(queryDesign, queryConfig);
         queryConfig.setSuperClass(ClassUtils.forName(queryDesign.getSuperClassName()))
                 .setGenericityType(queryRule.getGenericityType())
                 .setImplInterfaces(queryRule.getImplInterfaces())
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.DOC);
 
         MapperConfig mapperConfig = globalConfig.enableMapper();
-        MapperDesignMapping.INSTANCE.copySourceProperties(mapperDesign, mapperConfig);
+        CONVERTER.convert(mapperDesign, mapperConfig);
         mapperConfig.setSuperClass(ClassUtils.forName(mapperDesign.getSuperClassName()));
 
         globalConfig.enableMapperXml().setFilePrefix(xmlDesign.getFilePrefix())
                 .setFileSuffix(xmlDesign.getFileSuffix());
 
         ServiceConfig serviceConfig = globalConfig.enableService();
-        ServiceDesignMapping.INSTANCE.copySourceProperties(serviceDesign, serviceConfig);
+        CONVERTER.convert(serviceDesign, serviceConfig);
         serviceConfig.setSuperClass(ClassUtils.forName(serviceDesign.getSuperClassName()));
 
         ServiceImplConfig serviceImplConfig = globalConfig.enableServiceImpl();
-        ServiceImplDesignMapping.INSTANCE.copySourceProperties(serviceImplDesign, serviceImplConfig);
+        CONVERTER.convert(serviceImplDesign, serviceImplConfig);
         serviceImplConfig.setSuperClass(ClassUtils.forName(serviceImplDesign.getSuperClassName()));
 
         ControllerConfig controllerConfig = globalConfig.enableController();
-        ControllerDesignMapping.INSTANCE.copySourceProperties(controllerDesign, controllerConfig);
+        CONVERTER.convert(controllerDesign, controllerConfig);
         controllerConfig.setSuperClass(ClassUtils.forName(controllerDesign.getSuperClassName()));
 
         return globalConfig;

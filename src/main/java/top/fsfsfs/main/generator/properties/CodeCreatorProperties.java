@@ -8,8 +8,19 @@
 
 package top.fsfsfs.main.generator.properties;
 
+import com.mybatisflex.codegen.config.ControllerConfig;
+import com.mybatisflex.codegen.config.DtoConfig;
+import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.FrontConfig;
+import com.mybatisflex.codegen.config.MapperConfig;
+import com.mybatisflex.codegen.config.MapperXmlConfig;
+import com.mybatisflex.codegen.config.QueryConfig;
+import com.mybatisflex.codegen.config.ServiceConfig;
+import com.mybatisflex.codegen.config.ServiceImplConfig;
+import com.mybatisflex.codegen.config.VoConfig;
 import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
+import io.github.linpeilie.annotations.AutoMapper;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -19,6 +30,15 @@ import top.fsfsfs.basic.mvcflex.controller.SuperController;
 import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
+import top.fsfsfs.main.generator.entity.type.ControllerDesign;
+import top.fsfsfs.main.generator.entity.type.DtoDesign;
+import top.fsfsfs.main.generator.entity.type.EntityDesign;
+import top.fsfsfs.main.generator.entity.type.MapperDesign;
+import top.fsfsfs.main.generator.entity.type.QueryDesign;
+import top.fsfsfs.main.generator.entity.type.ServiceDesign;
+import top.fsfsfs.main.generator.entity.type.ServiceImplDesign;
+import top.fsfsfs.main.generator.entity.type.VoDesign;
+import top.fsfsfs.main.generator.entity.type.XmlDesign;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -113,6 +133,7 @@ public class CodeCreatorProperties {
      * @since 2024年06月18日15:51:07
      */
     @Data
+    @AutoMappers({@AutoMapper(target = DtoConfig.class), @AutoMapper(target = DtoDesign.class)})
     public static class DtoRule {
         /** 包名 */
         private String packageName = "dto";
@@ -173,6 +194,7 @@ public class CodeCreatorProperties {
      * @since 2021-08-01 16:04
      */
     @Data
+    @AutoMappers({@AutoMapper(target = EntityConfig.class), @AutoMapper(target = EntityDesign.class)})
     public static class EntityRule {
         /** 包名 */
         private String packageName = "entity";
@@ -234,6 +256,7 @@ public class CodeCreatorProperties {
      * @since 2024年06月18日15:51:07
      */
     @Data
+    @AutoMappers({@AutoMapper(target = QueryConfig.class), @AutoMapper(target = QueryDesign.class)})
     public static class QueryRule {
 
         /** 包名 */
@@ -286,6 +309,7 @@ public class CodeCreatorProperties {
      * @since 2024年06月18日15:51:07
      */
     @Data
+    @AutoMappers({@AutoMapper(target = VoDesign.class), @AutoMapper(target = VoConfig.class)})
     public static class VoRule {
 
         /**
@@ -338,6 +362,7 @@ public class CodeCreatorProperties {
      * @since 2024年06月18日15:51:07
      */
     @Data
+    @AutoMappers({@AutoMapper(target = MapperConfig.class), @AutoMapper(target = MapperDesign.class)})
     public static class MapperRule {
         /**
          * 代码生成目录
@@ -361,6 +386,7 @@ public class CodeCreatorProperties {
     }
 
     @Data
+    @AutoMappers({@AutoMapper(target = ServiceConfig.class), @AutoMapper(target = ServiceDesign.class)})
     public static class ServiceRule {
         /**
          * 代码生成目录
@@ -384,6 +410,7 @@ public class CodeCreatorProperties {
     }
 
     @Data
+    @AutoMappers({@AutoMapper(target = ServiceImplConfig.class), @AutoMapper(target = ServiceImplDesign.class)})
     public static class ServiceImplRule {
         /**
          * 代码生成目录 (在service目录下级）
@@ -407,6 +434,7 @@ public class CodeCreatorProperties {
     }
 
     @Data
+    @AutoMappers({@AutoMapper(target = ControllerConfig.class), @AutoMapper(target = ControllerDesign.class)})
     public static class ControllerRule {
         /**
          * 代码生成目录
@@ -445,6 +473,7 @@ public class CodeCreatorProperties {
     }
 
     @Data
+    @AutoMappers({@AutoMapper(target = MapperXmlConfig.class), @AutoMapper(target = XmlDesign.class)})
     public static class XmlRule {
         /**
          * 代码生成目录
