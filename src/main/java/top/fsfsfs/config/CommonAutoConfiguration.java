@@ -26,7 +26,6 @@ import top.fsfsfs.config.properties.SystemProperties;
 @RequiredArgsConstructor
 @ConditionalOnWebApplication
 @EnableConfigurationProperties(SystemProperties.class)
-@ComponentModelConfig(componentModel = "default")
 public class CommonAutoConfiguration {
     private final SystemProperties systemProperties;
 

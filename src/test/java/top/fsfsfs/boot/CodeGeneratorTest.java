@@ -6,10 +6,12 @@ import cn.hutool.core.util.ZipUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
+import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.config.TableConfig;
 import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
+import io.github.linpeilie.Converter;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.SuperEntity;
@@ -20,6 +22,7 @@ import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.main.generator.entity.type.EntityDesign;
 import top.fsfsfs.main.system.entity.SysMenu;
 
 import java.io.ByteArrayOutputStream;
@@ -83,6 +86,18 @@ public class CodeGeneratorTest {
     public void test4() {
         String javaDirKey = "src\\main\\java.123";
         System.out.println(Paths.get(javaDirKey, "aaa", "ddd").toString());
+    }
+
+    private final static Converter CONVERTER = new Converter();
+    @Test
+    public void test5() {
+        EntityDesign entityDesign = new EntityDesign();
+        entityDesign.setName("aa");
+        entityDesign.setSuperClassName(SuperEntity.class.getName());
+        EntityConfig entityConfig = new EntityConfig();
+        CONVERTER.convert(entityDesign, entityConfig);
+
+        System.out.println(entityConfig);
     }
 
     public static void main(String[] args) {
