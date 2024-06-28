@@ -1,19 +1,17 @@
 package top.fsfsfs.main.generator.entity.base;
 
-import java.io.Serializable;
-
 import com.mybatisflex.codegen.constant.GenTypeEnum;
-import top.fsfsfs.basic.base.entity.SuperEntity;
-
-import java.io.Serial;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lombok.EqualsAndHashCode;
+import top.fsfsfs.basic.base.entity.SuperEntity;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 代码生成内容 实体类。
@@ -52,6 +50,11 @@ public class CodeCreatorContentBase extends SuperEntity<Long> implements Seriali
      */
     @Schema(description = "包信息配置")
     private String content;
+    /**
+     * 相对地址
+     */
+    @Schema(description = "相对地址")
+    private String path;
 
     /**
      * 删除者

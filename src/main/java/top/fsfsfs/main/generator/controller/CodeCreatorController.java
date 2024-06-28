@@ -2,16 +2,22 @@ package top.fsfsfs.main.generator.controller;
 
 import cn.hutool.core.lang.tree.Tree;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
+import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.main.generator.dto.CodeCreatorDto;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
@@ -55,11 +61,15 @@ public class CodeCreatorController extends SuperController<CodeCreatorService, L
         return R.success(true);
     }
 
-//    @Operation(summary = "批量下载代码", description = "批量下载代码")
-//    @GetMapping(value = "/download", produces = "application/octet-stream")
-//    @WebLog(value = "批量下载代码")
-//    public void download(HttpServletResponse response, @RequestParam List<Long> ids, @RequestParam TemplateEnum template) {
-//        DownloadVO download = superService.download(ids, template);
-//        write(download.getData(), download.getFileName(), response);
-//    }
+    @Operation(summary = "批量下载代码", description = "批量下载代码")
+    @GetMapping(value = "/download", produces = "application/octet-stream")
+    @WebLog(value = "批量下载代码")
+    public void download(HttpServletResponse response,
+                         @Parameter(description = "表ID")
+                         @RequestParam List<Long> ids,
+                         @Parameter(description = "是否是使用配置信息，重新生成")
+                         @RequestParam(required = false) Boolean reload) {
+        DownloadVO download = superService.download(ids, reload);
+        write(download.getData(), download.getFileName(), response);
+    }
 }

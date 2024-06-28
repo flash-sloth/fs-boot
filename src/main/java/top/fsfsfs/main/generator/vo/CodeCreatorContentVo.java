@@ -53,7 +53,11 @@ public class CodeCreatorContentVo implements Serializable {
      */
     @Schema(description = "代码类型")
     private GenTypeEnum genType;
-
+    /**
+     * 相对地址
+     */
+    @Schema(description = "相对地址")
+    private String path;
     /**
      * 包信息配置
      */

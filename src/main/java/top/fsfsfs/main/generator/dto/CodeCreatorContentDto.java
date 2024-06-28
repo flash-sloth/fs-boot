@@ -56,6 +56,12 @@ public class CodeCreatorContentDto implements Serializable {
     @Size(max = 255, message = "代码类型长度不能超过{max}")
     @Schema(description = "代码类型")
     private GenTypeEnum genType;
+    /**
+     * 相对地址
+     */
+    @Schema(description = "相对地址")
+    @Size(max = 255, message = "相对地址长度不能超过{max}")
+    private String path;
 
     /**
      * 包信息配置

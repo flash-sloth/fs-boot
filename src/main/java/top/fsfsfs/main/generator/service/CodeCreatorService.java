@@ -1,6 +1,7 @@
 package top.fsfsfs.main.generator.service;
 
 import cn.hutool.core.lang.tree.Tree;
+import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
@@ -35,4 +36,13 @@ public interface CodeCreatorService extends SuperService<CodeCreator> {
      * @param genDto 生成参数
      */
     void generator(CodeGenDto genDto);
+
+
+    /**
+     * 下载代码
+     * @param ids id
+     * @param reload 是否覆盖
+     * @return 字节
+     */
+    DownloadVO download(List<Long> ids, Boolean reload);
 }

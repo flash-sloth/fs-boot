@@ -1,6 +1,7 @@
 package top.fsfsfs.main.generator.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.tree.Tree;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baidu.fsg.uid.UidGenerator;
@@ -13,12 +14,16 @@ import com.mybatisflex.codegen.generator.GeneratorFactory;
 import com.mybatisflex.codegen.generator.IGenerator;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.fsfsfs.basic.exception.BizException;
+import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
+import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
 import top.fsfsfs.main.generator.entity.CodeCreator;
@@ -40,6 +45,7 @@ import top.fsfsfs.main.generator.vo.PreviewVo;
 import top.fsfsfs.util.utils.CollHelper;
 import top.fsfsfs.util.utils.FsTreeUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,6 +54,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 代码生成 服务层实现。
@@ -237,23 +245,35 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         log.info("生成完成");
     }
 
-    public void download(CodeGenDto genDto) {
-        List<Table> tables = getTables(genDto.getIds());
+    @SneakyThrows
+    @Override
+    public DownloadVO download(List<Long> ids, Boolean reload) {
+        List<Table> tables = getTables(ids);
         if (tables == null || tables.isEmpty()) {
             log.error("table not found.");
-            return;
+            throw BizException.wrap("请选择您要下载的表");
         } else {
             log.info("find tables: {}", tables.stream().map(Table::getName).collect(Collectors.toSet()));
         }
 
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        StringBuilder name = new StringBuilder();
+
         for (int i = 0; i < tables.size(); i++) {
             Table table = tables.get(i);
+
+            name.append(table.buildEntityClassName());
+            if (i != tables.size() - 1) {
+                name.append("|");
+            }
+
             GlobalConfig globalConfig = table.getGlobalConfig();
             Map<String, Object> customConfig = globalConfig.getCustomConfig();
             CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
 
             QueryWrapper wrapper = QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId());
-            if (genDto.getReload() != null && genDto.getReload()) {
+            if (reload != null && reload) {
                 codeCreatorContentMapper.deleteByQuery(wrapper);
             }
 
@@ -267,6 +287,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
                     CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
                     codeCreatorContent.setGenType(generator.getGenType());
+                    codeCreatorContent.setPath(generator.getPath(globalConfig, false));
                     codeCreatorContent.setContent(previewCode);
                     codeCreatorContent.setCodeCreatorId(codeCreator.getId());
 
@@ -278,9 +299,18 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
                 String content = codeCreatorContent.getContent();
-//                String path  = codeCreatorContent.getPath();
+                String path = codeCreatorContent.getPath();
+                zip.putNextEntry(new ZipEntry(path));
+                IOUtils.write(content, zip, StrPool.UTF8);
+                zip.closeEntry();
+                IoUtil.flush(zip);
             }
         }
-        log.info("下载完成");
+
+        IoUtil.close(zip);
+
+        String zipName = "代码(" + name + ").zip";
+        return DownloadVO.builder()
+                .data(outputStream.toByteArray()).fileName(zipName).build();
     }
 }
