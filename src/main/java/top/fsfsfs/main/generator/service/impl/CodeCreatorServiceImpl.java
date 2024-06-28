@@ -34,8 +34,8 @@ import top.fsfsfs.main.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.service.CodeCreatorService;
 import top.fsfsfs.main.generator.service.impl.inner.CodeTreeBuilder;
-import top.fsfsfs.main.generator.service.impl.inner.TableBuilder;
 import top.fsfsfs.main.generator.service.impl.inner.ImportTableBuilder;
+import top.fsfsfs.main.generator.service.impl.inner.TableBuilder;
 import top.fsfsfs.main.generator.vo.PreviewVo;
 import top.fsfsfs.util.utils.CollHelper;
 import top.fsfsfs.util.utils.FsTreeUtil;
@@ -117,9 +117,9 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
 
     @Override
-    public List<Tree<Long>> preview(List<Long> ids) {
+    public List<Tree<Long>> preview(CodeGenDto genDto) {
 
-        List<Table> tables = getTables(ids);
+        List<Table> tables = getTables(genDto.getIds());
         if (tables == null || tables.isEmpty()) {
             log.error("table not found.");
             return Collections.emptyList();
@@ -135,7 +135,13 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             GlobalConfig globalConfig = table.getGlobalConfig();
             Map<String, Object> customConfig = globalConfig.getCustomConfig();
             CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
-            List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId()));
+
+            QueryWrapper wrapper = QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId());
+            if (genDto.getReload() != null && genDto.getReload()) {
+                codeCreatorContentMapper.deleteByQuery(wrapper);
+            }
+
+            List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(wrapper);
 
             if (CollUtil.isEmpty(codeCreatorContentList)) {
                 Collection<IGenerator> generators = GeneratorFactory.getGenerators();
@@ -198,6 +204,12 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             GlobalConfig globalConfig = table.getGlobalConfig();
             Map<String, Object> customConfig = globalConfig.getCustomConfig();
             CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
+
+            QueryWrapper wrapper = QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId());
+            if (genDto.getReload() != null && genDto.getReload()) {
+                codeCreatorContentMapper.deleteByQuery(wrapper);
+            }
+
             List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId()));
 
             if (CollUtil.isEmpty(codeCreatorContentList)) {

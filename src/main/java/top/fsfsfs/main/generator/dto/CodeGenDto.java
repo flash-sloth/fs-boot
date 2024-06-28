@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,8 @@ import java.util.Map;
 public class CodeGenDto {
     @NotEmpty(message = "请选择想要生成的表")
     private List<Long> ids;
-    @NotEmpty(message = "请配置生成策略")
+    @NotEmpty(message = "重新生成")
+    private Boolean reload;
+    @NotEmpty(message = "请配置生成策略", groups = {BaseEntity.Update.class})
     private Map<String, GenerationStrategyEnum> genStrategy;
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.fsfsfs.basic.annotation.log.WebLog;
 import top.fsfsfs.basic.base.R;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
 import top.fsfsfs.main.generator.dto.CodeCreatorDto;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
@@ -42,14 +43,14 @@ public class CodeCreatorController extends SuperController<CodeCreatorService, L
     @Operation(summary = "批量预览", description = "批量预览")
     @PostMapping("/preview")
     @WebLog(value = "批量预览")
-    public R<List<Tree<Long>>> preview(@RequestBody List<Long> ids) {
-        return R.success(superService.preview(ids));
+    public R<List<Tree<Long>>> preview(@RequestBody CodeGenDto genDto) {
+        return R.success(superService.preview(genDto));
     }
 
     @Operation(summary = "批量生成代码", description = "批量生成代码")
     @PostMapping("/generator")
     @WebLog(value = "批量生成代码")
-    public R<Boolean> generator(@RequestBody @Validated CodeGenDto genDto) {
+    public R<Boolean> generator(@RequestBody @Validated(BaseEntity.Update.class) CodeGenDto genDto) {
         superService.generator(genDto);
         return R.success(true);
     }

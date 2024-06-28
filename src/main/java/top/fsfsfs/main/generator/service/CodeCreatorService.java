@@ -25,10 +25,10 @@ public interface CodeCreatorService extends SuperService<CodeCreator> {
 
     /**
      * 预览表结构
-     * @param ids 表id
+     * @param genDto 生成参数
      * @return 代码预览树
      */
-    List<Tree<Long>> preview(List<Long> ids);
+    List<Tree<Long>> preview(CodeGenDto genDto);
 
     /**
      * 生成代码
