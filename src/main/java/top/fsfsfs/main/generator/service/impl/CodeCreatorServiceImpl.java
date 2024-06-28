@@ -34,7 +34,7 @@ import top.fsfsfs.main.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.service.CodeCreatorService;
 import top.fsfsfs.main.generator.service.impl.inner.CodeTreeBuilder;
-import top.fsfsfs.main.generator.service.impl.inner.GeneratorUtil;
+import top.fsfsfs.main.generator.service.impl.inner.TableBuilder;
 import top.fsfsfs.main.generator.service.impl.inner.ImportTableBuilder;
 import top.fsfsfs.main.generator.vo.PreviewVo;
 import top.fsfsfs.util.utils.CollHelper;
@@ -74,7 +74,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         dataSource.setUsername("root");
         dataSource.setPassword("root");
 
-        GeneratorUtil generatorUtil = new GeneratorUtil(dataSource, codeCreatorProperties);
+        TableBuilder generatorUtil = new TableBuilder(dataSource, codeCreatorProperties);
         List<Table> tables = generatorUtil.whenImportGetTable(importDto.getTableNames());
 
         List<CodeCreator> list = new ArrayList<>();
@@ -134,7 +134,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             Table table = tables.get(i);
             GlobalConfig globalConfig = table.getGlobalConfig();
             Map<String, Object> customConfig = globalConfig.getCustomConfig();
-            CodeCreator codeCreator = (CodeCreator) customConfig.get(GeneratorUtil.GLOBAL_CONFIG_KEY);
+            CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
             List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId()));
 
             if (CollUtil.isEmpty(codeCreatorContentList)) {
@@ -180,7 +180,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
         Multimap<Long, CodeCreatorColumn> map = CollHelper.iterableToMultiMap(allColumnList, CodeCreatorColumn::getCodeCreatorId, item -> item);
 
-        return new GeneratorUtil(codeCreatorProperties).getTableByCodeCreatorList(codeCreatorList, map);
+        return new TableBuilder(codeCreatorProperties).getTableByCodeCreatorList(codeCreatorList, map);
     }
 
     @Override
@@ -197,7 +197,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             Table table = tables.get(i);
             GlobalConfig globalConfig = table.getGlobalConfig();
             Map<String, Object> customConfig = globalConfig.getCustomConfig();
-            CodeCreator codeCreator = (CodeCreator) customConfig.get(GeneratorUtil.GLOBAL_CONFIG_KEY);
+            CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
             List<CodeCreatorContent> codeCreatorContentList = codeCreatorContentMapper.selectListByQuery(QueryWrapper.create().eq(CodeCreatorContent::getCodeCreatorId, codeCreator.getId()));
 
             if (CollUtil.isEmpty(codeCreatorContentList)) {

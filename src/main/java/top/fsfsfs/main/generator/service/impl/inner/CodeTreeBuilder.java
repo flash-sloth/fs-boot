@@ -42,7 +42,7 @@ public class CodeTreeBuilder {
     public void buildCodeTree(List<PreviewVo> previews, Map<String, PreviewVo> cache) {
         GlobalConfig globalConfig = table.getGlobalConfig();
         Map<String, Object> customConfig = globalConfig.getCustomConfig();
-        CodeCreator codeCreator = (CodeCreator) customConfig.get(GeneratorUtil.GLOBAL_CONFIG_KEY);
+        CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
         PackageDesign packageConfig = codeCreator.getPackageDesign();
         ControllerDesign controllerConfig = codeCreator.getControllerDesign();
         ServiceDesign serviceConfig = codeCreator.getServiceDesign();

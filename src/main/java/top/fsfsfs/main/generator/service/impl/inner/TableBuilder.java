@@ -81,13 +81,13 @@ import java.util.Set;
  */
 @Slf4j
 @AllArgsConstructor
-public class GeneratorUtil {
+public class TableBuilder {
     private DataSource dataSource;
     private CodeCreatorProperties codeCreatorProperties;
     private final static Converter CONVERTER = new Converter();
     public final static String GLOBAL_CONFIG_KEY = "$codeCreator";
 
-    public GeneratorUtil(CodeCreatorProperties codeCreatorProperties) {
+    public TableBuilder(CodeCreatorProperties codeCreatorProperties) {
         this.codeCreatorProperties = codeCreatorProperties;
     }
 
