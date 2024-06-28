@@ -15,8 +15,6 @@
 
 package top.fsfsfs.main.generator.entity.type;
 
-import com.mybatisflex.codegen.config.MapperConfig;
-import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +22,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
 
 /**
  * 代码生成器 菜单类配置

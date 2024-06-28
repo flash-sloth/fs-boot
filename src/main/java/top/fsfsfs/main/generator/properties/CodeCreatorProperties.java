@@ -8,17 +8,17 @@
 
 package top.fsfsfs.main.generator.properties;
 
-import com.mybatisflex.codegen.config.ControllerConfig;
-import com.mybatisflex.codegen.config.DtoConfig;
-import com.mybatisflex.codegen.config.EntityConfig;
-import com.mybatisflex.codegen.config.FrontConfig;
-import com.mybatisflex.codegen.config.MapperConfig;
-import com.mybatisflex.codegen.config.MapperXmlConfig;
-import com.mybatisflex.codegen.config.QueryConfig;
-import com.mybatisflex.codegen.config.ServiceConfig;
-import com.mybatisflex.codegen.config.ServiceImplConfig;
-import com.mybatisflex.codegen.config.VoConfig;
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.config.ControllerConfig;
+import top.fsfsfs.codegen.config.DtoConfig;
+import top.fsfsfs.codegen.config.EntityConfig;
+import top.fsfsfs.codegen.config.FrontConfig;
+import top.fsfsfs.codegen.config.MapperConfig;
+import top.fsfsfs.codegen.config.MapperXmlConfig;
+import top.fsfsfs.codegen.config.QueryConfig;
+import top.fsfsfs.codegen.config.ServiceConfig;
+import top.fsfsfs.codegen.config.ServiceImplConfig;
+import top.fsfsfs.codegen.config.VoConfig;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;

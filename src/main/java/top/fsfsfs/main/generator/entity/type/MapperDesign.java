@@ -15,7 +15,7 @@
 
 package top.fsfsfs.main.generator.entity.type;
 
-import com.mybatisflex.codegen.config.MapperConfig;
+import top.fsfsfs.codegen.config.MapperConfig;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;

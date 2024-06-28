@@ -1,6 +1,6 @@
 package top.fsfsfs.main.generator.dto;
 
-import com.mybatisflex.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

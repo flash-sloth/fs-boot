@@ -2,9 +2,9 @@ package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.util.StrUtil;
 import com.baidu.fsg.uid.UidGenerator;
-import com.mybatisflex.codegen.config.GlobalConfig;
-import com.mybatisflex.codegen.constant.GenTypeEnum;
-import com.mybatisflex.codegen.entity.Table;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.entity.Table;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.fsfsfs.basic.utils.StrPool;

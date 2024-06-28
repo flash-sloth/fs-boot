@@ -1,6 +1,6 @@
 package top.fsfsfs.main.generator.entity.base;
 
-import com.mybatisflex.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

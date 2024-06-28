@@ -2,8 +2,8 @@ package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.mybatisflex.codegen.entity.Column;
-import com.mybatisflex.codegen.entity.Table;
+import top.fsfsfs.codegen.entity.Column;
+import top.fsfsfs.codegen.entity.Table;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;

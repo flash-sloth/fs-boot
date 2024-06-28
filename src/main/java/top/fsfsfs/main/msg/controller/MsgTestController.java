@@ -1,6 +1,6 @@
 package top.fsfsfs.main.msg.controller;
 
-import com.mybatisflex.codegen.config.ControllerConfig;
+import top.fsfsfs.codegen.config.ControllerConfig;
 import io.github.linpeilie.Converter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
-import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 
 @RestController

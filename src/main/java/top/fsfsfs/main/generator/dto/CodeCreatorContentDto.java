@@ -1,12 +1,11 @@
 package top.fsfsfs.main.generator.dto;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+
 import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.Serial;

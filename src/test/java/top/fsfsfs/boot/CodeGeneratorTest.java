@@ -2,13 +2,12 @@ package top.fsfsfs.boot;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.ZipUtil;
 import com.alibaba.druid.pool.DruidDataSource;
-import com.mybatisflex.codegen.Generator;
-import com.mybatisflex.codegen.config.ColumnConfig;
-import com.mybatisflex.codegen.config.EntityConfig;
-import com.mybatisflex.codegen.config.GlobalConfig;
-import com.mybatisflex.codegen.config.TableConfig;
+import top.fsfsfs.codegen.Generator;
+import top.fsfsfs.codegen.config.ColumnConfig;
+import top.fsfsfs.codegen.config.EntityConfig;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.TableConfig;
 import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
 import io.github.linpeilie.Converter;

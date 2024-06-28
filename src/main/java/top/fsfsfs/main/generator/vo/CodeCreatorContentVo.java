@@ -2,7 +2,7 @@ package top.fsfsfs.main.generator.vo;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
-import com.mybatisflex.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
