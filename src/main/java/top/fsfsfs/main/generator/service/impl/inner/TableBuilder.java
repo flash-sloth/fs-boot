@@ -19,6 +19,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Multimap;
+import io.github.linpeilie.Converter;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
+import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.codegen.Generator;
 import top.fsfsfs.codegen.config.ControllerConfig;
 import top.fsfsfs.codegen.config.DtoConfig;
@@ -35,14 +43,6 @@ import top.fsfsfs.codegen.dialect.JdbcTypeMapping;
 import top.fsfsfs.codegen.dialect.TsTypeMapping;
 import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
-import io.github.linpeilie.Converter;
-import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
-import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
@@ -154,8 +154,6 @@ public class TableBuilder {
     }
 
 
-
-
     @NotNull
     @SneakyThrows
     private GlobalConfig buildGlobalConfig(CodeCreator codeCreator) {
@@ -188,7 +186,8 @@ public class TableBuilder {
                 .setAuthor(packageDesign.getAuthor())
         ;
 
-        String basePackage = StrUtil.isNotEmpty(packageDesign.getModule()) ? packageDesign.getBasePackage() + StrPool.DOT + packageDesign.getModule(): packageDesign.getBasePackage();
+        String basePackage = StrUtil.isNotEmpty(packageDesign.getModule()) ? packageDesign.getBasePackage() + StrPool.DOT + packageDesign.getModule() : packageDesign.getBasePackage();
+        String xmlPath = StrUtil.isNotEmpty(packageDesign.getModule()) ? xmlDesign.getPath() + StrPool.SLASH + packageDesign.getModule() : xmlDesign.getPath();
         globalConfig.getPackageConfig().
                 setSourceDir(packageDesign.getSourceDir() + StrPool.SLASH + StrPool.SRC_MAIN_JAVA)
                 .setBasePackage(basePackage)
@@ -197,7 +196,7 @@ public class TableBuilder {
                 .setQueryPackage(basePackage + StrPool.DOT + queryDesign.getPackageName())
                 .setEntityPackage(basePackage + StrPool.DOT + entityDesign.getPackageName())
                 .setMapperPackage(basePackage + StrPool.DOT + mapperDesign.getPackageName())
-                .setMapperXmlPath(xmlDesign.getPath())
+                .setMapperXmlPath(xmlPath)
                 .setServicePackage(basePackage + StrPool.DOT + serviceDesign.getPackageName())
                 .setServiceImplPackage(basePackage + StrPool.DOT + serviceDesign.getPackageName() + StrPool.DOT + serviceImplDesign.getPackageName())
                 .setControllerPackage(basePackage + StrPool.DOT + controllerDesign.getPackageName());

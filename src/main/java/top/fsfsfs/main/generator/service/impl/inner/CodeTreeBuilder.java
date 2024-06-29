@@ -2,12 +2,12 @@ package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.util.StrUtil;
 import com.baidu.fsg.uid.UidGenerator;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Table;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.entity.type.DtoDesign;
@@ -80,7 +80,7 @@ public class CodeTreeBuilder {
         buildLayer(previews, cache, backPackageDir, 7, queryConfig.getPackageName(), table.buildQueryClassName(), codeMap.get(GenTypeEnum.QUERY));
 
         // xml层
-        buildXml(previews, cache, resourceDir, xmlConfig, table.buildMapperXmlFileName(), codeMap.get(GenTypeEnum.MAPPER_XML));
+        buildXml(previews, cache, resourceDir, packageConfig, xmlConfig, table.buildMapperXmlFileName(), codeMap.get(GenTypeEnum.MAPPER_XML));
     }
 
     @NotNull
@@ -163,12 +163,14 @@ public class CodeTreeBuilder {
     }
 
     private void buildXml(List<PreviewVo> previews, Map<String, PreviewVo> cache, PreviewVo resourceDir,
-                          XmlDesign xmlConfig, String name, String content) {
+                          PackageDesign packageConfig, XmlDesign xmlConfig, String name, String content) {
+
         String cacheKey = resourceDir.getPath() + File.separator + xmlConfig.getPath();
         PreviewVo xmlDir = cache.get(cacheKey);
+
         if (xmlDir == null) {
             xmlDir = new PreviewVo();
-            xmlDir.setPath(resourceDir.getPath() + File.separator + xmlConfig.getPath())
+            xmlDir.setPath(cacheKey)
                     .setType("dir")
                     .setIsReadonly(true)
                     .setId(uidGenerator.getUid())
@@ -179,15 +181,35 @@ public class CodeTreeBuilder {
             previews.add(xmlDir);
         }
 
+        PreviewVo parent = xmlDir;
+
+        if (StrUtil.isNotEmpty(packageConfig.getModule())) {
+            String moduleCacheKey = xmlDir.getPath() + File.separator + packageConfig.getModule();
+            PreviewVo xmlModuleDir = cache.get(moduleCacheKey);
+            if (xmlModuleDir == null) {
+                xmlModuleDir = new PreviewVo();
+                xmlModuleDir.setPath(moduleCacheKey)
+                        .setType("dir")
+                        .setIsReadonly(true)
+                        .setId(uidGenerator.getUid())
+                        .setWeight(tableIndex)
+                        .setName(packageConfig.getModule())
+                        .setParentId(xmlDir.getId());
+                cache.put(moduleCacheKey, xmlModuleDir);
+                previews.add(xmlModuleDir);
+            }
+            parent = xmlModuleDir;
+        }
+
         PreviewVo xmlFile = new PreviewVo();
-        xmlFile.setPath(xmlDir.getPath() + File.separator + name)
+        xmlFile.setPath(parent.getPath() + File.separator + name)
                 .setType("file")
                 .setIsReadonly(false)
                 .setContent(content)
                 .setId(uidGenerator.getUid())
                 .setWeight(tableIndex)
                 .setName(name + ".xml")
-                .setParentId(xmlDir.getId());
+                .setParentId(parent.getId());
         previews.add(xmlFile);
     }
 
