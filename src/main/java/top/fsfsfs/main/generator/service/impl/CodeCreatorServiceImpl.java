@@ -6,12 +6,6 @@ import cn.hutool.core.lang.tree.Tree;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baidu.fsg.uid.UidGenerator;
 import com.google.common.collect.Multimap;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
-import top.fsfsfs.codegen.entity.Column;
-import top.fsfsfs.codegen.entity.Table;
-import top.fsfsfs.codegen.generator.GeneratorFactory;
-import top.fsfsfs.codegen.generator.IGenerator;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -24,6 +18,13 @@ import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.entity.Column;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.codegen.generator.GeneratorFactory;
+import top.fsfsfs.codegen.generator.IGenerator;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
 import top.fsfsfs.main.generator.entity.CodeCreator;
@@ -239,7 +240,8 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
                 IGenerator generator = GeneratorFactory.getGenerator(codeCreatorContent.getGenType());
                 generator.setTemplateContent(codeCreatorContent.getContent());
-                generator.generate(table, table.getGlobalConfig());
+                globalConfig.enableController().setGenerationStrategy(genDto.getGenStrategy().getOrDefault(codeCreatorContent.getGenType(), GenerationStrategyEnum.OVERWRITE));
+                generator.generate(table, globalConfig);
             }
         }
         log.info("生成完成");
@@ -310,7 +312,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         IoUtil.close(zip);
 
         String zipName = "代码(" + name + ").zip";
-        return DownloadVO.builder()
-                .data(outputStream.toByteArray()).fileName(zipName).build();
+        return DownloadVO.builder().data(outputStream.toByteArray()).fileName(zipName).build();
     }
 }

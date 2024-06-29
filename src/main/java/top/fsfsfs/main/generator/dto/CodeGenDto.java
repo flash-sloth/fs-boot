@@ -1,6 +1,5 @@
 package top.fsfsfs.main.generator.dto;
 
-import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -11,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import top.fsfsfs.basic.base.entity.BaseEntity;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.util.List;
 import java.util.Map;
@@ -34,5 +35,5 @@ public class CodeGenDto {
     @NotEmpty(message = "重新生成")
     private Boolean reload;
     @NotEmpty(message = "请配置生成策略", groups = {BaseEntity.Update.class})
-    private Map<String, GenerationStrategyEnum> genStrategy;
+    private Map<GenTypeEnum, GenerationStrategyEnum> genStrategy;
 }
