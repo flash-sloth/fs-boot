@@ -21,6 +21,7 @@ import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;
 import top.fsfsfs.main.system.entity.SysMenu;
 
@@ -149,7 +150,7 @@ public class CodeGeneratorTest {
         globalConfig.enableEntity()
 //                .setSuperClass(TreeEntity.class)
                 .setSuperClass(SuperEntity.class)
-                .setGenericityType(Long.class).setOverwriteEnable(true)
+                .setGenericityType(Long.class)
                 .setWithLombok(true)
                 .setWithBaseClassEnable(true)
         ;
@@ -158,17 +159,16 @@ public class CodeGeneratorTest {
 //                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
                 .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
 //                .setImplInterfaces(Serializable.class)
-                .setOverwriteEnable(true);
+;
 
         globalConfig.enableQuery()
                 .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
 //                .setImplInterfaces(Serializable.class)
-                .setOverwriteEnable(true);
+                ;
 
         globalConfig.enableDto()
                 .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
 //                .setImplInterfaces(Serializable.class)
-                .setOverwriteEnable(true)
                 .setIgnoreColumns(new HashSet<>(Arrays.asList(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
                         SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
                         SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)))
@@ -182,14 +182,14 @@ public class CodeGeneratorTest {
 //                .setSuperClass(SuperReadController.class)
 //                .setSuperClass(SuperTreeController.class)
 //                .setSuperClass(SuperSimpleController.class)
-                .setOverwriteEnable(true);
+                .setGenerationStrategy(GenerationStrategyEnum.BACKUPS);
 
         globalConfig.enableMapperXml();
 
 //        //设置生成 mapper
-        globalConfig.enableMapper().setSuperClass(SuperMapper.class).setOverwriteEnable(true);
-        globalConfig.enableService().setSuperClass(SuperService.class).setOverwriteEnable(true);
-        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setOverwriteEnable(true);
+        globalConfig.enableMapper().setSuperClass(SuperMapper.class);
+        globalConfig.enableService().setSuperClass(SuperService.class);
+        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();

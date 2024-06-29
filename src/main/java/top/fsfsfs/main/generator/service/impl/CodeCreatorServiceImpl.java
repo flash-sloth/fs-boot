@@ -240,7 +240,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
                 IGenerator generator = GeneratorFactory.getGenerator(codeCreatorContent.getGenType());
                 generator.setTemplateContent(codeCreatorContent.getContent());
-                globalConfig.enableController().setGenerationStrategy(genDto.getGenStrategy().getOrDefault(codeCreatorContent.getGenType(), GenerationStrategyEnum.OVERWRITE));
+                GenerationStrategyEnum generationStrategy = genDto.getGenStrategy().getOrDefault(codeCreatorContent.getGenType(), GenerationStrategyEnum.OVERWRITE);
+                globalConfig.enableController().setGenerationStrategy(generationStrategy);
+                globalConfig.enableService().setGenerationStrategy(generationStrategy);
+                globalConfig.enableServiceImpl().setGenerationStrategy(generationStrategy);
+                globalConfig.enableMapper().setGenerationStrategy(generationStrategy);
+                globalConfig.enableMapperXml().setGenerationStrategy(generationStrategy);
+                globalConfig.enableDto().setGenerationStrategy(generationStrategy);
+                globalConfig.enableEntity().setGenerationStrategy(generationStrategy);
+                globalConfig.enableVo().setGenerationStrategy(generationStrategy);
+                globalConfig.enableQuery().setGenerationStrategy(generationStrategy);
                 generator.generate(table, globalConfig);
             }
         }
