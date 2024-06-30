@@ -6,6 +6,7 @@ import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
 import top.fsfsfs.main.generator.entity.CodeCreator;
+import top.fsfsfs.main.generator.vo.CodeCreatorVo;
 
 import java.util.List;
 
@@ -16,6 +17,13 @@ import java.util.List;
  * @since 2024-06-21
  */
 public interface CodeCreatorService extends SuperService<CodeCreator> {
+    /**
+     * 查询指定数据源的表
+     *
+     * @param dsId 数据源id
+     * @return 表结构
+     */
+    List<CodeCreatorVo> listTableMetadata(Long dsId);
 
     /**
      * 导入表结构

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +43,10 @@ import top.fsfsfs.main.generator.service.CodeCreatorService;
 import top.fsfsfs.main.generator.service.impl.inner.CodeTreeBuilder;
 import top.fsfsfs.main.generator.service.impl.inner.ImportTableBuilder;
 import top.fsfsfs.main.generator.service.impl.inner.TableBuilder;
+import top.fsfsfs.main.generator.vo.CodeCreatorVo;
 import top.fsfsfs.main.generator.vo.PreviewVo;
 import top.fsfsfs.util.utils.CollHelper;
+import top.fsfsfs.util.utils.FsMetaUtil;
 import top.fsfsfs.util.utils.FsTreeUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -75,13 +78,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     private final CodeCreatorContentMapper codeCreatorContentMapper;
 
     @Override
+    public List<CodeCreatorVo> listTableMetadata(Long dsId) {
+        DruidDataSource ds = getDs(dsId);
+        List<cn.hutool.db.meta.Table> tables = FsMetaUtil.getTables(ds);
+        return tables.stream().map(table -> CodeCreatorVo.builder().tableName(table.getTableName()).tableDescription(table.getComment()).build()).toList();
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean importTable(TableImportDto importDto) {
-        //TODO 查询数据库
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/flash_sloth?characterEncoding=utf-8");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        DruidDataSource dataSource = getDs(importDto.getDsId());
 
         TableBuilder generatorUtil = new TableBuilder(dataSource, codeCreatorProperties);
         List<Table> tables = generatorUtil.whenImportGetTable(importDto.getTableNames());
@@ -122,6 +128,16 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         saveBatch(list);
         codeCreatorColumnMapper.insertBatch(columnList);
         return true;
+    }
+
+    @NotNull
+    private static DruidDataSource getDs(Long dsId) {
+        //TODO 查询数据库
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/flash_sloth?characterEncoding=utf-8");
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
+        return dataSource;
     }
 
 

@@ -3,7 +3,6 @@ package top.fsfsfs.main.generator.controller;
 import cn.hutool.core.lang.tree.Tree;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +38,14 @@ import java.util.List;
 @Tag(name = "代码生成接口")
 @RequestMapping("/main/codeCreator")
 public class CodeCreatorController extends SuperController<CodeCreatorService, Long, CodeCreator, CodeCreatorDto, CodeCreatorQuery, CodeCreatorVo> {
+
+    @Operation(summary = "查询指定数据源的表结构", description = "查询指定数据源的表结构")
+    @PostMapping("/listTableMetadata")
+    @WebLog(value = "查询指定数据源的表结构")
+    public R<List<CodeCreatorVo>> listTableMetadata(@Parameter(description = "数据源ID") @RequestParam Long dsId) {
+        return R.success(superService.listTableMetadata(dsId));
+    }
+
     @Operation(summary = "导入表结构", description = "导入表结构")
     @PostMapping(value = "/importTable")
     @WebLog(value = "'导入表结构", response = false)
