@@ -89,6 +89,10 @@ springdoc:
         displayName: '对象存储'
         paths-to-match: '/**'
         packages-to-scan: top.fsfsfs.main.oss
+      - group: '050_base'
+        displayName: '基础数据'
+        paths-to-match: '/**'
+        packages-to-scan: top.fsfsfs.main.base
       - group: '900_test'
         displayName: '示例代码'
         paths-to-match: '/**'
