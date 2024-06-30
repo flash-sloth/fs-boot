@@ -23,18 +23,18 @@ import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
 
 /**
- * 测试单表结构 DTO（写入方法入参）。
+ * 单表标准字段示例表 DTO（写入方法入参）。
  *
  * @author tangyh
- * @since 2024-06-25
+ * @since 2024-06-30
  */
 @Accessors(chain = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "测试单表结构")
-public class GenTestSimpleDto implements Serializable {
+@Schema(description = "单表标准字段示例表")
+public class CodeTestSimpleDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -53,18 +53,6 @@ public class GenTestSimpleDto implements Serializable {
     @Size(max = 24, message = "名称长度不能超过{max}")
     @Schema(description = "名称")
     private String name;
-
-    /**
-     * 父id
-     */
-    @Schema(description = "父id")
-    private Long parentId;
-
-    /**
-     * 排序
-     */
-    @Schema(description = "排序")
-    private Integer sortValue;
 
     /**
      * 库存

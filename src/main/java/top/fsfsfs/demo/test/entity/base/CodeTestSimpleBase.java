@@ -5,7 +5,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import top.fsfsfs.basic.base.entity.TreeEntity;
+import java.time.LocalTime;
+import top.fsfsfs.basic.base.entity.SuperEntity;
 
 import java.io.Serial;
 
@@ -17,10 +18,10 @@ import lombok.experimental.Accessors;
 import lombok.EqualsAndHashCode;
 
 /**
- * 测试树结构 实体类。
+ * 单表标准字段示例表实体类。
  *
  * @author tangyh
- * @since 2024-06-25
+ * @since 2024-06-30
  */
 @Data
 @Builder
@@ -28,12 +29,22 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class GenTestTreeBase extends TreeEntity<Long> implements Serializable {
+public class CodeTestSimpleBase extends SuperEntity<Long> implements Serializable {
     /** 表名称 */
-    public static final String TABLE_NAME = "fs_code_test_tree";
+    public static final String TABLE_NAME = "fs_code_test_simple";
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 删除标识
+     */
+    private Long deletedAt;
+
+    /**
+     * 删除人
+     */
+    private Long deletedBy;
 
     /**
      * 名称
@@ -46,14 +57,15 @@ public class GenTestTreeBase extends TreeEntity<Long> implements Serializable {
     private Integer stock;
 
     /**
-     * 商品类型;
+     * 商品类型;;
      * #ProductType{ordinary:普通;gift:赠品}
      */
     @Column("type_")
     private String type;
 
     /**
-     * 商品类型2;#{ordinary:01,普通;gift:02,赠品;}
+     * 商品类型2;;
+     * #{ordinary:01,普通;gift:02,赠品;}
      */
     private String type2;
 
@@ -83,6 +95,16 @@ public class GenTestTreeBase extends TreeEntity<Long> implements Serializable {
     private LocalDateTime test6;
 
     /**
+     * 时间戳时间戳
+     */
+    private LocalTime datetime1;
+
+    /**
+     * 时间戳
+     */
+    private LocalDateTime datetime2;
+
+    /**
      * 名称
      */
     private String label;
@@ -98,7 +120,7 @@ public class GenTestTreeBase extends TreeEntity<Long> implements Serializable {
     private Integer test12;
 
     /**
-     * 用户;@Echo(api = EchoApi.POSITION_ID_CLASS)[1-aa 2-ddd]
+     * 用户;@Echo(api = EchoApi.POSITION_ID_CLASS)
      */
     private Long userId;
 
@@ -126,12 +148,5 @@ public class GenTestTreeBase extends TreeEntity<Long> implements Serializable {
      * xiao树
      */
     private BigDecimal test11;
-
-    /**
-     * 删除标志
-     */
-    private Long deletedAt;
-
-    private Long deletedBy;
 
 }

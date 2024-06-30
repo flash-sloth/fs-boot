@@ -1,4 +1,4 @@
-package top.fsfsfs.demo.test.query;
+package top.fsfsfs.demo.test.vo;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
@@ -7,9 +7,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
-import top.fsfsfs.demo.test.entity.base.GenTestTreeBase;
+import top.fsfsfs.demo.test.entity.base.CodeTestSimpleBase;
 
 import java.io.Serial;
 
@@ -21,19 +22,19 @@ import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
 
 /**
- * 测试树结构 Query类（查询方法入参）。
+ * 单表标准字段示例表 VO类（通常用作Controller出参）。
  *
  * @author tangyh
- * @since 2024-06-25
+ * @since 2024-06-30
  */
 @Accessors(chain = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "测试树结构")
-@Table(value = GenTestTreeBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
-public class GenTestTreeQuery implements Serializable {
+@Schema(description = "单表标准字段示例表")
+@Table(value = CodeTestSimpleBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+public class CodeTestSimpleVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,30 +45,6 @@ public class GenTestTreeQuery implements Serializable {
     @Id
     @Schema(description = "ID")
     private Long id;
-
-    /**
-     * 名称
-     */
-    @Schema(description = "名称")
-    private String name;
-
-    /**
-     * 父id
-     */
-    @Schema(description = "父id")
-    private Long parentId;
-
-    /**
-     * 排序
-     */
-    @Schema(description = "排序")
-    private Integer weight;
-
-    /**
-     * 库存
-     */
-    @Schema(description = "库存")
-    private Integer stock;
 
     /**
      * 创建时间
@@ -82,29 +59,54 @@ public class GenTestTreeQuery implements Serializable {
     private Long createdBy;
 
     /**
-     * 修改时间
+     * 最后修改时间
      */
-    @Schema(description = "修改时间")
+    @Schema(description = "最后修改时间")
     private LocalDateTime updatedAt;
 
     /**
-     * 修改人
+     * 最后修改人
      */
-    @Schema(description = "修改人")
+    @Schema(description = "最后修改人")
     private Long updatedBy;
 
     /**
-     * 商品类型;
+     * 删除标识
+     */
+    @Schema(description = "删除标识")
+    private Long deletedAt;
+
+    /**
+     * 删除人
+     */
+    @Schema(description = "删除人")
+    private Long deletedBy;
+
+    /**
+     * 名称
+     */
+    @Schema(description = "名称")
+    private String name;
+
+    /**
+     * 库存
+     */
+    @Schema(description = "库存")
+    private Integer stock;
+
+    /**
+     * 商品类型;;
      * #ProductType{ordinary:普通;gift:赠品}
      */
     @Column("type_")
-    @Schema(description = "商品类型; #ProductType{ordinary:普通;gift:赠品}")
+    @Schema(description = "商品类型;; #ProductType{ordinary:普通;gift:赠品}")
     private String type;
 
     /**
-     * 商品类型2;#{ordinary:01,普通;gift:02,赠品;}
+     * 商品类型2;;
+     * #{ordinary:01,普通;gift:02,赠品;}
      */
-    @Schema(description = "商品类型2;#{ordinary:01,普通;gift:02,赠品;}")
+    @Schema(description = "商品类型2;; #{ordinary:01,普通;gift:02,赠品;}")
     private String type2;
 
     /**
@@ -138,6 +140,18 @@ public class GenTestTreeQuery implements Serializable {
     private LocalDateTime test6;
 
     /**
+     * 时间戳时间戳
+     */
+    @Schema(description = "时间戳时间戳")
+    private LocalTime datetime1;
+
+    /**
+     * 时间戳
+     */
+    @Schema(description = "时间戳")
+    private LocalDateTime datetime2;
+
+    /**
      * 名称
      */
     @Schema(description = "名称")
@@ -156,9 +170,9 @@ public class GenTestTreeQuery implements Serializable {
     private Integer test12;
 
     /**
-     * 用户;@Echo(api = EchoApi.POSITION_ID_CLASS)[1-aa 2-ddd]
+     * 用户;@Echo(api = EchoApi.POSITION_ID_CLASS)
      */
-    @Schema(description = "用户;@Echo(api = EchoApi.POSITION_ID_CLASS)[1-aa 2-ddd]")
+    @Schema(description = "用户;@Echo(api = EchoApi.POSITION_ID_CLASS)")
     private Long userId;
 
     /**
@@ -190,14 +204,5 @@ public class GenTestTreeQuery implements Serializable {
      */
     @Schema(description = "xiao树")
     private BigDecimal test11;
-
-    /**
-     * 删除标志
-     */
-    @Schema(description = "删除标志")
-    private Long deletedAt;
-
-    @Schema(description = "")
-    private Long deletedBy;
 
 }

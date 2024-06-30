@@ -1,8 +1,11 @@
 package top.fsfsfs.boot;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
+import top.fsfsfs.basic.base.entity.TreeEntity;
+import top.fsfsfs.basic.mvcflex.controller.SuperTreeController;
 import top.fsfsfs.codegen.Generator;
 import top.fsfsfs.codegen.config.ColumnConfig;
 import top.fsfsfs.codegen.config.EntityConfig;
@@ -129,8 +132,8 @@ public class CodeGeneratorTest {
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-        globalConfig.setGenerateTable("fs_code_test_simple");
-//        globalConfig.setGenerateTable("fs_gen_test_tree");
+//        globalConfig.setGenerateTable("fs_code_test_simple");
+        globalConfig.setGenerateTable("fs_code_test_tree");
 //        globalConfig.setGenerateTable("fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_sys_menu");
@@ -148,15 +151,15 @@ public class CodeGeneratorTest {
                 .setUpdateListenerClass(DefaultUpdateListener.class));
 
         globalConfig.enableEntity()
-//                .setSuperClass(TreeEntity.class)
-                .setSuperClass(SuperEntity.class)
+                .setSuperClass(TreeEntity.class)
+//                .setSuperClass(SuperEntity.class)
                 .setGenericityType(Long.class)
                 .setWithLombok(true)
                 .setWithBaseClassEnable(true)
         ;
 
         globalConfig.enableVo()
-//                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
+                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
                 .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
 //                .setImplInterfaces(Serializable.class)
 ;
@@ -177,10 +180,10 @@ public class CodeGeneratorTest {
         globalConfig.enableController()
                 .setRequestMappingPrefix("/demo")
 //                .setWithCrud(true)
-                .setSuperClass(SuperController.class)
+//                .setSuperClass(SuperController.class)
 //                .setSuperClass(SuperWriteController.class)
 //                .setSuperClass(SuperReadController.class)
-//                .setSuperClass(SuperTreeController.class)
+                .setSuperClass(SuperTreeController.class)
 //                .setSuperClass(SuperSimpleController.class)
                 .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
 
