@@ -2,6 +2,7 @@ package top.fsfsfs.main.generator.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +33,7 @@ import java.util.Map;
 public class CodeGenDto {
     @NotEmpty(message = "请选择想要生成的表")
     private List<Long> ids;
-    @NotEmpty(message = "重新生成")
+    @NotNull(message = "重新生成")
     private Boolean reload;
     @NotEmpty(message = "请配置生成策略", groups = {BaseEntity.Update.class})
     private Map<GenTypeEnum, GenerationStrategyEnum> genStrategy;
