@@ -1,7 +1,6 @@
 package top.fsfsfs.main.powerjob.demo.config;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.h2.Driver;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -28,15 +27,23 @@ public class SqlProcessorConfiguration {
     public DataSource sqlProcessorDataSource() {
         String path = System.getProperty("user.home") + "/test/h2/" + CommonUtils.genUUID() + "/";
         String jdbcUrl = String.format("jdbc:h2:file:%spowerjob_sql_processor_db;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false", path);
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName(Driver.class.getName());
-        config.setJdbcUrl(jdbcUrl);
-        config.setAutoCommit(true);
-        // 池中最小空闲连接数量
-        config.setMinimumIdle(1);
-        // 池中最大连接数量
-        config.setMaximumPoolSize(10);
-        return new HikariDataSource(config);
+//        HikariConfig config = new HikariConfig();
+//        config.setDriverClassName(Driver.class.getName());
+//        config.setJdbcUrl(jdbcUrl);
+//        config.setAutoCommit(true);
+//        // 池中最小空闲连接数量
+//        config.setMinimumIdle(1);
+//        // 池中最大连接数量
+//        config.setMaximumPoolSize(10);
+
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl(jdbcUrl);
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
+        dataSource.setDriverClassName(Driver.class.getName());
+        dataSource.setMinIdle(1);
+
+        return dataSource;
     }
 
 
