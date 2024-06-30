@@ -189,7 +189,7 @@ public class TableBuilder {
         String basePackage = StrUtil.isNotEmpty(packageDesign.getModule()) ? packageDesign.getBasePackage() + StrPool.DOT + packageDesign.getModule() : packageDesign.getBasePackage();
         String xmlPath = StrUtil.isNotEmpty(packageDesign.getModule()) ? xmlDesign.getPath() + StrPool.SLASH + packageDesign.getModule() : xmlDesign.getPath();
         globalConfig.getPackageConfig().
-                setSourceDir(packageDesign.getSourceDir() + StrPool.SLASH + StrPool.SRC_MAIN_JAVA)
+                setSourceDir(packageDesign.getSourceDir())
                 .setBasePackage(basePackage)
                 .setVoPackage(basePackage + StrPool.DOT + voDesign.getPackageName())
                 .setDtoPackage(basePackage + StrPool.DOT + dtoDesign.getPackageName())
