@@ -3,7 +3,6 @@ package top.fsfsfs.main.generator.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.tree.Tree;
-import com.alibaba.druid.pool.DruidDataSource;
 import com.baidu.fsg.uid.UidGenerator;
 import com.google.common.collect.Multimap;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +24,7 @@ import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.codegen.generator.GeneratorFactory;
 import top.fsfsfs.codegen.generator.IGenerator;
+import top.fsfsfs.main.base.service.BaseDatasourceService;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
 import top.fsfsfs.main.generator.entity.CodeCreator;
@@ -49,6 +48,7 @@ import top.fsfsfs.util.utils.CollHelper;
 import top.fsfsfs.util.utils.FsMetaUtil;
 import top.fsfsfs.util.utils.FsTreeUtil;
 
+import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,10 +76,11 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     private final CodeCreatorProperties codeCreatorProperties;
     private final CodeCreatorColumnMapper codeCreatorColumnMapper;
     private final CodeCreatorContentMapper codeCreatorContentMapper;
+    private final BaseDatasourceService baseDatasourceService;
 
     @Override
     public List<CodeCreatorVo> listTableMetadata(Long dsId) {
-        DruidDataSource ds = getDs(dsId);
+        DataSource ds = baseDatasourceService.getDs(dsId);
         List<cn.hutool.db.meta.Table> tables = FsMetaUtil.getTables(ds);
         return tables.stream().map(table -> CodeCreatorVo.builder().tableName(table.getTableName()).tableDescription(table.getComment()).build()).toList();
     }
@@ -87,7 +88,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean importTable(TableImportDto importDto) {
-        DruidDataSource dataSource = getDs(importDto.getDsId());
+        DataSource dataSource = baseDatasourceService.getDs(importDto.getDsId());
 
         TableBuilder generatorUtil = new TableBuilder(dataSource, codeCreatorProperties);
         List<Table> tables = generatorUtil.whenImportGetTable(importDto.getTableNames());
@@ -128,16 +129,6 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         saveBatch(list);
         codeCreatorColumnMapper.insertBatch(columnList);
         return true;
-    }
-
-    @NotNull
-    private static DruidDataSource getDs(Long dsId) {
-        //TODO 查询数据库
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/flash_sloth?characterEncoding=utf-8");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-        return dataSource;
     }
 
 
