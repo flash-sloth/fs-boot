@@ -176,6 +176,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                     CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
                     codeCreatorContent.setGenType(generator.getGenType());
                     codeCreatorContent.setContent(previewCode);
+                    codeCreatorContent.setPath(generator.getFilePath(table, globalConfig, false));
                     codeCreatorContent.setCodeCreatorId(codeCreator.getId());
 
                     codeCreatorContentList.add(codeCreatorContent);
@@ -245,6 +246,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                     CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
                     codeCreatorContent.setGenType(generator.getGenType());
                     codeCreatorContent.setContent(previewCode);
+                    codeCreatorContent.setPath(generator.getFilePath(table, globalConfig, false));
                     codeCreatorContent.setCodeCreatorId(codeCreator.getId());
 
                     codeCreatorContentList.add(codeCreatorContent);
