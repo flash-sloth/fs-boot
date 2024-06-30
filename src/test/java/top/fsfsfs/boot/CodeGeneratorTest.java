@@ -123,7 +123,7 @@ public class CodeGeneratorTest {
         GlobalConfig globalConfig = new GlobalConfig();
 
         //设置根包
-        globalConfig.setBasePackage("com.fsfsfs.tttt");
+        globalConfig.setBasePackage("top.fsfsfs.demo.test");
 //        globalConfig.setBasePackage("top.fsfsfs.main.generator");
 
 //        globalConfig.setEntityGenerateEnable();
@@ -182,7 +182,7 @@ public class CodeGeneratorTest {
 //                .setSuperClass(SuperReadController.class)
 //                .setSuperClass(SuperTreeController.class)
 //                .setSuperClass(SuperSimpleController.class)
-                .setGenerationStrategy(GenerationStrategyEnum.BACKUPS);
+                .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
 
         globalConfig.enableMapperXml();
 
