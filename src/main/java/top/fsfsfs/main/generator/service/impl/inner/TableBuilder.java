@@ -17,6 +17,7 @@ package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Multimap;
 import io.github.linpeilie.Converter;
@@ -211,17 +212,29 @@ public class TableBuilder {
         EntityConfig entityConfig = globalConfig.enableEntity();
         CONVERTER.convert(entityDesign, entityConfig);
         entityConfig.setSuperClass(ClassUtils.forName(entityDesign.getSuperClassName()))
-                .setGenericityType(entityRule.getGenericityType())
+//                .setGenericityType(entityRule.getGenericityType())
                 .setImplInterfaces(entityRule.getImplInterfaces())
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.DOC)
                 .setWithActiveRecord(false);
 
+        List<PropertyDesign> propertyDesignList = codeCreator.getPropertyDesign();
+        if (CollUtil.isNotEmpty(propertyDesignList)) {
+            PropertyDesign pkColumn = propertyDesignList.get(0);
+            entityConfig.setGenericityType(ClassUtils.forName(pkColumn.getPropertyType()));
+        }
+
         VoConfig voConfig = globalConfig.enableVo();
         CONVERTER.convert(voDesign, voConfig);
         voConfig.setSuperClass(ClassUtils.forName(voDesign.getSuperClassName()))
-                .setGenericityType(voRule.getGenericityType())
                 .setImplInterfaces(voRule.getImplInterfaces())
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.DOC);
+
+        if (ClassUtils.equals(TreeNode.class, voConfig.getSuperClass())) {
+            PropertyDesign pkColumn = propertyDesignList.get(0);
+            voConfig.setGenericityType(ClassUtils.forName(pkColumn.getPropertyType()));
+        }
+
+
 
         DtoConfig dtoConfig = globalConfig.enableDto();
         CONVERTER.convert(dtoDesign, dtoConfig);
@@ -263,6 +276,7 @@ public class TableBuilder {
 
         List<Table> tables = new ArrayList<>();
         for (CodeCreator codeCreator : codeCreatorList) {
+            Collection<CodeCreatorColumn> columnList = map.get(codeCreator.getId());
             GlobalConfig globalConfig = buildGlobalConfig(codeCreator);
 
             List<PropertyDesign> propertyDesignList = codeCreator.getPropertyDesign();
@@ -275,7 +289,6 @@ public class TableBuilder {
             table.setEntityConfig(globalConfig.getEntityConfig());
             table.setTableConfig(globalConfig.getTableConfig(codeCreator.getTableName()));
 
-            Collection<CodeCreatorColumn> columnList = map.get(codeCreator.getId());
             for (CodeCreatorColumn creatorColumn : columnList) {
                 if (creatorColumn.getIsPk()) {
                     table.addPrimaryKey(creatorColumn.getName());

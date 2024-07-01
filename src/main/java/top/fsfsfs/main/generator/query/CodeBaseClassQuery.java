@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
+import top.fsfsfs.main.generator.enumeration.ClassTypeEnum;
 
 /**
  * 基类管理 Query类（查询方法入参）。
@@ -53,8 +54,22 @@ public class CodeBaseClassQuery implements Serializable {
      * 公共字段
      */
     @Schema(description = "公共字段")
-    private String fields;
-
+    private String fields;;
+    /**
+     * 顺序;值越小优先级越高
+     */
+    @Schema(description = "顺序;值越小优先级越高")
+    private Integer weight;
+    /**
+     * 状态; 0-禁用 1-启用
+     */
+    @Schema(description = "状态; 0-禁用 1-启用")
+    private Boolean state;
+    /**
+     * 基类类型; [0-实体  1-Mapper 2-Service 3-Controller]
+     */
+    @Schema(description = "基类类型; [0-实体  1-Mapper 2-Service 3-Controller]")
+    private ClassTypeEnum classType;
     /**
      * 备注
      */

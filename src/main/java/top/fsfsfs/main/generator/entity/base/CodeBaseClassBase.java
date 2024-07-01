@@ -1,18 +1,20 @@
 package top.fsfsfs.main.generator.entity.base;
 
 import com.mybatisflex.annotation.Column;
-import java.io.Serializable;
-import top.fsfsfs.basic.base.entity.SuperEntity;
-
-import java.io.Serial;
-
+import com.mybatisflex.core.handler.FastjsonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lombok.EqualsAndHashCode;
+import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.main.generator.enumeration.ClassTypeEnum;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 基类管理
@@ -43,7 +45,6 @@ public class CodeBaseClassBase extends SuperEntity<Long> implements Serializable
     /**
      * 完整包名
      */
-    @Column("packageName")
     @Schema(description = "完整包名")
     private String packageName;
 
@@ -51,8 +52,23 @@ public class CodeBaseClassBase extends SuperEntity<Long> implements Serializable
      * 公共字段
      */
     @Schema(description = "公共字段")
-    private String fields;
-
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private List<String> fields;
+    /**
+     * 状态; 0-禁用 1-启用
+     */
+    @Schema(description = "状态; 0-禁用 1-启用")
+    private Boolean state;
+    /**
+     * 顺序;值越小优先级越高
+     */
+    @Schema(description = "顺序;值越小优先级越高")
+    private Integer weight;
+    /**
+     * 基类类型; [0-实体  1-Mapper 2-Service 3-Controller]
+     */
+    @Schema(description = "基类类型; [0-实体  1-Mapper 2-Service 3-Controller]")
+    private ClassTypeEnum classType;
     /**
      * 备注
      */

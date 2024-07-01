@@ -52,8 +52,8 @@ public class EntityDesign {
      * 父类完整类名
      */
     private String superClassName;
-    /** 父类泛型的类型 */
-    private String genericityTypeName;
+//    /** 父类泛型的类型 */
+//    private String genericityTypeName;
 //    /**
 //     * 默认实现的接口。
 //     */

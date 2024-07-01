@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.Serial;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
+import top.fsfsfs.main.generator.enumeration.ClassTypeEnum;
 
 /**
  * 基类管理 DTO（写入方法入参）。
@@ -61,10 +63,24 @@ public class CodeBaseClassDto implements Serializable {
     /**
      * 公共字段
      */
-    @Size(max = 255, message = "公共字段长度不能超过{max}")
+//    @Size(max = 255, message = "公共字段长度不能超过{max}")
     @Schema(description = "公共字段")
-    private String fields;
-
+    private List<String> fields;
+    /**
+     * 基类类型; [0-实体  1-Mapper 2-Service 3-Controller]
+     */
+    @Schema(description = "基类类型; [0-实体  1-Mapper 2-Service 3-Controller]")
+    private ClassTypeEnum classType;
+    /**
+     * 状态; 0-禁用 1-启用
+     */
+    @Schema(description = "状态; 0-禁用 1-启用")
+    private Boolean state;
+    /**
+     * 顺序;值越小优先级越高
+     */
+    @Schema(description = "顺序;值越小优先级越高")
+    private Integer weight;
     /**
      * 备注
      */

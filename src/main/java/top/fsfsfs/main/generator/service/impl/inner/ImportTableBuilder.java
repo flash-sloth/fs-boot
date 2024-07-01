@@ -1,15 +1,18 @@
 package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
-import top.fsfsfs.codegen.entity.Column;
-import top.fsfsfs.codegen.entity.Table;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.base.entity.SuperEntity;
 import top.fsfsfs.basic.base.entity.TreeEntity;
+import top.fsfsfs.basic.mvcflex.controller.TreeController;
+import top.fsfsfs.codegen.entity.Column;
+import top.fsfsfs.codegen.entity.Table;
+import top.fsfsfs.main.generator.entity.CodeBaseClass;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
@@ -29,6 +32,7 @@ import top.fsfsfs.main.generator.entity.type.front.FrontDesign;
 import top.fsfsfs.main.generator.entity.type.front.ListDesign;
 import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.main.generator.entity.type.front.SearchDesign;
+import top.fsfsfs.main.generator.enumeration.ClassTypeEnum;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 
 import java.sql.ResultSetMetaData;
@@ -48,6 +52,7 @@ import java.util.stream.Stream;
 public class ImportTableBuilder {
     private final Table table;
     private final CodeCreatorProperties codeCreatorProperties;
+    private final List<CodeBaseClass> codeBaseClassList;
     private final Long id;
 
     private final static Converter CONVERTER = new Converter();
@@ -106,6 +111,7 @@ public class ImportTableBuilder {
 
     private void fillControllerConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.ControllerRule controllerRule = codeCreatorProperties.getControllerRule();
+        CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         ControllerDesign controllerConfig = new ControllerDesign();
         controllerConfig.setPackageName(controllerRule.getPackageName())
                 .setClassPrefix(controllerRule.getClassPrefix()).setClassSuffix(controllerRule.getClassSuffix())
@@ -114,6 +120,23 @@ public class ImportTableBuilder {
                 .setWithCrud(controllerRule.getWithCrud())
                 .setRestStyle(controllerRule.getRestStyle())
         ;
+
+        if (entityRule.getAutoRecognitionSuperClass()) {
+            Set<String> allColumnNames = table.getAllColumns().stream().map(Column::getName).collect(Collectors.toSet());
+            if (CollUtil.isNotEmpty(codeBaseClassList)) {
+                for (CodeBaseClass codeBaseClass : codeBaseClassList) {
+                    if (ClassTypeEnum.CONTROLLER == codeBaseClass.getClassType() && CollUtil.containsAll(allColumnNames, codeBaseClass.getFields())) {
+                        controllerConfig.setSuperClassName(codeBaseClass.getPackageName());
+                        break;
+                    }
+                }
+            } else {
+                if (CollUtil.containsAll(allColumnNames, TREE_ENTITY_COLUMN_NAMES)) {
+                    controllerConfig.setSuperClassName(TreeController.class.getName());
+                }
+            }
+        }
+
         codeCreator.setControllerDesign(controllerConfig);
     }
 
@@ -195,6 +218,7 @@ public class ImportTableBuilder {
 
     private void fillVoConfig(CodeCreator codeCreator) {
         CodeCreatorProperties.VoRule voRule = codeCreatorProperties.getVoRule();
+        CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         VoDesign voConfig = new VoDesign();
         CONVERTER.convert(voRule, voConfig);
         voConfig.setSuperClassName(voRule.getSuperClass() != null ? voRule.getSuperClass().getName() : "")
@@ -206,6 +230,12 @@ public class ImportTableBuilder {
         } else {
             voConfig.setImplInterfaceNames(new String[0]);
         }
+
+        EntityDesign entityDesign = codeCreator.getEntityDesign();
+        if (TreeEntity.class.getName().equals(entityDesign.getSuperClassName())) {
+            voConfig.setSuperClassName(TreeNode.class.getName());
+        }
+
         codeCreator.setVoDesign(voConfig);
     }
 
@@ -218,30 +248,33 @@ public class ImportTableBuilder {
                 .setName(table.buildEntityClassName())
                 .setDescription(table.getSwaggerComment())
                 .setSuperClassName(entityRule.getSuperClass() != null ? entityRule.getSuperClass().getName() : "")
-                .setGenericityTypeName(entityRule.getGenericityType() != null ? entityRule.getGenericityType().getName() : "")
+//                .setGenericityTypeName(entityRule.getGenericityType() != null ? entityRule.getGenericityType().getName() : "")
                 .setWithLombok(entityRule.getWithLombok())
                 .setWithChain(entityRule.getWithChain())
                 .setWithBaseClassEnable(entityRule.getWithBaseClassEnabled())
                 .setWithSwagger(entityRule.getWithSwagger())
                 .setAlwaysGenColumnAnnotation(entityRule.getAlwaysGenColumnAnnotation())
         ;
+
         if (entityRule.getAutoRecognitionSuperClass()) {
             Set<String> allColumnNames = table.getAllColumns().stream().map(Column::getName).collect(Collectors.toSet());
-            if (CollUtil.containsAll(allColumnNames, TREE_ENTITY_COLUMN_NAMES)) {
-                entityConfig.setSuperClassName(TreeEntity.class.getName());
-            } else if (CollUtil.containsAll(allColumnNames, SUPER_ENTITY_COLUMN_NAMES)) {
-                entityConfig.setSuperClassName(SuperEntity.class.getName());
-            } else if (CollUtil.containsAll(allColumnNames, BASE_ENTITY_COLUMN_NAMES)) {
-                entityConfig.setSuperClassName(BaseEntity.class.getName());
+            if (CollUtil.isNotEmpty(codeBaseClassList)) {
+                for (CodeBaseClass codeBaseClass : codeBaseClassList) {
+                    if (ClassTypeEnum.ENTITY == codeBaseClass.getClassType() && CollUtil.containsAll(allColumnNames, codeBaseClass.getFields())) {
+                        entityConfig.setSuperClassName(codeBaseClass.getPackageName());
+                        break;
+                    }
+                }
+            } else {
+                if (CollUtil.containsAll(allColumnNames, TREE_ENTITY_COLUMN_NAMES)) {
+                    entityConfig.setSuperClassName(TreeEntity.class.getName());
+                } else if (CollUtil.containsAll(allColumnNames, SUPER_ENTITY_COLUMN_NAMES)) {
+                    entityConfig.setSuperClassName(SuperEntity.class.getName());
+                } else if (CollUtil.containsAll(allColumnNames, BASE_ENTITY_COLUMN_NAMES)) {
+                    entityConfig.setSuperClassName(BaseEntity.class.getName());
+                }
             }
         }
-//        Class<?>[] implInterfaces = entityRule.getImplInterfaces();
-//        if (implInterfaces != null) {
-//            String[] implInterfaceNames = Arrays.stream(implInterfaces).map(Class::getName).toArray(String[]::new);
-//            entityConfig.setImplInterfaceNames(implInterfaceNames);
-//        } else {
-//            entityConfig.setImplInterfaceNames(new String[0]);
-//        }
         codeCreator.setEntityDesign(entityConfig);
     }
 

@@ -25,6 +25,9 @@ import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
+import top.fsfsfs.codegen.dialect.JdbcTypeMapping;
+import top.fsfsfs.codegen.entity.Column;
+import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;
 import top.fsfsfs.main.system.entity.SysMenu;
 
@@ -126,14 +129,14 @@ public class CodeGeneratorTest {
         GlobalConfig globalConfig = new GlobalConfig();
 
         //设置根包
-        globalConfig.setBasePackage("top.fsfsfs.demo.test");
+        globalConfig.setBasePackage("com.fsfsfs.demo.test");
 //        globalConfig.setBasePackage("top.fsfsfs.main.generator");
 
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-//        globalConfig.setGenerateTable("fs_code_test_simple");
-        globalConfig.setGenerateTable("fs_code_test_tree");
+        globalConfig.setGenerateTable("fs_code_test_simple");
+//        globalConfig.setGenerateTable("fs_code_test_tree");
 //        globalConfig.setGenerateTable("fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_sys_menu");
@@ -151,48 +154,48 @@ public class CodeGeneratorTest {
                 .setUpdateListenerClass(DefaultUpdateListener.class));
 
         globalConfig.enableEntity()
-                .setSuperClass(TreeEntity.class)
-//                .setSuperClass(SuperEntity.class)
+//                .setSuperClass(TreeEntity.class)
+                .setSuperClass(SuperEntity.class)
                 .setGenericityType(Long.class)
                 .setWithLombok(true)
                 .setWithBaseClassEnable(true)
         ;
 
-        globalConfig.enableVo()
-                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
-                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
-//                .setImplInterfaces(Serializable.class)
-;
+//        globalConfig.enableVo()
+////                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
+//                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
+////                .setImplInterfaces(Serializable.class)
+//;
+//
+//        globalConfig.enableQuery()
+//                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
+////                .setImplInterfaces(Serializable.class)
+//                ;
+//
+//        globalConfig.enableDto()
+//                .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
+////                .setImplInterfaces(Serializable.class)
+//                .setIgnoreColumns(new HashSet<>(Arrays.asList(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
+//                        SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
+//                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)))
+//        ;
 
-        globalConfig.enableQuery()
-                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
-//                .setImplInterfaces(Serializable.class)
-                ;
+//        globalConfig.enableController()
+//                .setRequestMappingPrefix("/demo")
+////                .setWithCrud(true)
+////                .setSuperClass(SuperController.class)
+////                .setSuperClass(SuperWriteController.class)
+////                .setSuperClass(SuperReadController.class)
+//                .setSuperClass(SuperTreeController.class)
+////                .setSuperClass(SuperSimpleController.class)
+//                .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
 
-        globalConfig.enableDto()
-                .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
-//                .setImplInterfaces(Serializable.class)
-                .setIgnoreColumns(new HashSet<>(Arrays.asList(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
-                        SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
-                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)))
-        ;
-
-        globalConfig.enableController()
-                .setRequestMappingPrefix("/demo")
-//                .setWithCrud(true)
-//                .setSuperClass(SuperController.class)
-//                .setSuperClass(SuperWriteController.class)
-//                .setSuperClass(SuperReadController.class)
-                .setSuperClass(SuperTreeController.class)
-//                .setSuperClass(SuperSimpleController.class)
-                .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
-
-        globalConfig.enableMapperXml();
+//        globalConfig.enableMapperXml();
 
 //        //设置生成 mapper
-        globalConfig.enableMapper().setSuperClass(SuperMapper.class);
-        globalConfig.enableService().setSuperClass(SuperService.class);
-        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
+//        globalConfig.enableMapper().setSuperClass(SuperMapper.class);
+//        globalConfig.enableService().setSuperClass(SuperService.class);
+//        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();
@@ -201,15 +204,13 @@ public class CodeGeneratorTest {
         columnConfig.setVersion(true);
         globalConfig.setColumnConfig("fs_gen_test_tree", columnConfig);
 
-//        JdbcTypeMapping.setTypeMapper(new JdbcTypeMapping.JdbcTypeMapper() {
-//            @Override
-//            public String getType(String jdbcType, Table table, Column column) {
-//                if (column.getName().equals("test1111")) {
-//                    return Sex.class.getName();
-//                }
-//                return null;
-//            }
-//        });
+        JdbcTypeMapping.setTypeMapper(new JdbcTypeMapping.JdbcTypeMapper() {
+            @Override
+            public String getType(String jdbcType, Table table, Column column) {
+
+                return null;
+            }
+        });
 
 
         return globalConfig;

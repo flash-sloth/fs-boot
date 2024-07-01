@@ -214,7 +214,7 @@ public class CodeCreatorProperties {
          */
         private Class<?> superClass = SuperEntity.class;
         /** 父类泛型的类型 */
-        private Class<?> genericityType = Long.class;
+//        private Class<?> genericityType = Long.class;
         /**
          * Entity 默认实现的接口。
          */

@@ -27,6 +27,7 @@ import top.fsfsfs.codegen.generator.IGenerator;
 import top.fsfsfs.main.base.service.BaseDatasourceService;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
+import top.fsfsfs.main.generator.entity.CodeBaseClass;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
 import top.fsfsfs.main.generator.entity.CodeCreatorContent;
@@ -38,6 +39,7 @@ import top.fsfsfs.main.generator.mapper.CodeCreatorColumnMapper;
 import top.fsfsfs.main.generator.mapper.CodeCreatorContentMapper;
 import top.fsfsfs.main.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
+import top.fsfsfs.main.generator.service.CodeBaseClassService;
 import top.fsfsfs.main.generator.service.CodeCreatorService;
 import top.fsfsfs.main.generator.service.impl.inner.CodeTreeBuilder;
 import top.fsfsfs.main.generator.service.impl.inner.ImportTableBuilder;
@@ -77,6 +79,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     private final CodeCreatorColumnMapper codeCreatorColumnMapper;
     private final CodeCreatorContentMapper codeCreatorContentMapper;
     private final BaseDatasourceService baseDatasourceService;
+    private final CodeBaseClassService codeBaseClassService;
 
     @Override
     public List<CodeCreatorVo> listTableMetadata(Long dsId) {
@@ -89,7 +92,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     @Transactional(rollbackFor = Exception.class)
     public Boolean importTable(TableImportDto importDto) {
         DataSource dataSource = baseDatasourceService.getDs(importDto.getDsId());
-
+        List<CodeBaseClass> codeBaseClassList = codeBaseClassService.list(QueryWrapper.create().eq(CodeBaseClass::getState, true).orderBy(CodeBaseClass::getWeight, true));
         TableBuilder generatorUtil = new TableBuilder(dataSource, codeCreatorProperties);
         List<Table> tables = generatorUtil.whenImportGetTable(importDto.getTableNames());
 
@@ -97,7 +100,8 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
         List<CodeCreatorColumn> columnList = new ArrayList<>();
         for (Table table : tables) {
             long id = uidGenerator.getUid();
-            ImportTableBuilder importTableBuilder = new ImportTableBuilder(table, codeCreatorProperties, id);
+
+            ImportTableBuilder importTableBuilder = new ImportTableBuilder(table, codeCreatorProperties, codeBaseClassList, id);
             CodeCreator codeCreator = importTableBuilder.buildCodeCreator(importDto.getDsId());
 
             List<PropertyDesign> propertyDesignList = new ArrayList<>();

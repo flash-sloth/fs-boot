@@ -60,5 +60,9 @@ public class ServiceImplDesign implements Serializable {
      */
     private String superClassName;
 
+    /**
+     * 是否封装缓存
+     */
+    private Boolean cache;
 
 }

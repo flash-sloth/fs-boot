@@ -5,11 +5,14 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.mybatisflex.core.handler.FastjsonTypeHandler;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.main.generator.entity.base.CodeBaseClassBase;
 
 import java.io.Serial;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
+import top.fsfsfs.main.generator.enumeration.ClassTypeEnum;
 
 /**
  * 基类管理 VO类（通常用作Controller出参）。
@@ -52,7 +56,6 @@ public class CodeBaseClassVo implements Serializable {
     /**
      * 完整包名
      */
-    @Column("packageName")
     @Schema(description = "完整包名")
     private String packageName;
 
@@ -60,7 +63,23 @@ public class CodeBaseClassVo implements Serializable {
      * 公共字段
      */
     @Schema(description = "公共字段")
-    private String fields;
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private List<String> fields;
+    /**
+     * 基类类型; [0-实体  1-Mapper 2-Service 3-Controller]
+     */
+    @Schema(description = "基类类型; [0-实体  1-Mapper 2-Service 3-Controller]")
+    private ClassTypeEnum classType;
+    /**
+     * 状态; 0-禁用 1-启用
+     */
+    @Schema(description = "状态; 0-禁用 1-启用")
+    private Boolean state;
+    /**
+     * 顺序;值越小优先级越高
+     */
+    @Schema(description = "顺序;值越小优先级越高")
+    private Integer weight;
 
     /**
      * 备注
