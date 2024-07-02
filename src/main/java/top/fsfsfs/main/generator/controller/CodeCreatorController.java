@@ -56,7 +56,7 @@ public class CodeCreatorController extends SuperController<CodeCreatorService, L
     @Operation(summary = "批量预览", description = "批量预览")
     @PostMapping("/preview")
     @WebLog(value = "批量预览")
-    public R<List<Tree<Long>>> preview(@RequestBody CodeGenDto genDto) {
+    public R<List<Tree<Long>>> preview(@RequestBody @Validated CodeGenDto genDto) {
         return R.success(superService.preview(genDto));
     }
 
