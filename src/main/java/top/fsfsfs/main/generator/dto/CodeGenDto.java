@@ -33,7 +33,7 @@ import java.util.Map;
 public class CodeGenDto {
     @NotEmpty(message = "请选择想要生成的表")
     private List<Long> ids;
-    @NotNull(message = "重新生成")
+    @NotNull(message = "请填写是否需要重新生成")
     private Boolean reload;
     @NotEmpty(message = "请配置生成策略", groups = {BaseEntity.Update.class})
     private Map<GenTypeEnum, GenerationStrategyEnum> genStrategy;
