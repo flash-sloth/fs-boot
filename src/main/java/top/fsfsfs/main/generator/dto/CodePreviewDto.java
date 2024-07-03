@@ -2,6 +2,7 @@ package top.fsfsfs.main.generator.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,14 +10,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.base.entity.BaseEntity;
-import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * 代码生成 - 生成代码 - 入参
+ * 代码生成 - 预览代码 - 入参
  * @author tangyh
  * @since 2024/6/25 22:45
  */
@@ -27,10 +25,10 @@ import java.util.Map;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 @Builder
-@Schema(description = "生成代码")
-public class CodeGenDto {
+@Schema(description = "预览代码")
+public class CodePreviewDto {
     @NotEmpty(message = "请选择想要生成的表")
     private List<Long> ids;
-    @NotEmpty(message = "请配置生成策略", groups = {BaseEntity.Update.class})
-    private Map<Long, GenerationStrategyEnum> genStrategy;
+    @NotNull(message = "请填写是否需要重新生成")
+    private Boolean reload;
 }

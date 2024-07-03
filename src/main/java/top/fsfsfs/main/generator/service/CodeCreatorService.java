@@ -4,6 +4,7 @@ import cn.hutool.core.lang.tree.Tree;
 import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
+import top.fsfsfs.main.generator.dto.CodePreviewDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.vo.CodeCreatorVo;
@@ -34,10 +35,10 @@ public interface CodeCreatorService extends SuperService<CodeCreator> {
 
     /**
      * 预览表结构
-     * @param genDto 生成参数
+     * @param previewDto 预览参数
      * @return 代码预览树
      */
-    List<Tree<Long>> preview(CodeGenDto genDto);
+    List<Tree<Long>> preview(CodePreviewDto previewDto);
 
     /**
      * 生成代码
@@ -48,9 +49,9 @@ public interface CodeCreatorService extends SuperService<CodeCreator> {
 
     /**
      * 下载代码
-     * @param ids id
-     * @param reload 是否覆盖
+     * @param ids  表id
+     * @param codeIds 代码id
      * @return 字节
      */
-    DownloadVO download(List<Long> ids, Boolean reload);
+    DownloadVO download(List<Long> ids, List<Long> codeIds);
 }

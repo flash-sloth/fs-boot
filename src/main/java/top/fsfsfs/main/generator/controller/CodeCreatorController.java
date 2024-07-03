@@ -19,6 +19,7 @@ import top.fsfsfs.basic.mvcflex.controller.SuperController;
 import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.main.generator.dto.CodeCreatorDto;
 import top.fsfsfs.main.generator.dto.CodeGenDto;
+import top.fsfsfs.main.generator.dto.CodePreviewDto;
 import top.fsfsfs.main.generator.dto.TableImportDto;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.query.CodeCreatorQuery;
@@ -56,8 +57,8 @@ public class CodeCreatorController extends SuperController<CodeCreatorService, L
     @Operation(summary = "批量预览", description = "批量预览")
     @PostMapping("/preview")
     @WebLog(value = "批量预览")
-    public R<List<Tree<Long>>> preview(@RequestBody @Validated CodeGenDto genDto) {
-        return R.success(superService.preview(genDto));
+    public R<List<Tree<Long>>> preview(@RequestBody @Validated CodePreviewDto previewDto) {
+        return R.success(superService.preview(previewDto));
     }
 
     @Operation(summary = "批量生成代码", description = "批量生成代码")
@@ -74,9 +75,10 @@ public class CodeCreatorController extends SuperController<CodeCreatorService, L
     public void download(HttpServletResponse response,
                          @Parameter(description = "表ID")
                          @RequestParam List<Long> ids,
-                         @Parameter(description = "是否是使用配置信息，重新生成")
-                         @RequestParam(required = false) Boolean reload) {
-        DownloadVO download = superService.download(ids, reload);
+                         @Parameter(description = "代码ID")
+                         @RequestParam(required = false) List<Long> codeIds
+    ) {
+        DownloadVO download = superService.download(ids, codeIds);
         write(download.getData(), download.getFileName(), response);
     }
 }
