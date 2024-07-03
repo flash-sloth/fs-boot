@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import top.fsfsfs.basic.base.entity.BaseEntity;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
 import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 
 import java.util.List;
@@ -36,5 +35,5 @@ public class CodeGenDto {
     @NotNull(message = "请填写是否需要重新生成")
     private Boolean reload;
     @NotEmpty(message = "请配置生成策略", groups = {BaseEntity.Update.class})
-    private Map<GenTypeEnum, GenerationStrategyEnum> genStrategy;
+    private Map<Long, GenerationStrategyEnum> genStrategy;
 }

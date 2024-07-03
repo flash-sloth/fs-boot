@@ -1,7 +1,8 @@
 package top.fsfsfs.main.generator.service.impl.inner;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baidu.fsg.uid.UidGenerator;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.fsfsfs.basic.utils.StrPool;
@@ -9,6 +10,7 @@ import top.fsfsfs.codegen.config.GlobalConfig;
 import top.fsfsfs.codegen.constant.GenTypeEnum;
 import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.main.generator.entity.CodeCreator;
+import top.fsfsfs.main.generator.entity.CodeCreatorContent;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.entity.type.DtoDesign;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;
@@ -34,10 +36,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CodeTreeBuilder {
     private final CodeCreatorProperties codeCreatorProperties;
-    private final UidGenerator uidGenerator;
     private final Table table;
-    private final Map<GenTypeEnum, String> codeMap;
+    private final Map<GenTypeEnum, CodeCreatorContent> codeMap;
     private final int tableIndex;
+
+    private final static Snowflake SNOWFLAKE = IdUtil.getSnowflake(1, 1);
 
     public void buildCodeTree(List<PreviewVo> previews, Map<String, PreviewVo> cache) {
         GlobalConfig globalConfig = table.getGlobalConfig();
@@ -64,23 +67,23 @@ public class CodeTreeBuilder {
         PreviewVo backPackageDir = buildModule(previews, cache, packageConfig, javaDir);
 
         // mvc 层
-        buildLayer(previews, cache, backPackageDir, 1, controllerConfig.getPackageName(), table.buildControllerClassName(), codeMap.get(GenTypeEnum.CONTROLLER));
-        PreviewVo serviceDir = buildLayer(previews, cache, backPackageDir, 2, serviceConfig.getPackageName(), table.buildServiceClassName(), codeMap.get(GenTypeEnum.SERVICE));
-        buildLayer(previews, cache, serviceDir, -1, serviceImplConfig.getPackageName(), table.buildServiceImplClassName(), codeMap.get(GenTypeEnum.SERVICE_IMPL));
-        buildLayer(previews, cache, backPackageDir, 3, mapperConfig.getPackageName(), table.buildMapperClassName(), codeMap.get(GenTypeEnum.MAPPER));
+        buildLayer(previews, cache, backPackageDir, 1, controllerConfig.getPackageName(), table.buildControllerClassName(), GenTypeEnum.CONTROLLER);
+        PreviewVo serviceDir = buildLayer(previews, cache, backPackageDir, 2, serviceConfig.getPackageName(), table.buildServiceClassName(), GenTypeEnum.SERVICE);
+        buildLayer(previews, cache, serviceDir, -1, serviceImplConfig.getPackageName(), table.buildServiceImplClassName(), GenTypeEnum.SERVICE_IMPL);
+        buildLayer(previews, cache, backPackageDir, 3, mapperConfig.getPackageName(), table.buildMapperClassName(), GenTypeEnum.MAPPER);
 
         // pojo层
-        PreviewVo entityDir = buildLayer(previews, cache, backPackageDir, 4, entityConfig.getPackageName(), table.buildEntityClassName(), codeMap.get(GenTypeEnum.ENTITY));
+        PreviewVo entityDir = buildLayer(previews, cache, backPackageDir, 4, entityConfig.getPackageName(), table.buildEntityClassName(), GenTypeEnum.ENTITY);
         CodeCreatorProperties.EntityRule entityRule = codeCreatorProperties.getEntityRule();
         if (entityRule.getWithBaseClassEnabled()) {
-            buildLayer(previews, cache, entityDir, -1, "base", table.buildEntityBaseClassName(), codeMap.get(GenTypeEnum.ENTITY_BASE));
+            buildLayer(previews, cache, entityDir, -1, "base", table.buildEntityBaseClassName(), GenTypeEnum.ENTITY_BASE);
         }
-        buildLayer(previews, cache, backPackageDir, 5, voConfig.getPackageName(), table.buildVoClassName(), codeMap.get(GenTypeEnum.VO));
-        buildLayer(previews, cache, backPackageDir, 6, dtoConfig.getPackageName(), table.buildDtoClassName(), codeMap.get(GenTypeEnum.DTO));
-        buildLayer(previews, cache, backPackageDir, 7, queryConfig.getPackageName(), table.buildQueryClassName(), codeMap.get(GenTypeEnum.QUERY));
+        buildLayer(previews, cache, backPackageDir, 5, voConfig.getPackageName(), table.buildVoClassName(), GenTypeEnum.VO);
+        buildLayer(previews, cache, backPackageDir, 6, dtoConfig.getPackageName(), table.buildDtoClassName(), GenTypeEnum.DTO);
+        buildLayer(previews, cache, backPackageDir, 7, queryConfig.getPackageName(), table.buildQueryClassName(), GenTypeEnum.QUERY);
 
         // xml层
-        buildXml(previews, cache, resourceDir, packageConfig, xmlConfig, table.buildMapperXmlFileName(), codeMap.get(GenTypeEnum.MAPPER_XML));
+        buildXml(previews, cache, resourceDir, packageConfig, xmlConfig, table.buildMapperXmlFileName(), GenTypeEnum.MAPPER_XML);
     }
 
     @NotNull
@@ -93,7 +96,7 @@ public class CodeTreeBuilder {
             backPackageDir.setPath(packageKey)
                     .setType("dir")
                     .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
+                    .setId(SNOWFLAKE.nextId())
                     .setWeight(tableIndex)
                     .setName(name)
                     .setParentId(javaDir.getId());
@@ -113,7 +116,7 @@ public class CodeTreeBuilder {
             resourceDir.setPath(resourceDirKey)
                     .setType("dir")
                     .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
+                    .setId(SNOWFLAKE.nextId())
                     .setWeight(tableIndex + 2)
                     .setName(StrPool.SRC_MAIN_RESOURCES)
                     .setParentId(root.getId());
@@ -134,7 +137,7 @@ public class CodeTreeBuilder {
             javaDir.setPath(javaDirKey)
                     .setType("dir")
                     .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
+                    .setId(SNOWFLAKE.nextId())
                     .setWeight(tableIndex + 1)
                     .setName(StrPool.SRC_MAIN_JAVA)
                     .setParentId(root.getId());
@@ -153,7 +156,7 @@ public class CodeTreeBuilder {
                     .setIsReadonly(true)
                     .setType("project")
                     .setWeight(tableIndex)
-                    .setId(uidGenerator.getUid())
+                    .setId(SNOWFLAKE.nextId())
                     .setName("fs-boot")
                     .setParentId(null);
             cache.put(packageConfig.getSourceDir(), root);
@@ -163,7 +166,7 @@ public class CodeTreeBuilder {
     }
 
     private void buildXml(List<PreviewVo> previews, Map<String, PreviewVo> cache, PreviewVo resourceDir,
-                          PackageDesign packageConfig, XmlDesign xmlConfig, String name, String content) {
+                          PackageDesign packageConfig, XmlDesign xmlConfig, String name, GenTypeEnum genType) {
 
         String cacheKey = resourceDir.getPath() + File.separator + xmlConfig.getPath();
         PreviewVo xmlDir = cache.get(cacheKey);
@@ -173,7 +176,7 @@ public class CodeTreeBuilder {
             xmlDir.setPath(cacheKey)
                     .setType("dir")
                     .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
+                    .setId(SNOWFLAKE.nextId())
                     .setWeight(tableIndex)
                     .setName(xmlConfig.getPath())
                     .setParentId(resourceDir.getId());
@@ -191,7 +194,7 @@ public class CodeTreeBuilder {
                 xmlModuleDir.setPath(moduleCacheKey)
                         .setType("dir")
                         .setIsReadonly(true)
-                        .setId(uidGenerator.getUid())
+                        .setId(SNOWFLAKE.nextId())
                         .setWeight(tableIndex)
                         .setName(packageConfig.getModule())
                         .setParentId(xmlDir.getId());
@@ -200,21 +203,23 @@ public class CodeTreeBuilder {
             }
             parent = xmlModuleDir;
         }
-
-        PreviewVo xmlFile = new PreviewVo();
-        xmlFile.setPath(parent.getPath() + File.separator + name)
-                .setType("file")
-                .setIsReadonly(false)
-                .setContent(content)
-                .setId(uidGenerator.getUid())
-                .setWeight(tableIndex)
-                .setName(name + ".xml")
-                .setParentId(parent.getId());
-        previews.add(xmlFile);
+        CodeCreatorContent codeCreatorContent = codeMap.get(genType);
+        if (codeCreatorContent != null) {
+            PreviewVo xmlFile = new PreviewVo();
+            xmlFile.setPath(parent.getPath() + File.separator + name)
+                    .setType("file")
+                    .setIsReadonly(false)
+                    .setContent(codeCreatorContent.getContent())
+                    .setId(codeCreatorContent.getId())
+                    .setWeight(tableIndex)
+                    .setName(name + ".xml")
+                    .setParentId(parent.getId());
+            previews.add(xmlFile);
+        }
     }
 
     private PreviewVo buildLayer(List<PreviewVo> previews, Map<String, PreviewVo> cache, PreviewVo parent,
-                                 int dirIndex, String packageName, String name, String content) {
+                                 int dirIndex, String packageName, String name, GenTypeEnum genType) {
         String path = parent.getPath() + File.separator + packageName;
         PreviewVo layerDir = cache.get(path);
         if (layerDir == null) {
@@ -222,7 +227,7 @@ public class CodeTreeBuilder {
             layerDir.setPath(path)
                     .setType("dir")
                     .setIsReadonly(true)
-                    .setId(uidGenerator.getUid())
+                    .setId(SNOWFLAKE.nextId())
                     .setWeight(tableIndex + dirIndex)
                     .setName(packageName)
                     .setParentId(parent.getId());
@@ -230,16 +235,21 @@ public class CodeTreeBuilder {
             previews.add(layerDir);
         }
 
-        PreviewVo codeFile = new PreviewVo();
-        codeFile.setPath(layerDir.getPath() + File.separator + name + ".java")
-                .setType("file")
-                .setIsReadonly(false)
-                .setContent(content)
-                .setId(uidGenerator.getUid())
-                .setWeight(tableIndex)
-                .setName(name + ".java")
-                .setParentId(layerDir.getId());
-        previews.add(codeFile);
+        CodeCreatorContent codeCreatorContent = codeMap.get(genType);
+        if (codeCreatorContent != null) {
+
+            PreviewVo codeFile = new PreviewVo();
+            codeFile.setPath(layerDir.getPath() + File.separator + name + ".java")
+                    .setType("file")
+                    .setIsReadonly(false)
+                    .setContent(codeCreatorContent.getContent())
+                    .setId(codeCreatorContent.getId())
+                    .setWeight(tableIndex)
+                    .setName(name + ".java")
+                    .setParentId(layerDir.getId());
+            previews.add(codeFile);
+        }
+
         return layerDir;
     }
 

@@ -180,11 +180,11 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 codeCreatorContentMapper.insertBatch(codeCreatorContentList);
             }
 
-            Map<GenTypeEnum, String> codeMap = new HashMap<>(codeCreatorContentList.size());
+            Map<GenTypeEnum, CodeCreatorContent> codeMap = new HashMap<>(codeCreatorContentList.size());
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
-                codeMap.put(codeCreatorContent.getGenType(), codeCreatorContent.getContent());
+                codeMap.put(codeCreatorContent.getGenType(), codeCreatorContent);
             }
-            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(codeCreatorProperties, uidGenerator, table, codeMap, i);
+            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(codeCreatorProperties, table, codeMap, i);
             codeTreeBuilder.buildCodeTree(previews, cache);
         }
         log.info("Code is generated successfully. size ={}", previews.size());
@@ -252,7 +252,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
                 IGenerator generator = GeneratorFactory.getGenerator(codeCreatorContent.getGenType());
-                GenerationStrategyEnum generationStrategy = genDto.getGenStrategy().getOrDefault(codeCreatorContent.getGenType(), GenerationStrategyEnum.OVERWRITE);
+                GenerationStrategyEnum generationStrategy = genDto.getGenStrategy().getOrDefault(codeCreatorContent.getId(), GenerationStrategyEnum.OVERWRITE);
                 globalConfig.enableController().setGenerationStrategy(generationStrategy);
                 globalConfig.enableService().setGenerationStrategy(generationStrategy);
                 globalConfig.enableServiceImpl().setGenerationStrategy(generationStrategy);
