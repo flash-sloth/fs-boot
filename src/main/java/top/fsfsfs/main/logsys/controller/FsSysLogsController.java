@@ -6,10 +6,6 @@ import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +26,8 @@ import top.fsfsfs.main.logsys.entity.FsSysLogs;
 import top.fsfsfs.main.logsys.query.FsSysLogsQuery;
 import top.fsfsfs.main.logsys.service.FsSysLogsService;
 import top.fsfsfs.main.logsys.vo.FsSysLogsVo;
+
+import java.util.List;
 
 /**
  * 系统日志 控制层。
@@ -53,8 +51,8 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping
-    @Operation(summary="新增", description="保存系统日志")
-    public R<Long> save(@Validated @RequestBody @Parameter(description="系统日志") FsSysLogsDto dto) {
+    @Operation(summary = "新增", description = "保存系统日志")
+    public R<Long> save(@Validated @RequestBody @Parameter(description = "系统日志") FsSysLogsDto dto) {
         return R.success(fsSysLogsService.saveDto(dto).getId());
     }
 
@@ -65,7 +63,7 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping
-    @Operation(summary="删除", description="根据主键删除系统日志")
+    @Operation(summary = "删除", description = "根据主键删除系统日志")
     public R<Boolean> delete(@RequestBody List<Long> ids) {
         return R.success(fsSysLogsService.removeByIds(ids));
     }
@@ -77,8 +75,8 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping
-    @Operation(summary="修改", description="根据主键更新系统日志")
-    public R<Long> update(@Validated(BaseEntity.Update.class) @RequestBody @Parameter(description="系统日志主键")FsSysLogsDto dto) {
+    @Operation(summary = "修改", description = "根据主键更新系统日志")
+    public R<Long> update(@Validated(BaseEntity.Update.class) @RequestBody @Parameter(description = "系统日志主键") FsSysLogsDto dto) {
         return R.success(fsSysLogsService.updateDtoById(dto).getId());
     }
 
@@ -89,7 +87,7 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
      * @return 系统日志详情
      */
     @GetMapping("/{id}")
-    @Operation(summary="单体查询", description="根据主键获取系统日志")
+    @Operation(summary = "单体查询", description = "根据主键获取系统日志")
     public R<FsSysLogsVo> get(@PathVariable Long id) {
         FsSysLogs entity = fsSysLogsService.getById(id);
         return R.success(BeanUtil.toBean(entity, FsSysLogsVo.class));
@@ -102,11 +100,13 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
      * @return 分页对象
      */
     @PostMapping("/page")
-    @Operation(summary="分页列表查询", description="分页查询系统日志")
-    public R<Page<FsSysLogsVo>> page(@RequestBody @Validated  PageParams<FsSysLogsQuery> params) {
+    @Operation(summary = "分页列表查询", description = "分页查询系统日志")
+    public R<Page<FsSysLogsVo>> page(@RequestBody @Validated PageParams<FsSysLogsQuery> params) {
         Page<FsSysLogsVo> page = Page.of(params.getCurrent(), params.getSize());
-        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(params.getModel().getClass()));
-        ControllerUtil.buildOrder(wrapper, params);
+        FsSysLogs entity = BeanUtil.toBean(params.getModel(), FsSysLogs.class);
+        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(entity.getClass()));
+
+        ControllerUtil.buildOrder(wrapper, params, entity.getClass());
         fsSysLogsService.pageAs(page, wrapper, FsSysLogsVo.class);
         return R.success(page);
         // Page<FsSysLogs> page = Page.of(params.getCurrent(), params.getSize());
