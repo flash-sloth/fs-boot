@@ -22,6 +22,6 @@ import top.fsfsfs.main.generator.vo.CodeBaseClassVo;
 @RestController
 @Validated
 @Tag(name = "基类管理接口")
-@RequestMapping("/codeBaseClass")
+@RequestMapping("/main/codeBaseClass")
 public class CodeBaseClassController extends SuperController<CodeBaseClassService, Long, CodeBaseClass, CodeBaseClassDto, CodeBaseClassQuery, CodeBaseClassVo> {
 }

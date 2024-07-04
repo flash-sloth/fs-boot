@@ -22,6 +22,6 @@ import top.fsfsfs.main.generator.vo.CodeCreatorContentVo;
 @RestController
 @Validated
 @Tag(name = "代码生成内容接口")
-@RequestMapping("/codeCreatorContent")
+@RequestMapping("/main/codeCreatorContent")
 public class CodeCreatorContentController extends SuperController<CodeCreatorContentService, Long, CodeCreatorContent, CodeCreatorContentDto, CodeCreatorContentQuery, CodeCreatorContentVo> {
 }
