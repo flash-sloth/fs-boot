@@ -6,6 +6,8 @@ import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,13 +49,13 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
     /**
      * 添加系统日志。
      *
-     * @param dto 系统日志
+     * @param fsSysLogsDto 系统日志
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping
     @Operation(summary = "新增", description = "保存系统日志")
-    public R<Long> save(@Validated @RequestBody @Parameter(description = "系统日志") FsSysLogsDto dto) {
-        return R.success(fsSysLogsService.saveDto(dto).getId());
+    public R<Long> save(@Validated @RequestBody @Parameter(description = "系统日志") FsSysLogsDto fsSysLogsDto) {
+        return R.success(fsSysLogsService.saveDto(fsSysLogsDto).getId());
     }
 
     /**
@@ -88,7 +90,7 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
      */
     @GetMapping("/{id}")
     @Operation(summary = "单体查询", description = "根据主键获取系统日志")
-    public R<FsSysLogsVo> get(@PathVariable Long id) {
+    public R<FsSysLogsVo> get(HttpServletResponse response, HttpServletRequest request, @PathVariable Long id) {
         FsSysLogs entity = fsSysLogsService.getById(id);
         return R.success(BeanUtil.toBean(entity, FsSysLogsVo.class));
     }
@@ -96,17 +98,17 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
     /**
      * 分页查询系统日志。
      *
-     * @param params 分页对象
+     * @param fsSysLogsQueryParams 分页对象
      * @return 分页对象
      */
     @PostMapping("/page")
     @Operation(summary = "分页列表查询", description = "分页查询系统日志")
-    public R<Page<FsSysLogsVo>> page(@RequestBody @Validated PageParams<FsSysLogsQuery> params) {
-        Page<FsSysLogsVo> page = Page.of(params.getCurrent(), params.getSize());
-        FsSysLogs entity = BeanUtil.toBean(params.getModel(), FsSysLogs.class);
-        QueryWrapper wrapper = QueryWrapper.create(params.getModel(), ControllerUtil.buildOperators(entity.getClass()));
+    public R<Page<FsSysLogsVo>> page(@RequestBody @Validated PageParams<FsSysLogsQuery> fsSysLogsQueryParams) {
+        Page<FsSysLogsVo> page = Page.of(fsSysLogsQueryParams.getCurrent(), fsSysLogsQueryParams.getSize());
+        FsSysLogs entity = BeanUtil.toBean(fsSysLogsQueryParams.getModel(), FsSysLogs.class);
+        QueryWrapper wrapper = QueryWrapper.create(fsSysLogsQueryParams.getModel(), ControllerUtil.buildOperators(entity.getClass()));
 
-        ControllerUtil.buildOrder(wrapper, params, entity.getClass());
+        ControllerUtil.buildOrder(wrapper, fsSysLogsQueryParams, entity.getClass());
         fsSysLogsService.pageAs(page, wrapper, FsSysLogsVo.class);
         return R.success(page);
         // Page<FsSysLogs> page = Page.of(params.getCurrent(), params.getSize());

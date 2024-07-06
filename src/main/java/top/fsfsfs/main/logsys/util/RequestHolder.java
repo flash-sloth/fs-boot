@@ -3,11 +3,15 @@ package top.fsfsfs.main.logsys.util;
 import cn.hutool.http.useragent.Browser;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
+import cn.hutool.json.JSONUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -70,5 +74,22 @@ public class RequestHolder {
         UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
         Browser browser = userAgent.getBrowser();
         return browser.getName();
+    }
+
+
+    // 假设request是传入的HttpServletRequest对象
+    public static String  getParameterByRequest() {
+        HttpServletRequest request = getHttpServletRequest();
+        // 获取所有的请求参数名
+        Enumeration<String> paramNames = request.getParameterNames();
+        Map<String, String[]> paramMap=new HashMap<>();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            String[] paramValues = request.getParameterValues(paramName);
+
+            paramMap.put(paramName, paramValues);
+
+        }
+        return JSONUtil.toJsonStr(paramMap);
     }
 }
