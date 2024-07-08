@@ -136,37 +136,37 @@ public class FsSysLogsVo extends TreeNode<Long> implements Serializable {
      * 创建人
      */
     @Schema(description = "创建人")
-    private Long createBy;
+    private Long createdBy;
 
     /**
      * 修改人
      */
     @Schema(description = "修改人")
-    private Long updateBy;
+    private Long updatedBy;
 
     /**
      * 删除时间
      */
-    @Schema(description = "删除时间")
-    private LocalDateTime deleteAt;
+    @Schema(description = "删除标志")
+    private Long deletedAt;
 
     /**
      * 删除用户
      */
     @Schema(description = "删除用户")
-    private Long deleteBy;
+    private Long deletedBy;
 
     /**
      * 创建时间
      */
     @Schema(description = "创建时间")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
     @Schema(description = "修改时间")
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     /**
      * 删除标志,0：正常，非0（时间戳）：删除

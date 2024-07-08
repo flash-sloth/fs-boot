@@ -134,14 +134,14 @@ public class FsSysLogsQuery implements Serializable {
     /**
      * 删除时间
      */
-    @Schema(description = "删除时间")
-    private LocalDateTime deleteTime;
+    @Schema(description = "删除标志")
+    private Long deletedAt;
 
     /**
      * 删除用户
      */
     @Schema(description = "删除用户")
-    private Long deleteBy;
+    private Long deletedBy;
 
     /**
      * 创建时间

@@ -5,6 +5,7 @@ import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import top.fsfsfs.basic.base.entity.TreeEntity;
+import top.fsfsfs.basic.mvcflex.controller.SuperSimpleController;
 import top.fsfsfs.basic.mvcflex.controller.SuperTreeController;
 import top.fsfsfs.codegen.Generator;
 import top.fsfsfs.codegen.config.ColumnConfig;
@@ -33,6 +34,7 @@ import top.fsfsfs.main.system.entity.SysMenu;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -111,7 +113,7 @@ public class CodeGeneratorTest {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/flash_sloth?characterEncoding=utf-8");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("123456");
 
         //创建配置内容，两种风格都可以。
         GlobalConfig globalConfig = createGlobalConfigUseStyle1();
@@ -129,13 +131,13 @@ public class CodeGeneratorTest {
         GlobalConfig globalConfig = new GlobalConfig();
 
         //设置根包
-        globalConfig.setBasePackage("com.fsfsfs.demo.test");
-//        globalConfig.setBasePackage("top.fsfsfs.main.generator");
+        //globalConfig.setBasePackage("com.fsfsfs.demo.test");
+        globalConfig.setBasePackage("top.fsfsfs.main.system");
 
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-        globalConfig.setGenerateTable("fs_code_test_simple");
+        globalConfig.setGenerateTable("fs_sys_param");
 //        globalConfig.setGenerateTable("fs_code_test_tree");
 //        globalConfig.setGenerateTable("fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
@@ -149,60 +151,63 @@ public class CodeGeneratorTest {
         ;
 
         globalConfig.setTableConfig(TableConfig.create()
-//                        .setTableName("fs_code_creator_column")
+                        .setTableName("fs_sys_param")
                 .setInsertListenerClass(DefaultInsertListener.class)
                 .setUpdateListenerClass(DefaultUpdateListener.class));
 
         globalConfig.enableEntity()
-//                .setSuperClass(TreeEntity.class)
+                .setSuperClass(TreeEntity.class)
                 .setSuperClass(SuperEntity.class)
                 .setGenericityType(Long.class)
                 .setWithLombok(true)
                 .setWithBaseClassEnable(true)
         ;
 
-//        globalConfig.enableVo()
-////                .setSuperClass(TreeNode.class).setGenericityType(Long.class)
-//                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
-////                .setImplInterfaces(Serializable.class)
-//;
-//
-//        globalConfig.enableQuery()
-//                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
-////                .setImplInterfaces(Serializable.class)
-//                ;
-//
-//        globalConfig.enableDto()
-//                .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
-////                .setImplInterfaces(Serializable.class)
-//                .setIgnoreColumns(new HashSet<>(Arrays.asList(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
-//                        SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
-//                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)))
-//        ;
+        globalConfig.enableVo()
+                .setSuperClass(TreeNode.class)
+                .setGenericityType(Long.class)
+                .setWithLombok(true)
+                .setWithSwagger(true)
+                .setWithExcel(true)
+//                .setImplInterfaces(Serializable.class)
+        ;
 
-//        globalConfig.enableController()
-//                .setRequestMappingPrefix("/demo")
-////                .setWithCrud(true)
-////                .setSuperClass(SuperController.class)
-////                .setSuperClass(SuperWriteController.class)
-////                .setSuperClass(SuperReadController.class)
-//                .setSuperClass(SuperTreeController.class)
-////                .setSuperClass(SuperSimpleController.class)
-//                .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
+        globalConfig.enableQuery()
+                .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
+                .setImplInterfaces(Serializable.class);
 
-//        globalConfig.enableMapperXml();
+//
+        globalConfig.enableDto()
+                .setWithLombok(true).setWithSwagger(true).setWithValidator(true)
+                //.setImplInterfaces(Serializable.class)
+                .setIgnoreColumns(new HashSet<>(Arrays.asList(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
+                        SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
+                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)))
+        ;
+
+        globalConfig.enableController()
+                .setRequestMappingPrefix("/main/system")
+                .setWithCrud(true)
+//                .setSuperClass(SuperController.class)
+//                .setSuperClass(SuperWriteController.class)
+//                .setSuperClass(SuperReadController.class)
+               .setSuperClass(SuperTreeController.class)
+//               .setSuperClass(SuperSimpleController.class)
+               .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
+
+        globalConfig.enableMapperXml();
 
 //        //设置生成 mapper
-//        globalConfig.enableMapper().setSuperClass(SuperMapper.class);
-//        globalConfig.enableService().setSuperClass(SuperService.class);
-//        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
+        globalConfig.enableMapper().setSuperClass(SuperMapper.class);
+        globalConfig.enableService().setSuperClass(SuperService.class);
+        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();
         columnConfig.setColumnName("tenant_id");
         columnConfig.setLarge(true);
         columnConfig.setVersion(true);
-        globalConfig.setColumnConfig("fs_gen_test_tree", columnConfig);
+        globalConfig.setColumnConfig("fs_sys_param", columnConfig);
 
         JdbcTypeMapping.setTypeMapper(new JdbcTypeMapping.JdbcTypeMapper() {
             @Override

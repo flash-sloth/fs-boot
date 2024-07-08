@@ -110,4 +110,13 @@ public class FsSysLogsBase extends SuperEntity<Long> implements Serializable {
      */
     private Integer delFlag;
 
+    /**
+     * 删除标志
+     */
+    private Long deletedAt;
+
+    /**
+     * 删除用户
+     */
+    private Long deletedBy;
 }
