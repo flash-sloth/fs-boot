@@ -106,10 +106,10 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             ImportTableBuilder importTableBuilder = new ImportTableBuilder(table, codeCreatorProperties, codeBaseClassList, id);
             CodeCreator codeCreator = importTableBuilder.buildCodeCreator(importDto.getDsId());
 
-            List<PropertyDesign> propertyDesignList = new ArrayList<>();
-            List<SearchDesign> searchDesignList = new ArrayList<>();
-            List<FormDesign> formDesignList = new ArrayList<>();
-            List<ListDesign> listDesignList = new ArrayList<>();
+//            List<PropertyDesign> propertyDesignList = new ArrayList<>();
+//            List<SearchDesign> searchDesignList = new ArrayList<>();
+//            List<FormDesign> formDesignList = new ArrayList<>();
+//            List<ListDesign> listDesignList = new ArrayList<>();
 
             List<Column> allColumns = table.getAllColumns();
             for (int i = 0; i < allColumns.size(); i++) {
@@ -117,18 +117,18 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
                 columnList.add(importTableBuilder.fillCodeCreatorColumn(column, i));
 
-                propertyDesignList.add(importTableBuilder.fillPropertyDesign(column));
-                searchDesignList.add(importTableBuilder.fillSearchDesign(column, i));
-                listDesignList.add(importTableBuilder.fillListDesign(column, i));
-                formDesignList.add(importTableBuilder.fillFormDesign(column, i));
+//                propertyDesignList.add(importTableBuilder.fillPropertyDesign(column));
+//                searchDesignList.add(importTableBuilder.fillSearchDesign(column, i));
+//                listDesignList.add(importTableBuilder.fillListDesign(column, i));
+//                formDesignList.add(importTableBuilder.fillFormDesign(column, i));
                 //TODO 其他 tree
             }
 
 
-            codeCreator.setPropertyDesign(propertyDesignList);
-            codeCreator.setSearchDesign(searchDesignList);
-            codeCreator.setFromDesign(formDesignList);
-            codeCreator.setListDesign(listDesignList);
+//            codeCreator.setPropertyDesign(propertyDesignList);
+//            codeCreator.setSearchDesign(searchDesignList);
+//            codeCreator.setFromDesign(formDesignList);
+//            codeCreator.setListDesign(listDesignList);
             list.add(codeCreator);
         }
 

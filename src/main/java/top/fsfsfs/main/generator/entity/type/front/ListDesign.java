@@ -15,12 +15,15 @@
 
 package top.fsfsfs.main.generator.entity.type.front;
 
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.config.ControllerConfig;
+import top.fsfsfs.codegen.config.front.ListConfig;
 
 /**
  * 代码生成器 表格配置
@@ -34,6 +37,7 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@AutoMapper(target = ListConfig.class)
 public class ListDesign {
     /** 字段名 */
     private String name;
@@ -51,25 +55,8 @@ public class ListDesign {
     private String align;
 
     /**
-     * 组件类型
-     */
-    private String componentType;
-
-    /**
-     * 日期时间格式
-     */
-    private String format;
-    /**
-     * 是否列头删选
-     */
-    private Boolean filter;
-    /** 列宽拖动 */
-    private Boolean resizable;
-
-    /**
      * 顺序 升序
      */
     private Integer sequence;
-    /** 是否启用列排序 */
-    private Boolean sort;
+
 }

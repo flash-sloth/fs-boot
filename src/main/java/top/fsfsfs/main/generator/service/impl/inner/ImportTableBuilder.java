@@ -299,6 +299,11 @@ public class ImportTableBuilder {
         codeCreatorColumn.setIsNullable(column.getNullable() == ResultSetMetaData.columnNullable);
         codeCreatorColumn.setDefValue(column.getPropertyDefaultValue());
         codeCreatorColumn.setWeight(i);
+
+        codeCreatorColumn.setPropertyDesign(fillPropertyDesign(column));
+        codeCreatorColumn.setSearchDesign(fillSearchDesign(column, i));
+        codeCreatorColumn.setListDesign(fillListDesign(column, i));
+        codeCreatorColumn.setFormDesign(fillFormDesign(column, i));
         return codeCreatorColumn;
     }
 
@@ -333,7 +338,6 @@ public class ImportTableBuilder {
         design.setName(column.getName());
         design.setShow(true);
         design.setHidden(false);
-        design.setComponentType(column.getTsType());
         design.setSequence(index);
         return design;
     }

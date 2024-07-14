@@ -1,16 +1,22 @@
 package top.fsfsfs.main.generator.entity.base;
 
-import java.io.Serializable;
-import top.fsfsfs.basic.base.entity.SuperEntity;
-
-import java.io.Serial;
-
+import com.mybatisflex.annotation.Column;
+import com.mybatisflex.core.handler.FastjsonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lombok.EqualsAndHashCode;
+import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.main.generator.entity.type.front.FormDesign;
+import top.fsfsfs.main.generator.entity.type.front.ListDesign;
+import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
+import top.fsfsfs.main.generator.entity.type.front.SearchDesign;
+import top.fsfsfs.main.generator.entity.type.front.TreeDesign;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 代码生成字段 实体类。
@@ -85,6 +91,30 @@ public class CodeCreatorColumnBase extends SuperEntity<Long> implements Serializ
      * 排序
      */
     private Integer weight;
+
+
+    /**
+     * 搜索配置
+     */
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private SearchDesign searchDesign;
+
+    /**
+     * 表格配置
+     */
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private ListDesign listDesign;
+    /**
+     * 表单配置
+     */
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private FormDesign formDesign;
+
+    /**
+     * 属性配置
+     */
+    @Column(typeHandler = FastjsonTypeHandler.class)
+    private PropertyDesign propertyDesign;
 
     /**
      * 删除者

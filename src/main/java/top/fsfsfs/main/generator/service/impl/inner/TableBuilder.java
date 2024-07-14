@@ -16,8 +16,6 @@
 package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Multimap;
 import io.github.linpeilie.Converter;
@@ -40,6 +38,7 @@ import top.fsfsfs.codegen.config.ServiceImplConfig;
 import top.fsfsfs.codegen.config.StrategyConfig;
 import top.fsfsfs.codegen.config.TableConfig;
 import top.fsfsfs.codegen.config.VoConfig;
+import top.fsfsfs.codegen.config.front.ListConfig;
 import top.fsfsfs.codegen.dialect.JdbcTypeMapping;
 import top.fsfsfs.codegen.dialect.TsTypeMapping;
 import top.fsfsfs.codegen.entity.Column;
@@ -56,6 +55,8 @@ import top.fsfsfs.main.generator.entity.type.ServiceDesign;
 import top.fsfsfs.main.generator.entity.type.ServiceImplDesign;
 import top.fsfsfs.main.generator.entity.type.VoDesign;
 import top.fsfsfs.main.generator.entity.type.XmlDesign;
+import top.fsfsfs.main.generator.entity.type.front.FrontDesign;
+import top.fsfsfs.main.generator.entity.type.front.ListDesign;
 import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties.DtoRule;
@@ -64,15 +65,12 @@ import top.fsfsfs.main.generator.properties.CodeCreatorProperties.QueryRule;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties.StrategyRule;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties.VoRule;
 import top.fsfsfs.util.utils.ClassUtils;
-import top.fsfsfs.util.utils.CollHelper;
 
 import javax.sql.DataSource;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -165,6 +163,7 @@ public class TableBuilder {
         CodeCreatorProperties.DtoRule dtoRule = codeCreatorProperties.getDtoRule();
 
         PackageDesign packageDesign = codeCreator.getPackageDesign();
+        FrontDesign frontDesign = codeCreator.getFrontDesign();
         ControllerDesign controllerDesign = codeCreator.getControllerDesign();
         ServiceDesign serviceDesign = codeCreator.getServiceDesign();
         ServiceImplDesign serviceImplDesign = codeCreator.getServiceImplDesign();
@@ -191,7 +190,10 @@ public class TableBuilder {
         String xmlPath = StrUtil.isNotEmpty(packageDesign.getModule()) ? xmlDesign.getPath() + StrPool.SLASH + packageDesign.getModule() : xmlDesign.getPath();
         globalConfig.getPackageConfig().
                 setSourceDir(packageDesign.getSourceDir())
+                .setFrontSourceDir(frontDesign.getSourceDir())
                 .setBasePackage(basePackage)
+                .setModule(packageDesign.getModule())
+//                .setSubSystem() // TODO 这里这么取值
                 .setVoPackage(basePackage + StrPool.DOT + voDesign.getPackageName())
                 .setDtoPackage(basePackage + StrPool.DOT + dtoDesign.getPackageName())
                 .setQueryPackage(basePackage + StrPool.DOT + queryDesign.getPackageName())
@@ -217,24 +219,11 @@ public class TableBuilder {
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.DOC)
                 .setWithActiveRecord(false);
 
-        List<PropertyDesign> propertyDesignList = codeCreator.getPropertyDesign();
-        if (CollUtil.isNotEmpty(propertyDesignList)) {
-            PropertyDesign pkColumn = propertyDesignList.get(0);
-            entityConfig.setGenericityType(ClassUtils.forName(pkColumn.getPropertyType()));
-        }
-
         VoConfig voConfig = globalConfig.enableVo();
         CONVERTER.convert(voDesign, voConfig);
         voConfig.setSuperClass(ClassUtils.forName(voDesign.getSuperClassName()))
                 .setImplInterfaces(voRule.getImplInterfaces())
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.DOC);
-
-        if (ClassUtils.equals(TreeNode.class, voConfig.getSuperClass())) {
-            PropertyDesign pkColumn = propertyDesignList.get(0);
-            voConfig.setGenericityType(ClassUtils.forName(pkColumn.getPropertyType()));
-        }
-
-
 
         DtoConfig dtoConfig = globalConfig.enableDto();
         CONVERTER.convert(dtoDesign, dtoConfig);
@@ -279,9 +268,6 @@ public class TableBuilder {
             Collection<CodeCreatorColumn> columnList = map.get(codeCreator.getId());
             GlobalConfig globalConfig = buildGlobalConfig(codeCreator);
 
-            List<PropertyDesign> propertyDesignList = codeCreator.getPropertyDesign();
-            Map<String, PropertyDesign> propertyDesignMap = CollUtil.isNotEmpty(propertyDesignList) ? CollHelper.uniqueIndex(propertyDesignList, PropertyDesign::getName, item -> item) : Collections.emptyMap();
-
             Table table = new Table();
             table.setName(codeCreator.getTableName());
             table.setComment(codeCreator.getTableDescription());
@@ -306,7 +292,7 @@ public class TableBuilder {
                 //注释
                 column.setComment(creatorColumn.getRemarks());
 
-                PropertyDesign propertyDesign = propertyDesignMap.get(creatorColumn.getName());
+                PropertyDesign propertyDesign = creatorColumn.getPropertyDesign();
                 if (propertyDesign != null) {
                     column.setPropertyType(propertyDesign.getPropertyType());
                     column.setTsType(propertyDesign.getTsType());
@@ -314,7 +300,15 @@ public class TableBuilder {
                     column.setPropertyType(JdbcTypeMapping.getType(creatorColumn.getTypeName(), table, column));
                     column.setTsType(TsTypeMapping.getType(column.getRawType(), creatorColumn.getTypeName(), table, column));
                 }
+                ListDesign listDesign = creatorColumn.getListDesign();
+                column.setListConfig(CONVERTER.convert(listDesign, ListConfig.class));
                 table.addColumn(column);
+
+                if (column.getPrimaryKey()) {
+                    globalConfig.getEntityConfig().setGenericityType(ClassUtils.forName(column.getPropertyType()));
+                    globalConfig.getVoConfig().setGenericityType(ClassUtils.forName(column.getPropertyType()));
+                }
+
             }
 
             tables.add(table);

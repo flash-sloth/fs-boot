@@ -1,17 +1,8 @@
 package top.fsfsfs.boot;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
-import top.fsfsfs.basic.base.entity.TreeEntity;
-import top.fsfsfs.basic.mvcflex.controller.SuperSimpleController;
-import top.fsfsfs.basic.mvcflex.controller.SuperTreeController;
-import top.fsfsfs.codegen.Generator;
-import top.fsfsfs.codegen.config.ColumnConfig;
-import top.fsfsfs.codegen.config.EntityConfig;
-import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.TableConfig;
 import com.mybatisflex.core.table.TableInfo;
 import com.mybatisflex.core.table.TableInfoFactory;
 import io.github.linpeilie.Converter;
@@ -25,6 +16,11 @@ import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.basic.utils.StrPool;
+import top.fsfsfs.codegen.Generator;
+import top.fsfsfs.codegen.config.ColumnConfig;
+import top.fsfsfs.codegen.config.EntityConfig;
+import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.config.TableConfig;
 import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.codegen.dialect.JdbcTypeMapping;
 import top.fsfsfs.codegen.entity.Column;
@@ -84,7 +80,7 @@ public class CodeGeneratorTest {
     }
 
     @Test
-    public void hutoolZip () throws Exception {
+    public void hutoolZip() throws Exception {
         File file = new File("/Users/tangyh/Downloads", "汤云汉测试.pdf");
         System.out.println(file.exists());
     }
@@ -97,6 +93,7 @@ public class CodeGeneratorTest {
     }
 
     private final static Converter CONVERTER = new Converter();
+
     @Test
     public void test5() {
         EntityDesign entityDesign = new EntityDesign();
@@ -113,7 +110,7 @@ public class CodeGeneratorTest {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/flash_sloth?characterEncoding=utf-8");
         dataSource.setUsername("root");
-        dataSource.setPassword("123456");
+        dataSource.setPassword("root");
 
         //创建配置内容，两种风格都可以。
         GlobalConfig globalConfig = createGlobalConfigUseStyle1();
@@ -132,12 +129,13 @@ public class CodeGeneratorTest {
 
         //设置根包
         //globalConfig.setBasePackage("com.fsfsfs.demo.test");
-        globalConfig.setBasePackage("top.fsfsfs.main.system");
+        globalConfig.setBasePackage("top.fsfsfs");
+        globalConfig.getPackageConfig().setSubSystem("main").setModule("generator");
 
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-        globalConfig.setGenerateTable("fs_sys_param");
+        globalConfig.setGenerateTable("fs_code_type");
 //        globalConfig.setGenerateTable("fs_code_test_tree");
 //        globalConfig.setGenerateTable("fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
@@ -151,12 +149,11 @@ public class CodeGeneratorTest {
         ;
 
         globalConfig.setTableConfig(TableConfig.create()
-                        .setTableName("fs_sys_param")
                 .setInsertListenerClass(DefaultInsertListener.class)
                 .setUpdateListenerClass(DefaultUpdateListener.class));
 
         globalConfig.enableEntity()
-                .setSuperClass(TreeEntity.class)
+//                .setSuperClass(TreeEntity.class)
                 .setSuperClass(SuperEntity.class)
                 .setGenericityType(Long.class)
                 .setWithLombok(true)
@@ -164,8 +161,8 @@ public class CodeGeneratorTest {
         ;
 
         globalConfig.enableVo()
-                .setSuperClass(TreeNode.class)
-                .setGenericityType(Long.class)
+//                .setSuperClass(TreeNode.class)
+//                .setGenericityType(Long.class)
                 .setWithLombok(true)
                 .setWithSwagger(true)
                 .setWithExcel(true)
@@ -185,15 +182,16 @@ public class CodeGeneratorTest {
                         SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)))
         ;
 
+
         globalConfig.enableController()
-                .setRequestMappingPrefix("/main/system")
-                .setWithCrud(true)
-//                .setSuperClass(SuperController.class)
+                .setRequestMappingPrefix("/" + globalConfig.getPackageConfig().getSubSystem() + "/" + globalConfig.getPackageConfig().getModule())
+//                .setWithCrud(true)
+                .setSuperClass(SuperController.class)
 //                .setSuperClass(SuperWriteController.class)
 //                .setSuperClass(SuperReadController.class)
-               .setSuperClass(SuperTreeController.class)
+//               .setSuperClass(SuperTreeController.class)
 //               .setSuperClass(SuperSimpleController.class)
-               .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
+                .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
 
         globalConfig.enableMapperXml();
 
@@ -201,6 +199,7 @@ public class CodeGeneratorTest {
         globalConfig.enableMapper().setSuperClass(SuperMapper.class);
         globalConfig.enableService().setSuperClass(SuperService.class);
         globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
+//        globalConfig.enableFront();
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();

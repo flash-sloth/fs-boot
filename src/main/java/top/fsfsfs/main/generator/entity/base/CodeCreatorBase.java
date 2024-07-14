@@ -142,33 +142,33 @@ public class CodeCreatorBase extends SuperEntity<Long> implements Serializable {
     @Column(typeHandler = FastjsonTypeHandler.class)
     private FrontDesign frontDesign;
 
-    /**
-     * 搜索配置
-     */
-    @Column(typeHandler = FastjsonTypeHandler.class)
-    private List<SearchDesign> searchDesign;
+//    /**
+//     * 搜索配置
+//     */
+//    @Column(typeHandler = FastjsonTypeHandler.class)
+//    private List<SearchDesign> searchDesign;
 
-    /**
-     * 表格配置
-     */
-    @Column(typeHandler = FastjsonTypeHandler.class)
-    private List<ListDesign> listDesign;
-    /**
-     * 树结构配置
-     */
-    @Column(typeHandler = FastjsonTypeHandler.class)
-    private List<TreeDesign> treeDesign;
-    /**
-     * 表单配置
-     */
-    @Column(typeHandler = FastjsonTypeHandler.class)
-    private List<FormDesign> fromDesign;
-
-    /**
-     * 属性配置
-     */
-    @Column(typeHandler = FastjsonTypeHandler.class)
-    private List<PropertyDesign> propertyDesign;
+//    /**
+//     * 表格配置
+//     */
+//    @Column(typeHandler = FastjsonTypeHandler.class)
+//    private List<ListDesign> listDesign;
+//    /**
+//     * 树结构配置
+//     */
+//    @Column(typeHandler = FastjsonTypeHandler.class)
+//    private List<TreeDesign> treeDesign;
+//    /**
+//     * 表单配置
+//     */
+//    @Column(typeHandler = FastjsonTypeHandler.class)
+//    private List<FormDesign> fromDesign;
+//
+//    /**
+//     * 属性配置
+//     */
+//    @Column(typeHandler = FastjsonTypeHandler.class)
+//    private List<PropertyDesign> propertyDesign;
     /**
      * 按钮配置
      */
