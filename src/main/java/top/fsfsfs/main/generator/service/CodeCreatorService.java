@@ -54,4 +54,11 @@ public interface CodeCreatorService extends SuperService<CodeCreator> {
      * @return 字节
      */
     DownloadVO download(List<Long> ids, List<Long> codeIds);
+
+    /**
+     * 删除表和从表数据
+     * @param ids id
+     * @return 是否成功
+     */
+    Boolean removeAllByIds(List<Long> ids);
 }

@@ -8,7 +8,7 @@ import top.fsfsfs.main.generator.entity.CodeType;
  * 字段类型管理 映射层。
  *
  * @author tangyh
- * @since 2024-07-14 11:57:37
+ * @since 2024-07-15 00:41:12
  */
 @Repository
 public interface CodeTypeMapper extends SuperMapper<CodeType> {

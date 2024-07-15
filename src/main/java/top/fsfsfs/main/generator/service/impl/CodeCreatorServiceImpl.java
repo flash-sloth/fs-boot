@@ -32,16 +32,14 @@ import top.fsfsfs.main.generator.entity.CodeBaseClass;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
 import top.fsfsfs.main.generator.entity.CodeCreatorContent;
-import top.fsfsfs.main.generator.entity.type.front.FormDesign;
-import top.fsfsfs.main.generator.entity.type.front.ListDesign;
-import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
-import top.fsfsfs.main.generator.entity.type.front.SearchDesign;
+import top.fsfsfs.main.generator.entity.CodeType;
 import top.fsfsfs.main.generator.mapper.CodeCreatorColumnMapper;
 import top.fsfsfs.main.generator.mapper.CodeCreatorContentMapper;
 import top.fsfsfs.main.generator.mapper.CodeCreatorMapper;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.service.CodeBaseClassService;
 import top.fsfsfs.main.generator.service.CodeCreatorService;
+import top.fsfsfs.main.generator.service.CodeTypeService;
 import top.fsfsfs.main.generator.service.impl.inner.CodeTreeBuilder;
 import top.fsfsfs.main.generator.service.impl.inner.ImportTableBuilder;
 import top.fsfsfs.main.generator.service.impl.inner.TableBuilder;
@@ -82,6 +80,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     private final CodeCreatorContentMapper codeCreatorContentMapper;
     private final BaseDatasourceService baseDatasourceService;
     private final CodeBaseClassService codeBaseClassService;
+    private final CodeTypeService codeTypeService;
 
     @Override
     public List<CodeCreatorVo> listTableMetadata(Long dsId) {
@@ -95,7 +94,8 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     public Boolean importTable(TableImportDto importDto) {
         DataSource dataSource = baseDatasourceService.getDs(importDto.getDsId());
         List<CodeBaseClass> codeBaseClassList = codeBaseClassService.list(QueryWrapper.create().eq(CodeBaseClass::getState, true).orderBy(CodeBaseClass::getWeight, true));
-        TableBuilder generatorUtil = new TableBuilder(dataSource, codeCreatorProperties);
+        List<CodeType> codeTypeList = codeTypeService.listAll();
+        TableBuilder generatorUtil = new TableBuilder(dataSource, codeTypeList, codeCreatorProperties);
         List<Table> tables = generatorUtil.whenImportGetTable(importDto.getTableNames());
 
         List<CodeCreator> list = new ArrayList<>();
@@ -106,29 +106,12 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             ImportTableBuilder importTableBuilder = new ImportTableBuilder(table, codeCreatorProperties, codeBaseClassList, id);
             CodeCreator codeCreator = importTableBuilder.buildCodeCreator(importDto.getDsId());
 
-//            List<PropertyDesign> propertyDesignList = new ArrayList<>();
-//            List<SearchDesign> searchDesignList = new ArrayList<>();
-//            List<FormDesign> formDesignList = new ArrayList<>();
-//            List<ListDesign> listDesignList = new ArrayList<>();
-
             List<Column> allColumns = table.getAllColumns();
             for (int i = 0; i < allColumns.size(); i++) {
                 Column column = allColumns.get(i);
 
                 columnList.add(importTableBuilder.fillCodeCreatorColumn(column, i));
-
-//                propertyDesignList.add(importTableBuilder.fillPropertyDesign(column));
-//                searchDesignList.add(importTableBuilder.fillSearchDesign(column, i));
-//                listDesignList.add(importTableBuilder.fillListDesign(column, i));
-//                formDesignList.add(importTableBuilder.fillFormDesign(column, i));
-                //TODO 其他 tree
             }
-
-
-//            codeCreator.setPropertyDesign(propertyDesignList);
-//            codeCreator.setSearchDesign(searchDesignList);
-//            codeCreator.setFromDesign(formDesignList);
-//            codeCreator.setListDesign(listDesignList);
             list.add(codeCreator);
         }
 
@@ -209,7 +192,9 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
         Multimap<Long, CodeCreatorColumn> map = CollHelper.iterableToMultiMap(allColumnList, CodeCreatorColumn::getCodeCreatorId, item -> item);
 
-        return new TableBuilder(codeCreatorProperties).getTableByCodeCreatorList(codeCreatorList, map);
+        List<CodeType> codeTypeList = codeTypeService.listAll();
+
+        return new TableBuilder(codeTypeList, codeCreatorProperties).getTableByCodeCreatorList(codeCreatorList, map);
     }
 
     @Override
@@ -329,5 +314,13 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
         String zipName = "代码(" + name + ").zip";
         return DownloadVO.builder().data(outputStream.toByteArray()).fileName(zipName).build();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean removeAllByIds(List<Long> ids) {
+        boolean b = removeByIds(ids);
+        codeCreatorColumnMapper.deleteByQuery(QueryWrapper.create().in(CodeCreatorColumn::getCodeCreatorId, ids));
+        return b;
     }
 }

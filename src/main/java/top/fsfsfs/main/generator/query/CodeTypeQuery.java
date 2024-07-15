@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * 字段类型管理 Query类（查询方法入参）。
  *
  * @author tangyh
- * @since 2024-07-14 11:57:37
+ * @since 2024-07-15 00:41:12
  */
 @Accessors(chain = true)
 @Data
@@ -35,6 +35,18 @@ public class CodeTypeQuery implements Serializable {
      */
     @Schema(description = "主键ID")
     private Long id;
+
+    /**
+     * 实体类字段完整包名
+     */
+    @Schema(description = "实体类字段完整包名")
+    private String javaType;
+
+    /**
+     * 前端字段类型
+     */
+    @Schema(description = "前端字段类型")
+    private String tsType;
 
     /**
      * JDBC字段类型
@@ -61,22 +73,16 @@ public class CodeTypeQuery implements Serializable {
     private String postgreType;
 
     /**
-     * 实体类字段完整包名
+     * 是否默认类型
      */
-    @Schema(description = "实体类字段完整包名")
-    private String javaType;
+    @Schema(description = "是否默认类型")
+    private Boolean def;
 
     /**
-     * 实体类字段类型
+     * 优先级;升序
      */
-    @Schema(description = "实体类字段类型")
-    private String javaSimpleType;
-
-    /**
-     * 前端字段类型
-     */
-    @Schema(description = "前端字段类型")
-    private String tsType;
+    @Schema(description = "优先级;升序")
+    private Integer weight;
 
     /**
      * 创建时间

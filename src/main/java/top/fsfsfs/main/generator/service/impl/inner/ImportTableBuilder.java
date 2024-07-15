@@ -15,6 +15,7 @@ import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.main.generator.entity.CodeBaseClass;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
+import top.fsfsfs.main.generator.entity.CodeType;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.entity.type.DtoDesign;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;

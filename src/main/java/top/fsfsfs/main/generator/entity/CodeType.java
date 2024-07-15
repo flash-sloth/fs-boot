@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
  * DO类：数据对象，可以在关联查询时，再次添加字段，重新生成代码时，忽略此文件。
  *
  * @author tangyh
- * @since 2024-07-14 11:57:37
+ * @since 2024-07-15 00:41:12
  */
 @Accessors(chain = true)
 @Data

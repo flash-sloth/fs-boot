@@ -137,7 +137,10 @@ public class CodeGeneratorTest {
         globalConfig.setTablePrefix("fs_");
         globalConfig.setGenerateTable("fs_code_type");
 //        globalConfig.setGenerateTable("fs_code_test_tree");
+//        globalConfig.setGenerateTable("fs_code_test_simple");
+
 //        globalConfig.setGenerateTable("fs_code_creator_column");
+
 //        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
 //        globalConfig.setGenerateTable("fs_sys_menu");
         globalConfig.setJdkVersion(17);
@@ -179,9 +182,7 @@ public class CodeGeneratorTest {
                 //.setImplInterfaces(Serializable.class)
                 .setIgnoreColumns(new HashSet<>(Arrays.asList(SuperEntity.CREATED_AT_FIELD, SuperEntity.CREATED_BY_FIELD,
                         SuperEntity.UPDATED_AT_FIELD, SuperEntity.UPDATED_BY_FIELD,
-                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)))
-        ;
-
+                        SuperEntity.DELETED_AT_FIELD, SuperEntity.DELETED_BY_FIELD)));
 
         globalConfig.enableController()
                 .setRequestMappingPrefix("/" + globalConfig.getPackageConfig().getSubSystem() + "/" + globalConfig.getPackageConfig().getModule())
@@ -210,7 +211,7 @@ public class CodeGeneratorTest {
 
         JdbcTypeMapping.setTypeMapper(new JdbcTypeMapping.JdbcTypeMapper() {
             @Override
-            public String getType(String jdbcType, Table table, Column column) {
+            public String getType(String rawType, String jdbcType, Table table, Column column) {
 
                 return null;
             }

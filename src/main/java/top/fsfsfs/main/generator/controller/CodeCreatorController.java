@@ -40,6 +40,11 @@ import java.util.List;
 @RequestMapping("/main/codeCreator")
 public class CodeCreatorController extends SuperController<CodeCreatorService, Long, CodeCreator, CodeCreatorDto, CodeCreatorQuery, CodeCreatorVo> {
 
+    @Override
+    public R<Boolean> delete(@RequestBody List<Long> ids) {
+        return R.success(superService.removeAllByIds(ids));
+    }
+
     @Operation(summary = "查询指定数据源的表结构", description = "查询指定数据源的表结构")
     @PostMapping("/listTableMetadata")
     @WebLog(value = "查询指定数据源的表结构")

@@ -16,6 +16,7 @@
 package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Multimap;
 import io.github.linpeilie.Converter;
@@ -45,6 +46,8 @@ import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
+import top.fsfsfs.main.generator.entity.CodeType;
+import top.fsfsfs.main.generator.entity.base.CodeTypeBase;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.entity.type.DtoDesign;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;
@@ -71,7 +74,10 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 代码生成
@@ -82,11 +88,13 @@ import java.util.Set;
 @AllArgsConstructor
 public class TableBuilder {
     private DataSource dataSource;
+    private List<CodeType> codeTypeList;
     private CodeCreatorProperties codeCreatorProperties;
     private final static Converter CONVERTER = new Converter();
     public final static String GLOBAL_CONFIG_KEY = "$codeCreator";
 
-    public TableBuilder(CodeCreatorProperties codeCreatorProperties) {
+    public TableBuilder(List<CodeType> codeTypeList, CodeCreatorProperties codeCreatorProperties) {
+        this.codeTypeList = codeTypeList;
         this.codeCreatorProperties = codeCreatorProperties;
     }
 
@@ -148,8 +156,53 @@ public class TableBuilder {
         ServiceImplConfig serviceImplConfig = globalConfig.enableServiceImpl();
         CONVERTER.convert(serviceImplRule, serviceImplConfig);
 
+        registerTypeMapper();
+
         Generator generator = new Generator(dataSource, globalConfig);
         return generator.getTables();
+    }
+
+    private void registerTypeMapper() {
+        // 默认类型
+        Optional<CodeType> defCodeType = codeTypeList.parallelStream().filter(CodeTypeBase::getDef).findFirst();
+
+        String defJavaType = defCodeType.orElse(new CodeType()).getJavaType();
+        Map<String, String> jdbcJavaMap = codeTypeList.stream()
+                .filter(codeType -> CollUtil.isNotEmpty(codeType.getJdbcType()))
+                .flatMap(codeType -> codeType.getJdbcType().stream()
+                        .map(jdbcType -> Map.entry(jdbcType, codeType.getJavaType())))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (existingValue, newValue) -> existingValue
+                ));
+
+
+        JdbcTypeMapping.setTypeMapper((rawType, javaType, table, column) -> {
+            String codeType = jdbcJavaMap.getOrDefault(rawType, defJavaType);
+            if (StrUtil.isNotBlank(codeType)) {
+                return codeType;
+            }
+            return javaType;
+        });
+
+        String defTsType = defCodeType.orElse(new CodeType()).getTsType();
+        Map<String, String> jdbcTsMap = codeTypeList.stream()
+                .filter(codeType -> CollUtil.isNotEmpty(codeType.getJdbcType()))
+                .flatMap(codeType -> codeType.getJdbcType().stream()
+                        .map(jdbcType -> Map.entry(jdbcType, codeType.getTsType())))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (existingValue, newValue) -> existingValue
+                ));
+        TsTypeMapping.setTypeMapper((rawType, javaType, table, column) -> {
+            String codeType = jdbcTsMap.getOrDefault(rawType, defTsType);
+            if (StrUtil.isNotBlank(codeType)) {
+                return codeType;
+            }
+            return "string";
+        });
     }
 
 
@@ -262,6 +315,7 @@ public class TableBuilder {
     }
 
     public List<Table> getTableByCodeCreatorList(List<CodeCreator> codeCreatorList, Multimap<Long, CodeCreatorColumn> map) {
+        registerTypeMapper();
 
         List<Table> tables = new ArrayList<>();
         for (CodeCreator codeCreator : codeCreatorList) {
@@ -297,7 +351,7 @@ public class TableBuilder {
                     column.setPropertyType(propertyDesign.getPropertyType());
                     column.setTsType(propertyDesign.getTsType());
                 } else {
-                    column.setPropertyType(JdbcTypeMapping.getType(creatorColumn.getTypeName(), table, column));
+                    column.setPropertyType(JdbcTypeMapping.getType(column.getRawType(), creatorColumn.getTypeName(), table, column));
                     column.setTsType(TsTypeMapping.getType(column.getRawType(), creatorColumn.getTypeName(), table, column));
                 }
                 ListDesign listDesign = creatorColumn.getListDesign();

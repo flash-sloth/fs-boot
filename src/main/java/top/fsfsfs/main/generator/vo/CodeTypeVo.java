@@ -1,14 +1,18 @@
 package top.fsfsfs.main.generator.vo;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.mybatisflex.core.handler.CommaSplitTypeHandler;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
 import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.main.generator.entity.base.CodeTypeBase;
 
 import java.io.Serial;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -21,7 +25,7 @@ import lombok.NoArgsConstructor;
  * 字段类型管理 VO类（通常用作Controller出参）。
  *
  * @author tangyh
- * @since 2024-07-14 11:57:37
+ * @since 2024-07-15 00:41:12
  */
 @Accessors(chain = true)
 @Data
@@ -43,46 +47,56 @@ public class CodeTypeVo implements Serializable {
     private Long id;
 
     /**
-     * JDBC字段类型
-     */
-    @Schema(description = "JDBC字段类型")
-    private String jdbcType;
-
-    /**
-     * Oracle字段类型
-     */
-    @Schema(description = "Oracle字段类型")
-    private String oracleType;
-
-    /**
-     * SQLServer字段类型
-     */
-    @Schema(description = "SQLServer字段类型")
-    private String sqlServerType;
-
-    /**
-     * Postgre字段类型
-     */
-    @Schema(description = "Postgre字段类型")
-    private String postgreType;
-
-    /**
      * 实体类字段完整包名
      */
     @Schema(description = "实体类字段完整包名")
     private String javaType;
 
     /**
-     * 实体类字段类型
-     */
-    @Schema(description = "实体类字段类型")
-    private String javaSimpleType;
-
-    /**
      * 前端字段类型
      */
     @Schema(description = "前端字段类型")
     private String tsType;
+
+    /**
+     * JDBC字段类型
+     */
+    @Schema(description = "JDBC字段类型")
+    @Column(typeHandler = CommaSplitTypeHandler.class)
+    private List<String> jdbcType;
+
+    /**
+     * Oracle字段类型
+     */
+    @Schema(description = "Oracle字段类型")
+    @Column(typeHandler = CommaSplitTypeHandler.class)
+    private List<String> oracleType;
+
+    /**
+     * SQLServer字段类型
+     */
+    @Schema(description = "SQLServer字段类型")
+    @Column(typeHandler = CommaSplitTypeHandler.class)
+    private List<String> sqlServerType;
+
+    /**
+     * Postgre字段类型
+     */
+    @Schema(description = "Postgre字段类型")
+    @Column(typeHandler = CommaSplitTypeHandler.class)
+    private List<String> postgreType;
+
+    /**
+     * 是否默认类型
+     */
+    @Schema(description = "是否默认类型")
+    private Boolean def;
+
+    /**
+     * 优先级;升序
+     */
+    @Schema(description = "优先级;升序")
+    private Integer weight;
 
     /**
      * 创建时间
