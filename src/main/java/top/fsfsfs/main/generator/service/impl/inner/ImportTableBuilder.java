@@ -15,7 +15,6 @@ import top.fsfsfs.codegen.entity.Table;
 import top.fsfsfs.main.generator.entity.CodeBaseClass;
 import top.fsfsfs.main.generator.entity.CodeCreator;
 import top.fsfsfs.main.generator.entity.CodeCreatorColumn;
-import top.fsfsfs.main.generator.entity.CodeType;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.entity.type.DtoDesign;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;
@@ -85,10 +84,14 @@ public class ImportTableBuilder {
         fillMenuDesign(codeCreator);
         fillButtonDesign(codeCreator);
 
-        FrontDesign frontDesign = new FrontDesign();
-
-        codeCreator.setFrontDesign(frontDesign);
+        fillFrontDesign(codeCreator);
         return codeCreator;
+    }
+
+    private void fillFrontDesign(CodeCreator codeCreator) {
+        CodeCreatorProperties.FrontRule frontRule = codeCreatorProperties.getFrontRule();
+        FrontDesign frontDesign = CONVERTER.convert(frontRule, FrontDesign.class);
+        codeCreator.setFrontDesign(frontDesign);
     }
 
     private void fillMenuDesign(CodeCreator codeCreator) {
@@ -345,7 +348,6 @@ public class ImportTableBuilder {
 
     public FormDesign fillFormDesign(Column column, int index) {
         FormDesign design = new FormDesign();
-        design.setName(column.getName());
         design.setShow(true);
         design.setHidden(false);
         design.setComponentType(column.getTsType());

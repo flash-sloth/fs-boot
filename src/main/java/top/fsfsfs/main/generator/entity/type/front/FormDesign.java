@@ -15,12 +15,15 @@
 
 package top.fsfsfs.main.generator.entity.type.front;
 
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.config.front.FormConfig;
+import top.fsfsfs.codegen.config.front.ListConfig;
 
 /**
  * 代码生成器 表单配置
@@ -34,10 +37,9 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@AutoMapper(target = FormConfig.class)
 public class FormDesign {
 
-    /** 字段名 */
-    private String name;
     /** 是否生成该字段 */
     private Boolean show;
     /** 是否隐藏字段 */
@@ -50,8 +52,6 @@ public class FormDesign {
      * 组件类型
      */
     private String componentType;
-
-
     /**
      * 顺序 升序
      */

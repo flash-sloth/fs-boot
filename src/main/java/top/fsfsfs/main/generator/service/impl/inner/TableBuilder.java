@@ -39,7 +39,10 @@ import top.fsfsfs.codegen.config.ServiceImplConfig;
 import top.fsfsfs.codegen.config.StrategyConfig;
 import top.fsfsfs.codegen.config.TableConfig;
 import top.fsfsfs.codegen.config.VoConfig;
+import top.fsfsfs.codegen.config.front.FormConfig;
 import top.fsfsfs.codegen.config.front.ListConfig;
+import top.fsfsfs.codegen.config.front.PropertyConfig;
+import top.fsfsfs.codegen.config.front.SearchConfig;
 import top.fsfsfs.codegen.dialect.JdbcTypeMapping;
 import top.fsfsfs.codegen.dialect.TsTypeMapping;
 import top.fsfsfs.codegen.entity.Column;
@@ -58,9 +61,11 @@ import top.fsfsfs.main.generator.entity.type.ServiceDesign;
 import top.fsfsfs.main.generator.entity.type.ServiceImplDesign;
 import top.fsfsfs.main.generator.entity.type.VoDesign;
 import top.fsfsfs.main.generator.entity.type.XmlDesign;
+import top.fsfsfs.main.generator.entity.type.front.FormDesign;
 import top.fsfsfs.main.generator.entity.type.front.FrontDesign;
 import top.fsfsfs.main.generator.entity.type.front.ListDesign;
 import top.fsfsfs.main.generator.entity.type.front.PropertyDesign;
+import top.fsfsfs.main.generator.entity.type.front.SearchDesign;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties.DtoRule;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties.EntityRule;
@@ -347,6 +352,7 @@ public class TableBuilder {
                 column.setComment(creatorColumn.getRemarks());
 
                 PropertyDesign propertyDesign = creatorColumn.getPropertyDesign();
+                column.setPropertyConfig(CONVERTER.convert(propertyDesign, PropertyConfig.class));
                 if (propertyDesign != null) {
                     column.setPropertyType(propertyDesign.getPropertyType());
                     column.setTsType(propertyDesign.getTsType());
@@ -356,6 +362,13 @@ public class TableBuilder {
                 }
                 ListDesign listDesign = creatorColumn.getListDesign();
                 column.setListConfig(CONVERTER.convert(listDesign, ListConfig.class));
+
+                FormDesign formDesign = creatorColumn.getFormDesign();
+                column.setFormConfig(CONVERTER.convert(formDesign, FormConfig.class));
+
+                SearchDesign searchDesign = creatorColumn.getSearchDesign();
+                column.setSearchConfig(CONVERTER.convert(searchDesign, SearchConfig.class));
+
                 table.addColumn(column);
 
                 if (column.getPrimaryKey()) {

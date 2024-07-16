@@ -48,11 +48,16 @@ public class CodeTreeBuilder {
     private final int tableIndex;
 
     public CodeTreeBuilder(CodeCreatorProperties codeCreatorProperties, List<CodeCreatorContent> codeCreatorContentList,
-                           Table table, Map<GenTypeEnum, CodeCreatorContent> codeMap, int tableIndex) {
+                           Table table, int tableIndex) {
         this.codeCreatorProperties = codeCreatorProperties;
         this.table = table;
-        this.codeMap = codeMap;
         this.tableIndex = tableIndex;
+
+        Map<GenTypeEnum, CodeCreatorContent> codeMap = new HashMap<>(codeCreatorContentList.size());
+        for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
+            codeMap.put(codeCreatorContent.getGenType(), codeCreatorContent);
+        }
+        this.codeMap = codeMap;
         this.backendCodeCreatorContentList = codeCreatorContentList.stream().filter(item -> GenTypeEnum.BACKEND_LIST.contains(item.getGenType())).toList();
         this.frontCodeCreatorContentList = codeCreatorContentList.stream().filter(item -> GenTypeEnum.FRONT_LIST.contains(item.getGenType())).toList();
     }
@@ -112,11 +117,11 @@ public class CodeTreeBuilder {
         FrontDesign frontDesign = codeCreator.getFrontDesign();
 
 
-        PreviewVo parent = buildFrontRoot(treeDataList, cacheMap, frontDesign);
-        treeDataList.add(parent);
+        PreviewVo root = buildFrontRoot(treeDataList, cacheMap, frontDesign);
+        treeDataList.add(root);
 
         for (CodeCreatorContent creatorContent : frontCodeCreatorContentList) {
-
+            PreviewVo parent = root;
             List<String> pathList = StrUtil.split(creatorContent.getPath(), StrPool.SLASH);
 
             for (int i = 0; i < pathList.size(); i++) {
@@ -139,12 +144,13 @@ public class CodeTreeBuilder {
                     }
                     layerDir.setPath(key);
                     layerDir.setParentId(parent.getId());
+
+                    cacheMap.put(key, layerDir);
+                    treeDataList.add(layerDir);
                 }
                 parent = layerDir;
-
-                cacheMap.put(key, layerDir);
-                treeDataList.add(layerDir);
             }
+
         }
     }
 

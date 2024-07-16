@@ -165,11 +165,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 codeCreatorContentMapper.insertBatch(codeCreatorContentList);
             }
 
-            Map<GenTypeEnum, CodeCreatorContent> codeMap = new HashMap<>(codeCreatorContentList.size());
-            for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
-                codeMap.put(codeCreatorContent.getGenType(), codeCreatorContent);
-            }
-            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(codeCreatorProperties, codeCreatorContentList, table, codeMap, i);
+            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(codeCreatorProperties, codeCreatorContentList, table, i);
             codeTreeBuilder.buildCodeTree(previews, cache);
         }
         log.info("Code is generated successfully. size ={}", previews.size());

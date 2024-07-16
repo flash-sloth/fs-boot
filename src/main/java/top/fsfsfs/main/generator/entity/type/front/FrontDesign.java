@@ -16,6 +16,7 @@
 package top.fsfsfs.main.generator.entity.type.front;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import top.fsfsfs.codegen.config.FrontConfig;
 
 /**
  * 代码生成器 前端配置
@@ -47,23 +49,24 @@ public class FrontDesign {
     /**
      * 表单打开方式。
      */
-    @NotEmpty(message = "请填写表单打开方式")
-    private String openMode;
+    @NotNull(message = "请填写表单打开方式")
+    private FrontConfig.OpenMode openMode;
 
     /**
      * 布局方式。
      */
-    @NotEmpty(message = "请填写布局方式")
-    private String layout;
+    @NotNull(message = "请填写布局方式")
+    private FrontConfig.Layout layout;
+
     /**
      * 是否启用国际化。
      */
-    @NotEmpty(message = "请填写国际化")
+    @NotNull(message = "请填写国际化")
     private Boolean i18n;
     /**
      * 页面缓存。
      */
-    @NotEmpty(message = "请填写页面缓存")
+    @NotNull(message = "请填写页面缓存")
     private Boolean keepAlive;
 
 

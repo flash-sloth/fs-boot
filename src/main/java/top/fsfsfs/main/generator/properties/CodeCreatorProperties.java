@@ -8,17 +8,6 @@
 
 package top.fsfsfs.main.generator.properties;
 
-import top.fsfsfs.codegen.config.ControllerConfig;
-import top.fsfsfs.codegen.config.DtoConfig;
-import top.fsfsfs.codegen.config.EntityConfig;
-import top.fsfsfs.codegen.config.FrontConfig;
-import top.fsfsfs.codegen.config.MapperConfig;
-import top.fsfsfs.codegen.config.MapperXmlConfig;
-import top.fsfsfs.codegen.config.QueryConfig;
-import top.fsfsfs.codegen.config.ServiceConfig;
-import top.fsfsfs.codegen.config.ServiceImplConfig;
-import top.fsfsfs.codegen.config.VoConfig;
-import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
@@ -30,6 +19,17 @@ import top.fsfsfs.basic.mvcflex.controller.SuperController;
 import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
+import top.fsfsfs.codegen.config.ControllerConfig;
+import top.fsfsfs.codegen.config.DtoConfig;
+import top.fsfsfs.codegen.config.EntityConfig;
+import top.fsfsfs.codegen.config.FrontConfig;
+import top.fsfsfs.codegen.config.MapperConfig;
+import top.fsfsfs.codegen.config.MapperXmlConfig;
+import top.fsfsfs.codegen.config.QueryConfig;
+import top.fsfsfs.codegen.config.ServiceConfig;
+import top.fsfsfs.codegen.config.ServiceImplConfig;
+import top.fsfsfs.codegen.config.VoConfig;
+import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.main.generator.entity.type.ControllerDesign;
 import top.fsfsfs.main.generator.entity.type.DtoDesign;
 import top.fsfsfs.main.generator.entity.type.EntityDesign;
@@ -39,6 +39,7 @@ import top.fsfsfs.main.generator.entity.type.ServiceDesign;
 import top.fsfsfs.main.generator.entity.type.ServiceImplDesign;
 import top.fsfsfs.main.generator.entity.type.VoDesign;
 import top.fsfsfs.main.generator.entity.type.XmlDesign;
+import top.fsfsfs.main.generator.entity.type.front.FrontDesign;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -492,6 +493,7 @@ public class CodeCreatorProperties {
     }
 
     @Data
+    @AutoMappers({@AutoMapper(target = FrontDesign.class), @AutoMapper(target = FrontConfig.class)})
     public static class FrontRule {
 
         /**
@@ -515,15 +517,6 @@ public class CodeCreatorProperties {
          * 页面缓存。
          */
         private Boolean keepAlive = true;
-        /**
-         * 表格生成复选框列。
-         */
-        private Boolean checkbox = true;
-
-        /**
-         * 表格生成单选框列。
-         */
-        private Boolean radio = false;
     }
 
 
