@@ -169,7 +169,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
                 codeMap.put(codeCreatorContent.getGenType(), codeCreatorContent);
             }
-            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(codeCreatorProperties, table, codeMap, i);
+            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(codeCreatorProperties, codeCreatorContentList, table, codeMap, i);
             codeTreeBuilder.buildCodeTree(previews, cache);
         }
         log.info("Code is generated successfully. size ={}", previews.size());

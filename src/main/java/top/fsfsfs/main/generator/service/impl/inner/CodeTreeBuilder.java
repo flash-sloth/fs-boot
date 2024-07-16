@@ -1,9 +1,10 @@
 package top.fsfsfs.main.generator.service.impl.inner;
 
 import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.codegen.config.GlobalConfig;
@@ -21,10 +22,14 @@ import top.fsfsfs.main.generator.entity.type.ServiceDesign;
 import top.fsfsfs.main.generator.entity.type.ServiceImplDesign;
 import top.fsfsfs.main.generator.entity.type.VoDesign;
 import top.fsfsfs.main.generator.entity.type.XmlDesign;
+import top.fsfsfs.main.generator.entity.type.front.FrontDesign;
 import top.fsfsfs.main.generator.properties.CodeCreatorProperties;
 import top.fsfsfs.main.generator.vo.PreviewVo;
+import top.fsfsfs.util.utils.FsTreeUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +38,24 @@ import java.util.Map;
  * @author tangyh
  * @since 2024/6/28 14:40
  */
-@RequiredArgsConstructor
+@Slf4j
 public class CodeTreeBuilder {
     private final CodeCreatorProperties codeCreatorProperties;
+    private final List<CodeCreatorContent> backendCodeCreatorContentList;
+    private final List<CodeCreatorContent> frontCodeCreatorContentList;
     private final Table table;
     private final Map<GenTypeEnum, CodeCreatorContent> codeMap;
     private final int tableIndex;
+
+    public CodeTreeBuilder(CodeCreatorProperties codeCreatorProperties, List<CodeCreatorContent> codeCreatorContentList,
+                           Table table, Map<GenTypeEnum, CodeCreatorContent> codeMap, int tableIndex) {
+        this.codeCreatorProperties = codeCreatorProperties;
+        this.table = table;
+        this.codeMap = codeMap;
+        this.tableIndex = tableIndex;
+        this.backendCodeCreatorContentList = codeCreatorContentList.stream().filter(item -> GenTypeEnum.BACKEND_LIST.contains(item.getGenType())).toList();
+        this.frontCodeCreatorContentList = codeCreatorContentList.stream().filter(item -> GenTypeEnum.FRONT_LIST.contains(item.getGenType())).toList();
+    }
 
     private final static Snowflake SNOWFLAKE = IdUtil.getSnowflake(1, 1);
 
@@ -84,6 +101,69 @@ public class CodeTreeBuilder {
 
         // xml层
         buildXml(previews, cache, resourceDir, packageConfig, xmlConfig, table.buildMapperXmlFileName(), GenTypeEnum.MAPPER_XML);
+
+        buildFrontCodeTree(previews, cache);
+    }
+
+    private void buildFrontCodeTree(List<PreviewVo> treeDataList, Map<String, PreviewVo> cacheMap) {
+        GlobalConfig globalConfig = table.getGlobalConfig();
+        Map<String, Object> customConfig = globalConfig.getCustomConfig();
+        CodeCreator codeCreator = (CodeCreator) customConfig.get(TableBuilder.GLOBAL_CONFIG_KEY);
+        FrontDesign frontDesign = codeCreator.getFrontDesign();
+
+
+        PreviewVo parent = buildFrontRoot(treeDataList, cacheMap, frontDesign);
+        treeDataList.add(parent);
+
+        for (CodeCreatorContent creatorContent : frontCodeCreatorContentList) {
+
+            List<String> pathList = StrUtil.split(creatorContent.getPath(), StrPool.SLASH);
+
+            for (int i = 0; i < pathList.size(); i++) {
+                String path = pathList.get(i);
+                String key = parent.getPath() + File.separator + path;
+
+                PreviewVo layerDir;
+                if (cacheMap.containsKey(key)) {
+                    layerDir = cacheMap.get(key);
+                } else {
+                    layerDir = new PreviewVo();
+                    layerDir.setName(path);
+//                        .setWeight(tableIndex + dirIndex)
+
+                    if (i + 1 == pathList.size()) {
+                        layerDir.setType("file").setIsReadonly(false).setContent(creatorContent.getContent()).setId(creatorContent.getId());
+
+                    } else {
+                        layerDir.setType("dir").setIsReadonly(true).setId(SNOWFLAKE.nextId());
+                    }
+                    layerDir.setPath(key);
+                    layerDir.setParentId(parent.getId());
+                }
+                parent = layerDir;
+
+                cacheMap.put(key, layerDir);
+                treeDataList.add(layerDir);
+            }
+        }
+    }
+
+    @NotNull
+    private PreviewVo buildFrontRoot(List<PreviewVo> previews, Map<String, PreviewVo> cache, FrontDesign frontDesign) {
+        PreviewVo root = cache.get(frontDesign.getSourceDir());
+        if (root == null) {
+            root = new PreviewVo();
+            root.setPath(frontDesign.getSourceDir())
+                    .setIsReadonly(true)
+                    .setType("project")
+                    .setWeight(tableIndex)
+                    .setId(SNOWFLAKE.nextId())
+                    .setName("fs-web")
+                    .setParentId(null);
+            cache.put(frontDesign.getSourceDir(), root);
+            previews.add(root);
+        }
+        return root;
     }
 
     @NotNull
@@ -253,4 +333,93 @@ public class CodeTreeBuilder {
         return layerDir;
     }
 
+
+    public static void main(String[] args) {
+        List<CodeCreatorContent> list = new ArrayList<>();
+
+        CodeCreatorContent codeCreatorContent = new CodeCreatorContent();
+        codeCreatorContent.setId(1L);
+        codeCreatorContent.setContent("ttt");
+        codeCreatorContent.setPath("src/views/main/abcde/codeTestSimple/index.tsx");
+        list.add(codeCreatorContent);
+
+        codeCreatorContent = new CodeCreatorContent();
+        codeCreatorContent.setId(2L);
+        codeCreatorContent.setContent("2222");
+        codeCreatorContent.setPath("src/views/main/abcde/codeTestSimple/modules/form.vue");
+        list.add(codeCreatorContent);
+
+
+        codeCreatorContent = new CodeCreatorContent();
+        codeCreatorContent.setId(3L);
+        codeCreatorContent.setContent("3333");
+        codeCreatorContent.setPath("src/views/main/abcde/codeTestSimple/modules/wrapper.vue");
+        list.add(codeCreatorContent);
+
+
+        codeCreatorContent = new CodeCreatorContent();
+        codeCreatorContent.setId(4L);
+        codeCreatorContent.setContent("4444");
+        codeCreatorContent.setPath("src/views/main/abcde/codeTestSimple/data/form.tsx");
+        list.add(codeCreatorContent);
+
+        codeCreatorContent = new CodeCreatorContent();
+        codeCreatorContent.setId(5L);
+        codeCreatorContent.setContent("555");
+        codeCreatorContent.setPath("src/service/main/abcde/codeTestSimple/api.ts");
+        list.add(codeCreatorContent);
+
+        codeCreatorContent = new CodeCreatorContent();
+        codeCreatorContent.setId(5L);
+        codeCreatorContent.setContent("555");
+        codeCreatorContent.setPath("src/service/main/abcde/codeTestSimple/model.d.ts");
+        list.add(codeCreatorContent);
+
+
+        List<PreviewVo> treeDataList = new ArrayList<>();
+        Map<String, PreviewVo> cacheMap = new HashMap<>();
+
+        PreviewVo parent = new PreviewVo();
+        parent.setPath("/Users/tangyh/fs-web").setId(null);
+        treeDataList.add(parent);
+
+        for (CodeCreatorContent creatorContent : list) {
+
+            List<String> pathList = StrUtil.split(creatorContent.getPath(), StrPool.SLASH);
+
+            for (int i = 0; i < pathList.size(); i++) {
+                String path = pathList.get(i);
+                String key = parent.getPath() + File.separator + path;
+
+                PreviewVo layerDir;
+                if (cacheMap.containsKey(key)) {
+                    layerDir = cacheMap.get(key);
+                } else {
+                    layerDir = new PreviewVo();
+                    layerDir.setName(path);
+//                        .setWeight(tableIndex + dirIndex)
+
+                    if (i + 1 == pathList.size()) {
+                        layerDir.setType("file").setIsReadonly(false).setContent(creatorContent.getContent()).setId(codeCreatorContent.getId());
+
+                    } else {
+                        layerDir.setType("dir").setIsReadonly(true).setId(SNOWFLAKE.nextId());
+                    }
+                    layerDir.setPath(key);
+                    layerDir.setParentId(parent.getId());
+                }
+                parent = layerDir;
+
+                cacheMap.put(key, layerDir);
+                treeDataList.add(layerDir);
+            }
+
+        }
+
+//        log.info(JSONUtil.toJsonStr(treeDataList));
+
+        List<Tree<Long>> treeList = FsTreeUtil.build(treeDataList, new PreviewVo.PreviewNodeParser());
+        log.info("treeList ={} ", treeList);
+
+    }
 }

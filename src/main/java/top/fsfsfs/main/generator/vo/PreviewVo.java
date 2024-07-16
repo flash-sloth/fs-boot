@@ -19,10 +19,6 @@ import java.util.Map;
 @Data
 @Accessors(chain = true)
 public class PreviewVo extends TreeNode<Long> {
-    //        private Long id;
-//        private Integer weight;
-    //        private Long parentId;
-//        private String name;
     private String path;
     private String type;
     private String content;
