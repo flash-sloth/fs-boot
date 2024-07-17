@@ -122,9 +122,9 @@ public class TableBuilder {
 
         globalConfig.getJavadocConfig()
                 .setTableCommentFormat(comment -> StrUtil.replace(comment, "\n", "\n     * "))
-                .setTableSwaggerCommentFormat(comment -> StrUtil.replace(StrUtil.replace(comment, "\n", " "), "\"", "\\\""))
+                .setTableSwaggerCommentFormat(comment -> StrUtil.subBefore(comment, "\n", true))
                 .setColumnCommentFormat(comment -> StrUtil.replace(comment, "\n", "\n     * "))
-                .setColumnSwaggerCommentFormat(comment -> StrUtil.replace(StrUtil.replace(comment, "\n", " "), "\"", "\\\""))
+                .setColumnSwaggerCommentFormat(comment -> StrUtil.subBefore(comment, "\n", true))
                 .setAuthor(packageRule.getAuthor())
         ;
 
@@ -238,9 +238,9 @@ public class TableBuilder {
 
         globalConfig.getJavadocConfig()
                 .setTableCommentFormat(comment -> StrUtil.replace(comment, "\n", "\n     * "))
-                .setTableSwaggerCommentFormat(comment -> StrUtil.replace(StrUtil.replace(comment, "\n", " "), "\"", "\\\""))
+                .setTableSwaggerCommentFormat(comment -> StrUtil.subBefore(comment, "\n", true))
                 .setColumnCommentFormat(comment -> StrUtil.replace(comment, "\n", "\n     * "))
-                .setColumnSwaggerCommentFormat(comment -> StrUtil.replace(StrUtil.replace(comment, "\n", " "), "\"", "\\\""))
+                .setColumnSwaggerCommentFormat(comment -> StrUtil.subBefore(comment, "\n", true))
                 .setAuthor(packageDesign.getAuthor())
         ;
 

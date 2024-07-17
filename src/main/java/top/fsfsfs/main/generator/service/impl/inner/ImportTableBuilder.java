@@ -350,7 +350,6 @@ public class ImportTableBuilder {
         design.setShow(true);
         design.setHidden(false);
         design.setComponentType("VxeInput");
-        design.setComponentType(column.getTsType());
         design.setSequence(index);
         return design;
     }
