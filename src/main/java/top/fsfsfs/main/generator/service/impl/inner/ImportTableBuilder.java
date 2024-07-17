@@ -330,16 +330,15 @@ public class ImportTableBuilder {
 
     public SearchDesign fillSearchDesign(Column column, int index) {
         SearchDesign design = new SearchDesign();
-        design.setName(column.getName());
         design.setShow(true);
         design.setHidden(false);
+        design.setComponentType("VxeInput");
         design.setSequence(index);
         return design;
     }
 
     public ListDesign fillListDesign(Column column, int index) {
         ListDesign design = new ListDesign();
-        design.setName(column.getName());
         design.setShow(true);
         design.setHidden(false);
         design.setSequence(index);
@@ -350,6 +349,7 @@ public class ImportTableBuilder {
         FormDesign design = new FormDesign();
         design.setShow(true);
         design.setHidden(false);
+        design.setComponentType("VxeInput");
         design.setComponentType(column.getTsType());
         design.setSequence(index);
         return design;

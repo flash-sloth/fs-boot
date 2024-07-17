@@ -39,8 +39,7 @@ import top.fsfsfs.codegen.config.front.ListConfig;
 @AllArgsConstructor
 @AutoMapper(target = ListConfig.class)
 public class ListDesign {
-    /** 字段名 */
-    private String name;
+
     /** 是否生成该字段 */
     private Boolean show;
     /** 是否隐藏字段 */
