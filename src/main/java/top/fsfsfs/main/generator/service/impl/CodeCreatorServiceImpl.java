@@ -18,7 +18,6 @@ import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.constant.GenTypeEnum;
 import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
@@ -54,7 +53,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +81,12 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     private final CodeTypeService codeTypeService;
 
     @Override
+    protected <DTO> CodeCreator saveBefore(DTO save) {
+        return super.saveBefore(save);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<CodeCreatorVo> listTableMetadata(Long dsId) {
         DataSource ds = baseDatasourceService.getDs(dsId);
         List<cn.hutool.db.meta.Table> tables = FsMetaUtil.getTables(ds);
@@ -122,6 +126,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<Tree<Long>> preview(CodePreviewDto previewDto) {
 
         List<Table> tables = getTables(previewDto.getIds());
@@ -165,7 +170,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
                 codeCreatorContentMapper.insertBatch(codeCreatorContentList);
             }
 
-            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(codeCreatorProperties, codeCreatorContentList, table, i);
+            CodeTreeBuilder codeTreeBuilder = new CodeTreeBuilder(table, codeCreatorContentList, i);
             codeTreeBuilder.buildCodeTree(previews, cache);
         }
         log.info("Code is generated successfully. size ={}", previews.size());
@@ -194,6 +199,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void generator(CodeGenDto genDto) {
         List<Table> tables = getTables(genDto.getIds());
         if (tables == null || tables.isEmpty()) {
@@ -250,6 +256,7 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
 
     @SneakyThrows
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public DownloadVO download(List<Long> ids, List<Long> codeIds) {
         List<Table> tables = getTables(ids);
         if (tables == null || tables.isEmpty()) {
