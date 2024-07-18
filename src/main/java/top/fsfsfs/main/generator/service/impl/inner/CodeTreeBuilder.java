@@ -61,7 +61,7 @@ public class CodeTreeBuilder {
 
             for (int i = 0; i < pathList.size(); i++) {
                 String path = pathList.get(i);
-                String key = parent.getPath() + File.separator + path;
+                String key = parent.getPath() + StrPool.SLASH + path;
 
                 PreviewVo layerDir;
                 if (cacheMap.containsKey(key)) {
@@ -101,7 +101,7 @@ public class CodeTreeBuilder {
 
             for (int i = 0; i < pathList.size(); i++) {
                 String path = pathList.get(i);
-                String key = parent.getPath() + File.separator + path;
+                String key = parent.getPath() + StrPool.SLASH + path;
 
                 PreviewVo layerDir;
                 if (cacheMap.containsKey(key)) {
