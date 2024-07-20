@@ -175,7 +175,7 @@ public class TableBuilder {
         Map<String, String> jdbcJavaMap = codeTypeList.stream()
                 .filter(codeType -> CollUtil.isNotEmpty(codeType.getJdbcType()))
                 .flatMap(codeType -> codeType.getJdbcType().stream()
-                        .map(jdbcType -> Map.entry(jdbcType, codeType.getJavaType())))
+                        .map(jdbcType -> Map.entry(jdbcType.toLowerCase(), codeType.getJavaType())))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -184,7 +184,7 @@ public class TableBuilder {
 
 
         JdbcTypeMapping.setTypeMapper((rawType, javaType, table, column) -> {
-            String codeType = jdbcJavaMap.getOrDefault(rawType, defJavaType);
+            String codeType = jdbcJavaMap.getOrDefault(rawType.toLowerCase(), defJavaType);
             if (StrUtil.isNotBlank(codeType)) {
                 return codeType;
             }
@@ -195,14 +195,14 @@ public class TableBuilder {
         Map<String, String> jdbcTsMap = codeTypeList.stream()
                 .filter(codeType -> CollUtil.isNotEmpty(codeType.getJdbcType()))
                 .flatMap(codeType -> codeType.getJdbcType().stream()
-                        .map(jdbcType -> Map.entry(jdbcType, codeType.getTsType())))
+                        .map(jdbcType -> Map.entry(jdbcType.toLowerCase(), codeType.getTsType())))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (existingValue, newValue) -> existingValue
                 ));
         TsTypeMapping.setTypeMapper((rawType, javaType, table, column) -> {
-            String codeType = jdbcTsMap.getOrDefault(rawType, defTsType);
+            String codeType = jdbcTsMap.getOrDefault(rawType.toLowerCase(), defTsType);
             if (StrUtil.isNotBlank(codeType)) {
                 return codeType;
             }
