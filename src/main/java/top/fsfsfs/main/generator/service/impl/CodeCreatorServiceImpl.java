@@ -18,6 +18,7 @@ import top.fsfsfs.basic.mvcflex.request.DownloadVO;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.codegen.config.GlobalConfig;
+import top.fsfsfs.codegen.constant.GenTypeEnum;
 import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.codegen.entity.Column;
 import top.fsfsfs.codegen.entity.Table;
@@ -306,6 +307,11 @@ public class CodeCreatorServiceImpl extends SuperServiceImpl<CodeCreatorMapper, 
             for (CodeCreatorContent codeCreatorContent : codeCreatorContentList) {
                 String content = codeCreatorContent.getContent();
                 String path = codeCreatorContent.getPath();
+                if (GenTypeEnum.FRONT_LIST.contains(codeCreatorContent.getGenType())) {
+                    path = "fs-web/" + path;
+                } else {
+                    path = "fs-boot/" + path;
+                }
                 zip.putNextEntry(new ZipEntry(path));
                 IOUtils.write(content, zip, StrPool.UTF8);
                 zip.closeEntry();
