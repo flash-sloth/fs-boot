@@ -9,10 +9,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import top.fsfsfs.basic.base.entity.TreeEntity;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
+import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 菜单 实体类。
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table("fs_sys_menu")
+@Table(value = "fs_sys_menu", onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
 public class SysMenu extends TreeEntity<Long> implements Serializable {
 
     @Serial
