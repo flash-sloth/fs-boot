@@ -1,6 +1,5 @@
 package top.fsfsfs.main.system.entity;
 
-import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,12 +31,6 @@ public class SysMenu extends TreeEntity<Long> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * ID
-     */
-    @Id
-    private Long id;
 
     /**
      * 子系统ID
