@@ -20,6 +20,6 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Table(value = CodeTestSimpleBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeTestSimpleBase.TABLE_NAME)
 public class CodeTestSimple extends CodeTestSimpleBase {
 }

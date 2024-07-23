@@ -32,7 +32,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "树结构标准字段示例表")
-@Table(value = CodeTestTreeBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeTestTreeBase.TABLE_NAME)
 public class CodeTestTreeVo extends TreeNode<Long> implements Serializable {
 
     @Serial

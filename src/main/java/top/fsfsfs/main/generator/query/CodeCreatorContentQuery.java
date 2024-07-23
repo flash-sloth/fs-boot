@@ -29,7 +29,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "代码生成内容")
-@Table(value = CodeCreatorContentBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeCreatorContentBase.TABLE_NAME)
 public class CodeCreatorContentQuery implements Serializable {
 
     @Serial

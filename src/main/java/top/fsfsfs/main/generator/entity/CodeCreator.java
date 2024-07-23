@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.main.generator.entity.base.CodeCreatorBase;
 
 /**
@@ -20,6 +18,6 @@ import top.fsfsfs.main.generator.entity.base.CodeCreatorBase;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Table(value = CodeCreatorBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeCreatorBase.TABLE_NAME)
 public class CodeCreator extends CodeCreatorBase {
 }

@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "单表标准字段示例表")
-@Table(value = CodeTestSimpleBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeTestSimpleBase.TABLE_NAME)
 public class CodeTestSimpleQuery implements Serializable {
 
     @Serial

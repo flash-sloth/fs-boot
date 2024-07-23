@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "树结构标准字段示例表")
-@Table(value = CodeTestTreeBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeTestTreeBase.TABLE_NAME)
 public class CodeTestTreeQuery implements Serializable {
 
     @Serial

@@ -1,14 +1,12 @@
 package top.fsfsfs.main.generator.entity;
 
 import com.mybatisflex.annotation.Table;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
-import top.fsfsfs.main.generator.entity.base.CodeBaseClassBase;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import top.fsfsfs.main.generator.entity.base.CodeBaseClassBase;
 
 /**
  * 基类管理
@@ -22,6 +20,6 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Schema(description = "基类管理")
-@Table(value = CodeBaseClassBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeBaseClassBase.TABLE_NAME)
 public class CodeBaseClass extends CodeBaseClassBase {
 }

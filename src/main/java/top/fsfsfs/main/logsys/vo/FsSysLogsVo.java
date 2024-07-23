@@ -34,7 +34,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "系统日志")
-@Table(value = FsSysLogsBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = FsSysLogsBase.TABLE_NAME)
 public class FsSysLogsVo extends TreeNode<Long> implements Serializable {
 
     @Serial

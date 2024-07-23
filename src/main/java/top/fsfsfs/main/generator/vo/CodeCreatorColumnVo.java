@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "代码生成字段")
-@Table(value = CodeCreatorColumnBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeCreatorColumnBase.TABLE_NAME)
 public class CodeCreatorColumnVo implements Serializable {
 
     @Serial

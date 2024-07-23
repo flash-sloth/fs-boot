@@ -1,13 +1,11 @@
 package top.fsfsfs.main.generator.entity;
 
 import com.mybatisflex.annotation.Table;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
-import top.fsfsfs.main.generator.entity.base.CodeCreatorColumnBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import top.fsfsfs.main.generator.entity.base.CodeCreatorColumnBase;
 
 /**
  * 代码生成字段 实体类。
@@ -20,6 +18,6 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Table(value = CodeCreatorColumnBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeCreatorColumnBase.TABLE_NAME)
 public class CodeCreatorColumn extends CodeCreatorColumnBase {
 }

@@ -1,8 +1,6 @@
 package top.fsfsfs.main.logsys.entity;
 
 import com.mybatisflex.annotation.Table;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.main.logsys.entity.base.FsSysLogsBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +18,6 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Table(value = FsSysLogsBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = FsSysLogsBase.TABLE_NAME)
 public class FsSysLogs extends FsSysLogsBase {
 }

@@ -1,14 +1,12 @@
 package top.fsfsfs.main.base.entity;
 
 import com.mybatisflex.annotation.Table;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
-import top.fsfsfs.main.base.entity.base.BaseDatasourceBase;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import top.fsfsfs.main.base.entity.base.BaseDatasourceBase;
 
 /**
  * 数据源
@@ -22,6 +20,6 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Schema(description = "数据源")
-@Table(value = BaseDatasourceBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = BaseDatasourceBase.TABLE_NAME)
 public class BaseDatasource extends BaseDatasourceBase {
 }

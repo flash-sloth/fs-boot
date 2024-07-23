@@ -34,7 +34,7 @@ import top.fsfsfs.main.generator.enumeration.ClassTypeEnum;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "基类管理")
-@Table(value = CodeBaseClassBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = CodeBaseClassBase.TABLE_NAME)
 public class CodeBaseClassVo implements Serializable {
 
     @Serial

@@ -140,9 +140,9 @@ public class TableBuilder {
                 .setTablePrefix(strategyRule.getTablePrefix())
                 .setGenerateTables(tableNames);
 
-        globalConfig.setTableConfig(TableConfig.create()
-                .setInsertListenerClass(DefaultInsertListener.class)
-                .setUpdateListenerClass(DefaultUpdateListener.class));
+//        globalConfig.setTableConfig(TableConfig.create()
+//                .setInsertListenerClass(DefaultInsertListener.class)
+//                .setUpdateListenerClass(DefaultUpdateListener.class));
 
         globalConfig.enableEntity().setClassPrefix(entityRule.getClassPrefix()).setClassSuffix(entityRule.getClassSuffix());
         globalConfig.enableVo().setClassPrefix(voRule.getClassPrefix()).setClassSuffix(voRule.getClassSuffix());
@@ -265,9 +265,9 @@ public class TableBuilder {
         StrategyConfig strategyConfig = globalConfig.getStrategyConfig();
         BeanUtil.copyProperties(strategyRule, strategyConfig);
 
-        globalConfig.setTableConfig(TableConfig.create()
-                .setInsertListenerClass(DefaultInsertListener.class)
-                .setUpdateListenerClass(DefaultUpdateListener.class));
+//        globalConfig.setTableConfig(TableConfig.create()
+//                .setInsertListenerClass(DefaultInsertListener.class)
+//                .setUpdateListenerClass(DefaultUpdateListener.class));
 
         EntityConfig entityConfig = globalConfig.enableEntity();
         CONVERTER.convert(entityDesign, entityConfig);
