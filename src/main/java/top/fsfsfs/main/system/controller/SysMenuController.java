@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.mvcflex.controller.SuperTreeController;
 import top.fsfsfs.main.system.dto.SysMenuDto;
 import top.fsfsfs.main.system.entity.SysMenu;
@@ -22,4 +23,16 @@ import top.fsfsfs.main.system.vo.SysMenuVo;
 @Tag(name = "菜单接口")
 @RequestMapping("/main/system/sysMenu")
 public class SysMenuController extends SuperTreeController<SysMenuService, Long, SysMenu, SysMenuDto, SysMenuQuery, SysMenuVo> {
+
+    @Override
+    public R<Long> handlerSave(SysMenuDto data) {
+        return success(superService.saveWithCache(data));
+    }
+
+    @Override
+    public R<Long> handlerUpdate(SysMenuDto data) {
+        return success(superService.updateWithCacheById(data));
+    }
+
+
 }
