@@ -1,11 +1,12 @@
-package top.fsfsfs.main.system.vo;
+package top.fsfsfs.main.system.dto;
 
-import cn.hutool.core.lang.tree.TreeNode;
 import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import top.fsfsfs.main.system.entity.base.SysMenuBase;
+import top.fsfsfs.basic.base.entity.BaseEntity;
 
 import java.io.Serial;
 
@@ -15,10 +16,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
 
 /**
- * 菜单 VO类（通常用作Controller出参）。
+ * 菜单 DTO（写入方法入参）。
  *
  * @author tangyh
  * @since 2024-07-23 19:20:21
@@ -28,10 +28,8 @@ import lombok.EqualsAndHashCode;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Schema(description = "菜单")
-@Table(SysMenuBase.TABLE_NAME)
-public class SysMenuVo extends TreeNode<Long> implements Serializable {
+public class SysMenuDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,31 +37,38 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
     /**
      * ID
      */
-    @Id
+    @NotNull(message = "请填写ID", groups = BaseEntity.Update.class)
     @Schema(description = "ID")
     private Long id;
 
     /**
      * 子系统ID
      */
+    @NotNull(message = "请填写子系统ID")
     @Schema(description = "子系统ID")
     private Long subSystemId;
 
     /**
      * 编码;唯一编码，用于区分资源
      */
+    @NotEmpty(message = "请填写编码;唯一编码，用于区分资源")
+    @Size(max = 255, message = "编码;唯一编码，用于区分资源长度不能超过{max}")
     @Schema(description = "编码;唯一编码，用于区分资源")
     private String code;
 
     /**
      * 名称
      */
+    @NotEmpty(message = "请填写名称")
+    @Size(max = 255, message = "名称长度不能超过{max}")
     @Schema(description = "名称")
     private String name;
 
     /**
      * 类型;[10-菜单  20-按钮 30-字段 40-数据]
      */
+    @NotEmpty(message = "请填写类型;[10-菜单  20-按钮 30-字段 40-数据]")
+    @Size(max = 2, message = "类型;[10-菜单  20-按钮 30-字段 40-数据]长度不能超过{max}")
     @Schema(description = "类型;[10-菜单  20-按钮 30-字段 40-数据]")
     private String resourceType;
 
@@ -71,36 +76,42 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
      * 打开方式;[01-组件 02-内链 03-外链]
      * 
      */
+    @Size(max = 2, message = "打开方式;[01-组件 02-内链 03-外链] 长度不能超过{max}")
     @Schema(description = "打开方式;[01-组件 02-内链 03-外链] ")
     private String openWith;
 
     /**
      * 备注
      */
+    @Size(max = 255, message = "备注长度不能超过{max}")
     @Schema(description = "备注")
     private String remarks;
 
     /**
      * 地址栏路径
      */
+    @Size(max = 255, message = "地址栏路径长度不能超过{max}")
     @Schema(description = "地址栏路径")
     private String path;
 
     /**
      * 页面地址
      */
+    @Size(max = 255, message = "页面地址长度不能超过{max}")
     @Schema(description = "页面地址")
     private String component;
 
     /**
      * 重定向;用于resource_type=菜单和视图
      */
+    @Size(max = 255, message = "重定向;用于resource_type=菜单和视图长度不能超过{max}")
     @Schema(description = "重定向;用于resource_type=菜单和视图")
     private String redirect;
 
     /**
      * 图标
      */
+    @Size(max = 255, message = "图标长度不能超过{max}")
     @Schema(description = "图标")
     private String icon;
 
@@ -125,12 +136,14 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
     /**
      * 状态;[0-禁用 1-启用]
      */
+    @NotNull(message = "请填写状态;[0-禁用 1-启用]")
     @Schema(description = "状态;[0-禁用 1-启用]")
     private Boolean state;
 
     /**
      * 分组
      */
+    @Size(max = 255, message = "分组长度不能超过{max}")
     @Schema(description = "分组")
     private String subGroup;
 
@@ -149,12 +162,14 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
     /**
      * 数据范围;[01-全部 02-本单位及子级 03-本单位 04-本部门及子级 05-本部门 06-个人 07-自定义]
      */
+    @Size(max = 2, message = "数据范围;[01-全部 02-本单位及子级 03-本单位 04-本部门及子级 05-本部门 06-个人 07-自定义]长度不能超过{max}")
     @Schema(description = "数据范围;[01-全部 02-本单位及子级 03-本单位 04-本部门及子级 05-本部门 06-个人 07-自定义]")
     private String dataScope;
 
     /**
      * 实现类;自定义实现类全类名
      */
+    @Size(max = 255, message = "实现类;自定义实现类全类名长度不能超过{max}")
     @Schema(description = "实现类;自定义实现类全类名")
     private String dataCustomClass;
 
@@ -167,6 +182,7 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
     /**
      * 树路径
      */
+    @Size(max = 512, message = "树路径长度不能超过{max}")
     @Schema(description = "树路径")
     private String treePath;
 
@@ -179,6 +195,7 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
     /**
      * 元数据;菜单的元数据
      */
+    @Size(max = 512, message = "元数据;菜单的元数据长度不能超过{max}")
     @Schema(description = "元数据;菜单的元数据")
     private String metaJson;
 
@@ -193,41 +210,5 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
      */
     @Schema(description = "顺序号")
     private Integer weight;
-
-    /**
-     * 创建人id
-     */
-    @Schema(description = "创建人id")
-    private Long createdBy;
-
-    /**
-     * 创建时间
-     */
-    @Schema(description = "创建时间")
-    private LocalDateTime createdAt;
-
-    /**
-     * 更新人id
-     */
-    @Schema(description = "更新人id")
-    private Long updatedBy;
-
-    /**
-     * 更新时间
-     */
-    @Schema(description = "更新时间")
-    private LocalDateTime updatedAt;
-
-    /**
-     * 删除人
-     */
-    @Schema(description = "删除人")
-    private Long deletedBy;
-
-    /**
-     * 删除标志
-     */
-    @Schema(description = "删除标志")
-    private Long deletedAt;
 
 }

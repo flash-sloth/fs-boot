@@ -33,7 +33,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "系统参数")
-@Table(value = SysParamBase.TABLE_NAME, onInsert = DefaultInsertListener.class, onUpdate = DefaultUpdateListener.class)
+@Table(value = SysParamBase.TABLE_NAME)
 public class SysParamVo extends TreeNode<Long> implements Serializable {
 
     @Serial

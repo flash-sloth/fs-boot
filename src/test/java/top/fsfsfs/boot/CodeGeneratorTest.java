@@ -1,6 +1,7 @@
 package top.fsfsfs.boot;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mybatisflex.core.table.TableInfo;
@@ -9,18 +10,17 @@ import io.github.linpeilie.Converter;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import top.fsfsfs.basic.base.entity.SuperEntity;
+import top.fsfsfs.basic.base.entity.TreeEntity;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
+import top.fsfsfs.basic.mvcflex.controller.SuperTreeController;
 import top.fsfsfs.basic.mvcflex.mapper.SuperMapper;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultInsertListener;
-import top.fsfsfs.basic.mybatisflex.listener.DefaultUpdateListener;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.codegen.Generator;
 import top.fsfsfs.codegen.config.ColumnConfig;
 import top.fsfsfs.codegen.config.EntityConfig;
 import top.fsfsfs.codegen.config.GlobalConfig;
-import top.fsfsfs.codegen.config.TableConfig;
 import top.fsfsfs.codegen.constant.GenerationStrategyEnum;
 import top.fsfsfs.codegen.dialect.JdbcTypeMapping;
 import top.fsfsfs.codegen.entity.Column;
@@ -127,22 +127,23 @@ public class CodeGeneratorTest {
         //创建配置内容
         GlobalConfig globalConfig = new GlobalConfig();
 
-        //设置根包
+        // TODO 是否树形结构
+        boolean isTree = true;
+        Class<?> idClass = Long.class;
+        // 设置根包和生成的表名
         //globalConfig.setBasePackage("com.fsfsfs.demo.test");
         globalConfig.setBasePackage("top.fsfsfs");
-        globalConfig.getPackageConfig().setSubSystem("main").setModule("generator");
+        globalConfig.getPackageConfig().setSubSystem("main").setModule("system");
+//        globalConfig.setGenerateTable("fs_code_type");
+//        globalConfig.setGenerateTable("fs_code_test_tree");
+//        globalConfig.setGenerateTable("fs_code_test_simple");
+//        globalConfig.setGenerateTable("fs_code_creator_column");
+//        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
+        globalConfig.setGenerateTable("fs_sys_menu");
 
 //        globalConfig.setEntityGenerateEnable();
         //设置表前缀和只生成哪些表
         globalConfig.setTablePrefix("fs_");
-        globalConfig.setGenerateTable("fs_code_type");
-//        globalConfig.setGenerateTable("fs_code_test_tree");
-//        globalConfig.setGenerateTable("fs_code_test_simple");
-
-//        globalConfig.setGenerateTable("fs_code_creator_column");
-
-//        globalConfig.setGenerateTable("fs_code_creator", "fs_code_creator_column");
-//        globalConfig.setGenerateTable("fs_sys_menu");
         globalConfig.setJdkVersion(17);
         globalConfig.getJavadocConfig()
                 .setColumnCommentFormat(comment -> StrUtil.replace(comment, "\n", "\n     * "))
@@ -151,27 +152,34 @@ public class CodeGeneratorTest {
                 .setTableSwaggerCommentFormat(comment -> StrUtil.replace(StrUtil.replace(comment, "\n", " "), "\"", "\\\""))
         ;
 
-        globalConfig.setTableConfig(TableConfig.create()
-                .setInsertListenerClass(DefaultInsertListener.class)
-                .setUpdateListenerClass(DefaultUpdateListener.class));
+//        globalConfig.setTableConfig(TableConfig.create()
+//                .setInsertListenerClass(DefaultInsertListener.class)
+//                .setUpdateListenerClass(DefaultUpdateListener.class));
 
         globalConfig.enableEntity()
-//                .setSuperClass(TreeEntity.class)
                 .setSuperClass(SuperEntity.class)
-                .setGenericityType(Long.class)
+                .setGenericityType(idClass)
                 .setWithLombok(true)
                 .setWithBaseClassEnable(true)
         ;
+        if (isTree) {
+            globalConfig.getEntityConfig().setSuperClass(TreeEntity.class);
+        } else {
+            globalConfig.getEntityConfig().setSuperClass(SuperEntity.class);
+        }
 
         globalConfig.enableVo()
-//                .setSuperClass(TreeNode.class)
-//                .setGenericityType(Long.class)
                 .setWithLombok(true)
                 .setWithSwagger(true)
                 .setWithExcel(true)
 //                .setImplInterfaces(Serializable.class)
         ;
 
+        if (isTree) {
+            globalConfig.getVoConfig()
+                    .setSuperClass(TreeNode.class)
+                    .setGenericityType(idClass);
+        }
         globalConfig.enableQuery()
                 .setWithLombok(true).setWithSwagger(true).setWithExcel(true)
                 .setImplInterfaces(Serializable.class);
@@ -187,20 +195,25 @@ public class CodeGeneratorTest {
         globalConfig.enableController()
                 .setRequestMappingPrefix("/" + globalConfig.getPackageConfig().getSubSystem() + "/" + globalConfig.getPackageConfig().getModule())
 //                .setWithCrud(true)
-                .setSuperClass(SuperController.class)
+//                .setSuperClass(SuperController.class)
 //                .setSuperClass(SuperWriteController.class)
 //                .setSuperClass(SuperReadController.class)
-//               .setSuperClass(SuperTreeController.class)
 //               .setSuperClass(SuperSimpleController.class)
                 .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
+        if (isTree) {
+            globalConfig.getControllerConfig().setSuperClass(SuperTreeController.class);
+        } else {
+            globalConfig.getControllerConfig().setSuperClass(SuperController.class);
+        }
 
         globalConfig.enableMapperXml();
 
 //        //设置生成 mapper
         globalConfig.enableMapper().setSuperClass(SuperMapper.class);
         globalConfig.enableService().setSuperClass(SuperService.class);
-        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
+//        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
 //        globalConfig.enableFront();
+        globalConfig.disableFront();
 
         //可以单独配置某个列
         ColumnConfig columnConfig = new ColumnConfig();

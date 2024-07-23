@@ -1,11 +1,8 @@
-package top.fsfsfs.main.system.vo;
+package top.fsfsfs.main.system.query;
 
-import cn.hutool.core.lang.tree.TreeNode;
 import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import top.fsfsfs.main.system.entity.base.SysMenuBase;
 
 import java.io.Serial;
 
@@ -15,10 +12,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
 
 /**
- * 菜单 VO类（通常用作Controller出参）。
+ * 菜单 Query类（查询方法入参）。
  *
  * @author tangyh
  * @since 2024-07-23 19:20:21
@@ -28,10 +24,8 @@ import lombok.EqualsAndHashCode;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Schema(description = "菜单")
-@Table(SysMenuBase.TABLE_NAME)
-public class SysMenuVo extends TreeNode<Long> implements Serializable {
+public class SysMenuQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,7 +33,6 @@ public class SysMenuVo extends TreeNode<Long> implements Serializable {
     /**
      * ID
      */
-    @Id
     @Schema(description = "ID")
     private Long id;
 

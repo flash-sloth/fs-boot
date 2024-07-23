@@ -10,7 +10,7 @@ import java.util.List;
  * 菜单 服务层。
  *
  * @author tangyh
- * @since 2024-06-15
+ * @since 2024-07-23 19:20:21
  */
 public interface SysMenuService extends SuperService<SysMenu> {
 
