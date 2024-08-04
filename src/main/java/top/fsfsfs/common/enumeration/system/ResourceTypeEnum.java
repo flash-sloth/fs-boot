@@ -18,26 +18,23 @@ import lombok.NoArgsConstructor;
 @Schema(description = "资源类型-枚举")
 public enum ResourceTypeEnum {
     /**
-     * 菜单
+     * 目录
      */
-    SYSTEM("10", "子系统"),
+    DIR("10", "目录"),
     /**
      * 菜单
      */
     MENU("20", "菜单"),
     /**
-     * 按钮
+     * 内链
      */
-    BUTTON("30", "按钮"),
+    INNER_HREF("30", "内链"),
     /**
-     * 字段
+     * 外链
      */
-    FIELD("40", "字段"),
+    OUTER_HREF("40", "外链"),
 
-    /**
-     * 数据权限
-     */
-    DATA("50", "数据");
+     ;
 
     /**
      * 资源类型

@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.parser.NodeParser;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -19,16 +18,16 @@ import top.fsfsfs.main.system.dto.SysMenuDto;
 import top.fsfsfs.main.system.entity.SysMenu;
 import top.fsfsfs.main.system.mapper.SysMenuMapper;
 import top.fsfsfs.main.system.service.SysMenuService;
-import top.fsfsfs.main.system.vo.SysMenuResultVo;
+import top.fsfsfs.main.system.vo.SysMenuVo;
 import top.fsfsfs.util.utils.ArgumentAssert;
 import top.fsfsfs.util.utils.BeanPlusUtil;
 import top.fsfsfs.util.utils.FsTreeUtil;
 import top.fsfsfs.util.utils.JsonUtil;
 import top.fsfsfs.util.utils.ValidatorUtil;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 菜单 服务层实现。
@@ -50,7 +49,7 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
     public List<Tree<Long>> listVisibleRouter() {
         // 1
         List<SysMenu> menuList = list();
-        List<SysMenuResultVo> resultList = BeanUtil.copyToList(menuList, SysMenuResultVo.class);
+        List<SysMenuVo> resultList = BeanUtil.copyToList(menuList, SysMenuVo.class);
 
 //        2
         List<Tree<Long>> menuTreeList = FsTreeUtil.build(resultList, new RouterNodeParser());
@@ -58,15 +57,13 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
 //        3
         forEachTree(menuTreeList, 1, null);
 
-
         return menuTreeList;
     }
 
-    public static class RouterNodeParser implements NodeParser<SysMenuResultVo, Long> {
+    public static class RouterNodeParser implements NodeParser<SysMenuVo, Long> {
         @Override
-        public void parse(SysMenuResultVo treeNode, Tree<Long> tree) {
-            Map<String, Object> map = BeanUtil.beanToMap(treeNode);
-            tree.putAll(map);
+        public void parse(SysMenuVo treeNode, Tree<Long> tree) {
+            tree.putExtra("node", treeNode);
 
             tree.setId(treeNode.getId());
             tree.setParentId(treeNode.getParentId());
@@ -81,48 +78,35 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
     private void forEachTree(List<Tree<Long>> tree, int level, Tree<Long> parent) {
 
         for (Tree<Long> item : tree) {
+            SysMenuVo node = (SysMenuVo) item.get("node");
             RouterMeta meta = null;
 
             if (item.get(META) == null) {
-                if (ObjectUtil.isNotEmpty(item.get(META_JSON)) && !StrPool.BRACE.equals(item.get(META_JSON))) {
-                    meta = JsonUtil.parse((String) item.get(META_JSON), RouterMeta.class);
-                }
-                if (meta == null) {
-                    meta = new RouterMeta();
-                }
-
-                meta.put("component", item.get("component"));
-                if (ObjectUtil.isEmpty(meta.get("title"))) {
-                    meta.put("title", item.getName());
-                }
-                meta.put("icon", item.get("icon"));
-
-                // 视图需要隐藏
-                meta.put("hideInMenu", item.get("hideInMenu") != null ? item.get("hideInMenu") : false);
-
-                if ((Boolean) meta.get("hideInMenu") && ObjectUtil.isEmpty(meta.get("activeMenu")) && parent != null) {
-                    meta.put("activeMenu", parent.getName());
+                meta = new RouterMeta();
+                meta.setComponent(node.getComponent());
+                meta.setTitle(StrUtil.isEmpty(node.getTitle()) ? node.getName() : node.getTitle());
+                meta.setIcon(node.getIcon());
+                meta.setHideInMenu(node.getHideInMenu() != null && node.getHideInMenu());
+                if (meta.getHideInMenu()) {
+                    meta.setActiveMenu(parent.getName().toString());
                 }
 
-//                TODO 这段逻辑建议在配置菜单时，一次性配置完成
-//                内链
-                if ("02".equals(item.get("openWith"))) {
-                    //  是否内嵌页面
-                    meta.put("frameSrc", item.get("component"));
-                    item.put("component", "IFRAME");
-                    meta.put("component", "_builtin/iframe/index");
-                } else if ("03".equals(item.get("openWith"))) {
-                    // 是否外链
-                    item.put("component", "IFRAME");
-                    meta.put("href", item.get("path"));
-                    item.put("path", "/IFRAME");
+                if (ResourceTypeEnum.INNER_HREF.eq(node.getMenuType())) {
+                    // TODO 这里要不要改为其他？
+                    meta.setHref(node.getHref());
+                    meta.setComponent("_builtin/iframe/index");
+                    node.setComponent("IFRAME");
+                } else if (ResourceTypeEnum.OUTER_HREF.eq(node.getMenuType())) {
+                    meta.setHref(node.getHref());
+                    node.setComponent("IFRAME");
+                    node.setPath("/IFRAME");
                 }
 
             } else {
                 meta = (RouterMeta) item.get(META);
             }
 
-            //            soybean-admin 要求的格式
+            // soybean-admin 要求的格式
             if (parent != null) {
                 item.setName(parent.getName() + "_" + item.getName());
             }
@@ -149,7 +133,6 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
     public Boolean checkName(Long id, Long applicationId, String name) {
         return count(QueryWrapper.create().ne(SysMenu::getId, id, id != null)
                 .eq(SysMenu::getSubSystemId, applicationId)
-                .in(SysMenu::getResourceType, ResourceTypeEnum.MENU.getCode())
                 .eq(SysMenu::getName, name)) > 0;
     }
 
@@ -176,27 +159,38 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long saveWithCache(SysMenuDto data) {
-        if (StrUtil.containsAny(data.getResourceType(), ResourceTypeEnum.MENU.getCode())) {
+        ArgumentAssert.isFalse(check(null, data.getCode()), "编码重复：{}", data.getCode());
+        ArgumentAssert.isFalse(checkName(null, data.getSubSystemId(), data.getName()), "名称重复：{}", data.getName());
+
+        if (!StrUtil.equals(data.getMenuType(), ResourceTypeEnum.OUTER_HREF.getCode())) {
             ArgumentAssert.notEmpty(data.getPath(), "请填写【地址栏路径】");
-            ArgumentAssert.notEmpty(data.getComponent(), "请填写【页面路径】");
-            ArgumentAssert.isFalse(checkName(null, data.getSubSystemId(), data.getName()), "【名称】:{}重复", data.getName());
-            if (!ValidatorUtil.isUrl(data.getPath())) {
-                ArgumentAssert.isFalse(checkPath(null, data.getSubSystemId(), data.getPath()), "【地址栏路径】:{}重复", data.getPath());
-            }
+            ArgumentAssert.isFalse(checkPath(null, data.getSubSystemId(), data.getPath()), "【地址栏路径】:{}重复", data.getPath());
         }
-        ArgumentAssert.isFalse(check(null, data.getCode()), "【编码】：{}重复", data.getCode());
+        SysMenu parent = data.getParentId() != null ? getById(data.getParentId()) : null;
+
+        if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.MENU.getCode())) {
+            ArgumentAssert.notEmpty(data.getComponent(), "请填写【页面路径】");
+            if (parent != null) {
+                ArgumentAssert.contain(Arrays.asList(ResourceTypeEnum.DIR.getCode(), ResourceTypeEnum.MENU.getCode()), parent.getMenuType(), "【菜单】只能挂载在【目录】或【菜单】下级");
+                ArgumentAssert.isFalse(parent.getHideInMenu() != null && parent.getHideInMenu(), "菜单不能挂载在隐藏菜单下级");
+            }
+        } else if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.DIR.getCode())) {
+            if (parent != null) {
+                ArgumentAssert.isTrue(ResourceTypeEnum.DIR.eq(parent.getMenuType()), "【目录】只能挂载在【目录】下级");
+            }
+
+            data.setComponent("layout.base");
+        } else if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.INNER_HREF.getCode())) {
+            ArgumentAssert.notEmpty(data.getHref(), "请填写【跳转地址】");
+            data.setComponent("IFRAME");
+        } else if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.OUTER_HREF.getCode())) {
+            ArgumentAssert.notEmpty(data.getHref(), "请填写【跳转地址】");
+            data.setComponent("IFRAME");
+        }
+
+
         data.setMetaJson(parseMetaJson(data.getMetaJson()));
         SysMenu resource = BeanUtil.toBean(data, SysMenu.class);
-
-        SysMenu parent = getById(data.getParentId());
-        if (parent != null) {
-            if (ResourceTypeEnum.MENU.eq(data.getResourceType())) {
-                ArgumentAssert.isFalse(!ResourceTypeEnum.MENU.eq(parent.getResourceType()),
-                        "菜单只能挂载在菜单下级");
-                ArgumentAssert.isFalse(parent.getIsHidden() != null && parent.getIsHidden(),
-                        "菜单不能挂载在隐藏菜单下级");
-            }
-        }
 
         checkGeneral(resource, false);
 
@@ -263,7 +257,7 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long updateWithCacheById(SysMenuDto data) {
-        if (StrUtil.containsAny(data.getResourceType(), ResourceTypeEnum.MENU.getCode())) {
+        if (StrUtil.containsAny(data.getMenuType(), ResourceTypeEnum.MENU.getCode())) {
             ArgumentAssert.notEmpty(data.getPath(), "【地址栏路径】不能为空");
             ArgumentAssert.notEmpty(data.getComponent(), "【页面路径】不能为空");
             ArgumentAssert.isFalse(checkName(data.getId(), data.getSubSystemId(), data.getName()), "【资源名称】:{}重复", data.getName());

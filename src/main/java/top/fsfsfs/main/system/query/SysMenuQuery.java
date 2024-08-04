@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * 菜单 Query类（查询方法入参）。
  *
  * @author tangyh
- * @since 2024-07-23 19:20:21
+ * @since 2024-08-01 22:43:23
  */
 @Accessors(chain = true)
 @Data
@@ -55,17 +55,10 @@ public class SysMenuQuery implements Serializable {
     private String name;
 
     /**
-     * 类型;[10-菜单  20-按钮 30-字段 40-数据]
+     * 类型;[10-目录  20-菜单 30-内链 40-外链]
      */
-    @Schema(description = "类型;[10-菜单  20-按钮 30-字段 40-数据]")
-    private String resourceType;
-
-    /**
-     * 打开方式;[01-组件 02-内链 03-外链]
-     * 
-     */
-    @Schema(description = "打开方式;[01-组件 02-内链 03-外链] ")
-    private String openWith;
+    @Schema(description = "类型;[10-目录  20-菜单 30-内链 40-外链]")
+    private String menuType;
 
     /**
      * 备注
@@ -98,18 +91,6 @@ public class SysMenuQuery implements Serializable {
     private String icon;
 
     /**
-     * 是否目录
-     */
-    @Schema(description = "是否目录")
-    private Boolean isDir;
-
-    /**
-     * 是否隐藏菜单
-     */
-    @Schema(description = "是否隐藏菜单")
-    private Boolean isHidden;
-
-    /**
      * 是否公共资源;1-无需分配所有人就可以访问的
      */
     @Schema(description = "是否公共资源;1-无需分配所有人就可以访问的")
@@ -122,40 +103,52 @@ public class SysMenuQuery implements Serializable {
     private Boolean state;
 
     /**
-     * 分组
+     * 布局方式 [01-默认 02-全屏]
      */
-    @Schema(description = "分组")
-    private String subGroup;
+    @Schema(description = "布局方式 [01-默认 02-全屏]")
+    private String layout;
 
     /**
-     * 是否脱敏;显示时是否需要脱敏实现 (用于resource_type=字段)
+     * 跳转地址
      */
-    @Schema(description = "是否脱敏;显示时是否需要脱敏实现 (用于resource_type=字段)")
-    private Boolean fieldSecret;
+    @Schema(description = "跳转地址")
+    private String href;
 
     /**
-     * 是否禁止编辑;是否可以编辑(用于resource_type=字段)
+     * 是否缓存该路由
      */
-    @Schema(description = "是否禁止编辑;是否可以编辑(用于resource_type=字段)")
-    private Boolean fieldDisabled;
+    @Schema(description = "是否缓存该路由")
+    private Boolean keepAlive;
 
     /**
-     * 数据范围;[01-全部 02-本单位及子级 03-本单位 04-本部门及子级 05-本部门 06-个人 07-自定义]
+     * 路由标题
      */
-    @Schema(description = "数据范围;[01-全部 02-本单位及子级 03-本单位 04-本部门及子级 05-本部门 06-个人 07-自定义]")
-    private String dataScope;
+    @Schema(description = "路由标题")
+    private String title;
 
     /**
-     * 实现类;自定义实现类全类名
+     * 是否在菜单中隐藏该路由
      */
-    @Schema(description = "实现类;自定义实现类全类名")
-    private String dataCustomClass;
+    @Schema(description = "是否在菜单中隐藏该路由")
+    private Boolean hideInMenu;
 
     /**
-     * 是否默认
+     * 进入该路由时激活的菜单键
      */
-    @Schema(description = "是否默认")
-    private Boolean dataDef;
+    @Schema(description = "进入该路由时激活的菜单键")
+    private String activeMenu;
+
+    /**
+     * 默认情况下，相同路径的路由会共享一个标签页，若设置为true，则使用多个标签页
+     */
+    @Schema(description = "默认情况下，相同路径的路由会共享一个标签页，若设置为true，则使用多个标签页")
+    private Boolean multiTab;
+
+    /**
+     * 路由查询参数，如果设置的话，点击菜单进入该路由时会自动携带的query参数
+     */
+    @Schema(description = "路由查询参数，如果设置的话，点击菜单进入该路由时会自动携带的query参数")
+    private String query;
 
     /**
      * 树路径
@@ -170,12 +163,6 @@ public class SysMenuQuery implements Serializable {
     private Integer treeGrade;
 
     /**
-     * 元数据;菜单的元数据
-     */
-    @Schema(description = "元数据;菜单的元数据")
-    private String metaJson;
-
-    /**
      * 父级ID
      */
     @Schema(description = "父级ID")
@@ -186,6 +173,12 @@ public class SysMenuQuery implements Serializable {
      */
     @Schema(description = "顺序号")
     private Integer weight;
+
+    /**
+     * 元数据;菜单的元数据
+     */
+    @Schema(description = "元数据;菜单的元数据")
+    private String metaJson;
 
     /**
      * 创建人id

@@ -199,7 +199,7 @@ public class CodeGeneratorTest {
 //                .setSuperClass(SuperWriteController.class)
 //                .setSuperClass(SuperReadController.class)
 //               .setSuperClass(SuperSimpleController.class)
-                .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE);
+                .setGenerationStrategy(GenerationStrategyEnum.OVERWRITE).setGenerationStrategy(GenerationStrategyEnum.EXIST_IGNORE);
         if (isTree) {
             globalConfig.getControllerConfig().setSuperClass(SuperTreeController.class);
         } else {
@@ -210,8 +210,8 @@ public class CodeGeneratorTest {
 
 //        //设置生成 mapper
         globalConfig.enableMapper().setSuperClass(SuperMapper.class);
-        globalConfig.enableService().setSuperClass(SuperService.class);
-//        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class);
+        globalConfig.enableService().setSuperClass(SuperService.class).setGenerationStrategy(GenerationStrategyEnum.EXIST_IGNORE);
+        globalConfig.enableServiceImpl().setSuperClass(SuperServiceImpl.class).setGenerationStrategy(GenerationStrategyEnum.EXIST_IGNORE);
 //        globalConfig.enableFront();
         globalConfig.disableFront();
 
