@@ -47,14 +47,14 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
      */
     @Override
     public List<Tree<Long>> listVisibleRouter() {
-        // 1
+        // 1 查询登录用户拥有的菜单 （目前查询全部，后续修改）
         List<SysMenu> menuList = list();
         List<SysMenuVo> resultList = BeanUtil.copyToList(menuList, SysMenuVo.class);
 
-//        2
+//        2 转换树结构， hutool的工具类性能好一些
         List<Tree<Long>> menuTreeList = FsTreeUtil.build(resultList, new RouterNodeParser());
 
-//        3
+//        3 构造前端需要的vueRouter数据，此方法可以考虑在前端做
         forEachTree(menuTreeList, 1, null);
 
         return menuTreeList;
