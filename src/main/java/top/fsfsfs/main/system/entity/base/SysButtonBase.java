@@ -75,6 +75,16 @@ public class SysButtonBase extends SuperEntity<Long> implements Serializable {
     @Schema(description = "状态;[0-禁用 1-启用]")
     private Boolean state;
 
+    /**
+     * 删除人
+     */
+    @Schema(description = "删除人")
+    private Long deletedBy;
 
+    /**
+     * 删除标志
+     */
+    @Schema(description = "删除标志")
+    private Long deletedAt;
 
 }
