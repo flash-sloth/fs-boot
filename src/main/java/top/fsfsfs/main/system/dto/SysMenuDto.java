@@ -44,7 +44,6 @@ public class SysMenuDto implements Serializable {
     /**
      * 子系统ID
      */
-    @NotNull(message = "请填写子系统ID")
     @Schema(description = "子系统ID")
     private Long subSystemId;
 

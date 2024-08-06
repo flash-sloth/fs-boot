@@ -169,6 +169,10 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
         ArgumentAssert.isFalse(check(null, data.getCode()), "编码重复：{}", data.getCode());
         ArgumentAssert.isFalse(checkName(null, data.getSubSystemId(), data.getName()), "名称重复：{}", data.getName());
 
+        if (data.getHideInMenu() == null) {
+            data.setHideInMenu(false);
+        }
+
         if (!StrUtil.equals(data.getMenuType(), ResourceTypeEnum.OUTER_HREF.getCode())) {
             ArgumentAssert.notEmpty(data.getPath(), "请填写【地址栏路径】");
             ArgumentAssert.isFalse(checkPath(null, data.getSubSystemId(), data.getPath()), "【地址栏路径】:{}重复", data.getPath());
@@ -178,19 +182,28 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
         if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.MENU.getCode())) {
             ArgumentAssert.notEmpty(data.getComponent(), "请填写【页面路径】");
             if (parent != null) {
-                ArgumentAssert.contain(Arrays.asList(ResourceTypeEnum.DIR.getCode(), ResourceTypeEnum.MENU.getCode()), parent.getMenuType(), "【菜单】只能挂载在【目录】或【菜单】下级");
-                ArgumentAssert.isFalse(parent.getHideInMenu() != null && parent.getHideInMenu(), "菜单不能挂载在隐藏菜单下级");
+                if (data.getHideInMenu()) {
+                    ArgumentAssert.contain(Arrays.asList(ResourceTypeEnum.DIR.getCode(), ResourceTypeEnum.MENU.getCode()), parent.getMenuType(), "【隐藏菜单】只能挂载在【{}】或【{}】下级", ResourceTypeEnum.DIR.getDesc(), ResourceTypeEnum.MENU.getDesc());
+                } else {
+                    ArgumentAssert.equals(ResourceTypeEnum.DIR.getCode(), parent.getMenuType(), "【{}】只能挂载在【{}】下级", ResourceTypeEnum.MENU.getDesc(), ResourceTypeEnum.DIR.getDesc());
+                }
             }
         } else if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.DIR.getCode())) {
             if (parent != null) {
-                ArgumentAssert.isTrue(ResourceTypeEnum.DIR.eq(parent.getMenuType()), "【目录】只能挂载在【目录】下级");
+                ArgumentAssert.isTrue(ResourceTypeEnum.DIR.eq(parent.getMenuType()), "【{}】只能挂载在【{}】下级", ResourceTypeEnum.DIR.getDesc(), ResourceTypeEnum.DIR.getDesc());
             }
 
             data.setComponent("layout.base");
         } else if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.INNER_HREF.getCode())) {
+            if (parent != null) {
+                ArgumentAssert.isTrue(ResourceTypeEnum.DIR.eq(parent.getMenuType()), "【{}】只能挂载在【{}】下级", ResourceTypeEnum.INNER_HREF.getDesc(), ResourceTypeEnum.DIR.getDesc());
+            }
             ArgumentAssert.notEmpty(data.getHref(), "请填写【跳转地址】");
             data.setComponent("IFRAME");
         } else if (StrUtil.equals(data.getMenuType(), ResourceTypeEnum.OUTER_HREF.getCode())) {
+            if (parent != null) {
+                ArgumentAssert.isTrue(ResourceTypeEnum.DIR.eq(parent.getMenuType()), "【{}】只能挂载在【{}】下级", ResourceTypeEnum.OUTER_HREF.getDesc(), ResourceTypeEnum.DIR.getDesc());
+            }
             ArgumentAssert.notEmpty(data.getHref(), "请填写【跳转地址】");
             data.setComponent("IFRAME");
         }
@@ -289,7 +302,7 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
 
     @Override
     public List<Tree<Long>> menuTree(SysMenuQueryVo query) {
-        SysMenu entity =  BeanPlusUtil.toBean(query, SysMenu.class);
+        SysMenu entity = BeanPlusUtil.toBean(query, SysMenu.class);
         QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(entity.getClass()));
         List<SysMenu> list = list(wrapper);
         List<SysMenuVo> treeList = BeanUtil.copyToList(list, SysMenuVo.class);
