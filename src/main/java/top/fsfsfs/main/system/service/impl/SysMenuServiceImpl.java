@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.fsfsfs.basic.exception.BizException;
 import top.fsfsfs.basic.mvcflex.service.impl.SuperServiceImpl;
+import top.fsfsfs.basic.mvcflex.utils.ControllerUtil;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.common.enumeration.system.ResourceTypeEnum;
 import top.fsfsfs.main.auth.vo.RouterMeta;
@@ -18,6 +19,7 @@ import top.fsfsfs.main.system.dto.SysMenuDto;
 import top.fsfsfs.main.system.entity.SysMenu;
 import top.fsfsfs.main.system.mapper.SysMenuMapper;
 import top.fsfsfs.main.system.service.SysMenuService;
+import top.fsfsfs.main.system.vo.SysMenuQueryVo;
 import top.fsfsfs.main.system.vo.SysMenuVo;
 import top.fsfsfs.util.utils.ArgumentAssert;
 import top.fsfsfs.util.utils.BeanPlusUtil;
@@ -28,6 +30,7 @@ import top.fsfsfs.util.utils.ValidatorUtil;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单 服务层实现。
@@ -56,7 +59,6 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
 
 //        3 构造前端需要的vueRouter数据，此方法可以考虑在前端做
         forEachTree(menuTreeList, 1, null);
-
         return menuTreeList;
     }
 
@@ -64,7 +66,6 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
         @Override
         public void parse(SysMenuVo treeNode, Tree<Long> tree) {
             tree.putExtra("node", treeNode);
-
             tree.setId(treeNode.getId());
             tree.setParentId(treeNode.getParentId());
             tree.setWeight(treeNode.getWeight());
@@ -116,6 +117,12 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
             if (CollUtil.isNotEmpty(item.getChildren())) {
                 forEachTree(item.getChildren(), level + 1, item);
             }
+            // 将node 平铺到tree节点
+            item.remove("node");
+            Map<String, Object> map = BeanUtil.beanToMap(node);
+            // 避免name字段 soybean-admin 逻辑被覆盖
+            map.remove("name");
+            item.putAll(map);
         }
     }
 
@@ -280,4 +287,21 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
         return resource.getId();
     }
 
+    @Override
+    public List<Tree<Long>> menuTree(SysMenuQueryVo query) {
+        SysMenu entity =  BeanPlusUtil.toBean(query, SysMenu.class);
+        QueryWrapper wrapper = QueryWrapper.create(entity, ControllerUtil.buildOperators(entity.getClass()));
+        List<SysMenu> list = list(wrapper);
+        List<SysMenuVo> treeList = BeanUtil.copyToList(list, SysMenuVo.class);
+        return FsTreeUtil.build(treeList, new MenuNodeParser());
+    }
+
+
+    public static class MenuNodeParser implements NodeParser<SysMenuVo, Long> {
+        @Override
+        public void parse(SysMenuVo treeNode, Tree<Long> tree) {
+            Map<String, Object> map = BeanUtil.beanToMap(treeNode);
+            tree.putAll(map);
+        }
+    }
 }

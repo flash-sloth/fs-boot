@@ -4,6 +4,7 @@ import cn.hutool.core.lang.tree.Tree;
 import top.fsfsfs.basic.mvcflex.service.SuperService;
 import top.fsfsfs.main.system.dto.SysMenuDto;
 import top.fsfsfs.main.system.entity.SysMenu;
+import top.fsfsfs.main.system.vo.SysMenuQueryVo;
 
 import java.util.List;
 
@@ -78,5 +79,10 @@ public interface SysMenuService extends SuperService<SysMenu> {
      */
     Long updateWithCacheById(SysMenuDto data);
 
-
+    /**
+     * 将菜单以树的形式呈现
+     * @param query 查询条件
+     * @return
+     */
+    List<Tree<Long>> menuTree(SysMenuQueryVo query);
 }
