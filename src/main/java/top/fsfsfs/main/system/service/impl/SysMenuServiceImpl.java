@@ -96,7 +96,7 @@ public class SysMenuServiceImpl extends SuperServiceImpl<SysMenuMapper, SysMenu>
                     // TODO 这里要不要改为其他？
                     meta.setHref(node.getHref());
                     meta.setComponent("_builtin/iframe/index");
-                    node.setComponent("IFRAME");
+                    node.setComponent("_builtin/iframe/index");
                 } else if (ResourceTypeEnum.OUTER_HREF.eq(node.getMenuType())) {
                     meta.setHref(node.getHref());
                     node.setComponent("IFRAME");
