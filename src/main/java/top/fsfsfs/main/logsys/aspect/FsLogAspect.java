@@ -16,6 +16,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
@@ -31,12 +32,17 @@ import top.fsfsfs.basic.utils.ContextUtil;
 import top.fsfsfs.basic.utils.StrPool;
 import top.fsfsfs.config.properties.SystemProperties;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 
 import org.apache.ibatis.javassist.*;
@@ -161,6 +167,7 @@ public class FsLogAspect {
         Object result = null;
         long startTime = System.currentTimeMillis();
         try {
+            //joinPoint.proceed(); //执行方法
             result = joinPoint.proceed(); //执行方法
             //写入到数据库中
             //outResultLog(joinPoint, logTraceId, types, startTime, result, systemProperties.getRecordResult());
@@ -211,14 +218,14 @@ public class FsLogAspect {
      * @param logTraceId
      * @param types
      * @param start
-     * @param retVal
+     * @param result
      * @param flag
      *
      * @author dely
      * @since 2024-06-30 22:15
      */
 
-    public  void logToDb(ProceedingJoinPoint joinPoint, String logTraceId, String types, long start, Object retVal, boolean flag) {
+    public  void logToDb(ProceedingJoinPoint joinPoint, String logTraceId, String types, long start, Object result, boolean flag) {
         /**
          synchronized
         log.info("<<<< [traceId:{}] {}.{}({}) end... {} ms", logTraceId, joinPoint.getSignature().getDeclaringType(),
@@ -253,14 +260,19 @@ public class FsLogAspect {
         fsSysLogs.setLogParams( strParams );
 
         //返回值
-        String jsonRetVal =  JSONUtil.toJsonStr(retVal);
-        if (jsonRetVal.length() < 1024) {
-            fsSysLogs.setExceptionDetail(jsonRetVal);
+        if(result  instanceof InputStreamSource || result  instanceof File
+                || result  instanceof InputStream || result  instanceof OutputStream        ){
+            fsSysLogs.setExceptionDetail("");
+        }else {
+            String jsonRetVal = JSONUtil.toJsonStr(result);
+            if (jsonRetVal != null && jsonRetVal.length() < 1024) {
+                fsSysLogs.setExceptionDetail(jsonRetVal);
+            }
         }
 
         //是否记录返回值
         if (flag) {
-            log.info("<<<< [traceId:{}] result={}", logTraceId, retVal);
+            log.info("<<<< [traceId:{}] result={}", logTraceId, result);
         }
 
         fsSysLogs.setId(IdUtil.getSnowflakeNextId());

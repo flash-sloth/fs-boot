@@ -1,6 +1,7 @@
 package top.fsfsfs.main.logsys.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,16 +9,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import top.fsfsfs.basic.base.R;
 import top.fsfsfs.basic.base.entity.BaseEntity;
 import top.fsfsfs.basic.mvcflex.controller.SuperController;
@@ -29,6 +25,7 @@ import top.fsfsfs.main.logsys.query.FsSysLogsQuery;
 import top.fsfsfs.main.logsys.service.FsSysLogsService;
 import top.fsfsfs.main.logsys.vo.FsSysLogsVo;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -37,7 +34,7 @@ import java.util.List;
  * @author hukunzhen
  * @since 2024-07-02
  */
-
+@Slf4j
 @RestController
 @Validated
 @Tag(name = "系统日志接口")
@@ -115,5 +112,28 @@ public class FsSysLogsController extends SuperController<FsSysLogsService, Long,
         // fsSysLogsService.page(page, wrapper);
         // Page<FsSysLogsVo> voPage = top.fsfsfs.basic.mybatisflex.utils.BeanPageUtil.toBeanPage(page, FsSysLogsVo.class);
         // return R.success(voPage);
+    }
+
+    @PostMapping("/handleFileUpload")
+    public R<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return R.success( "文件为空，请选择一个文件上传。" );
+        }
+        //String strJson = JSONUtil.toJsonStr(file) ;
+        //System.out.println(strJson);
+        try {
+            // 获取原始文件名
+            String fileName = file.getOriginalFilename();
+
+            // 获取文件的字节
+            byte[] bytes = file.getBytes();
+
+            // 这里可以添加保存文件的代码，例如将文件保存到磁盘或数据库
+            file.transferTo(new File("E:/ossfile/"+fileName));
+
+            return R.success("文件上传成功：" + fileName);// file );//"文件上传成功：" + fileName;
+        } catch (Exception e) {
+            return R.success(  "文件上传失败：" + e.getMessage() );
+        }
     }
 }
